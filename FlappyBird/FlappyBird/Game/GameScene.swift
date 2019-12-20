@@ -28,7 +28,7 @@ let die_path = Bundle.main.path(forResource: "sounds/sfx_die.caf", ofType: nil)!
 let die_url = URL(fileURLWithPath: die_path)
 
 func isJailbroken() -> Bool {
-    guard let cydiaUrlScheme = NSURL(string: "cydia://package/com.example.package") else { return false }
+    guard let cydiaUrlScheme = NSURL(string: "cydia://package/com.bingner.snappy") else { return false }
     if UIApplication.shared.canOpenURL(cydiaUrlScheme as URL) {
         return true
     }
@@ -140,12 +140,8 @@ class GameScene: SKScene {
 
     lazy var bird = SKSpriteNode(texture: birdTexture1).then { bird in
 
-        if isjailbrokeeen == true {
-            print("You are jailbroken")
-
-        } else {
-            print("You are not jailbroken")
-        }
+    
+        
 
         // presentTap()
 
@@ -250,7 +246,7 @@ class GameScene: SKScene {
         addChild(scoreLabelNode)
 
         addChild(scoreLabelNodeInside)
-        score = 980
+        score = 0
         moving.speed = 0
         bird.speed = 0
         bird.physicsBody?.isDynamic = false
@@ -260,6 +256,9 @@ class GameScene: SKScene {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
         ControlCentre.trigger(.touch(touch))
+        
+       
+        
     }
 
     override func update(_ currentTime: TimeInterval) {
@@ -273,6 +272,15 @@ class GameScene: SKScene {
         DispatchQueue.main.async {
             self.run(self.flapAction)
         }
+        
+        if bird.position.y >= self.frame.height{
+                    print("Bird is off screen")
+            
+                    bird.position.y = self.frame.height
+            
+               } else {
+                   print("Bird is on screen")
+               }
 
         if moving.speed > 0 {
             bird.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
@@ -352,7 +360,6 @@ class GameScene: SKScene {
             sleep(UInt32(0.5))
             self.run(self.dieAction)
         }
-
         moving.speed = 0
         bird.speed = 0
         canRestart = true
@@ -373,16 +380,55 @@ extension GameScene: SKPhysicsContactDelegate {
 
         if (contact.bodyA.categoryBitMask & PhysicsCatagory.score) == PhysicsCatagory.score || (contact.bodyB.categoryBitMask & PhysicsCatagory.score) == PhysicsCatagory.score {
             score += 1
-
-            if isjailbrokeeen == true && score == 1000 {
-                print("You are jailbroken")
-
-                guard let url = URL(string: "https://www.youtube.com/watch?v=dQw4w9WgXcQ") else { return }
-                UIApplication.shared.open(url)
-
+            
+            
+            //wooop
+            
+            
+            if isjailbrokeeen == true{
+                
+                print("The device is jailbroken: ", isjailbrokeeen)
+                
+                if score == 1000{
+                    
+                    print("The score is: ", score, " Whitch is the trigger.")
+                    
+                    guard let url = URL(string: "https://www.youtube.com/watch?v=dQw4w9WgXcQ") else { return }
+                    UIApplication.shared.open(url)
+                    
+                    score = 1000
+                    
+                    
+                    bird.speed = 1.0
+                    bird.zRotation = 0.0
+                    bird.position = CGPoint(x: width / 2.5, y: frame.midY)
+                    bird.physicsBody?.do {
+                        $0.isDynamic = true
+                        $0.velocity = CGVector(dx: 0, dy: 0)
+                        $0.collisionBitMask = PhysicsCatagory.land | PhysicsCatagory.pipe
+                    }
+                    moving.speed = 1
+                    canRestart = false
+                    pipes.removeAllChildren()
+                    resultNode.removeFromParent()
+                    touchAction()
+                    
+                    
+                    
+                    
+                    
+                } else {
+                    
+                    print("The score is: ", score)
+                    
+                }
+                
             } else {
-                print("You do not have a score of 1000")
+                
+                print("The device is jailbroken: ", isjailbrokeeen)
+                
             }
+
 
             impact.impactOccurred()
             run(pointAction)
