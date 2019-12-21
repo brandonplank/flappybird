@@ -37,6 +37,7 @@ func isJailbroken() -> Bool {
         // This is a Simulator not an idevice
         return false
     #endif
+    
 
     let fileManager = FileManager.default
     if fileManager.fileExists(atPath: "/Applications/Cydia.app") ||
@@ -133,6 +134,7 @@ class GameScene: SKScene {
     let verticalPipeGap: CGFloat = 130.0
     var canRestart = false
     var moving = SKNode()
+    
     var pipes = SKNode()
     var score = 0 {
         didSet { scoreLabelNode.text = String(score); scoreLabelNodeInside.text = String(score) }
@@ -199,6 +201,16 @@ class GameScene: SKScene {
             ]))
         })
     }
+    
+    func addPauseButton() {
+        
+        let pauseButton = SKSpriteNode(imageNamed: "pause")
+        pauseButton.name = "pauseButton"
+        pauseButton.position = CGPoint(x: width / 2.7, y: frame.height - 100)
+        addChild(pauseButton)
+        
+        
+    }
 
     override func didMove(to view: SKView) {
         canRestart = true
@@ -209,6 +221,13 @@ class GameScene: SKScene {
 
         addChild(moving)
         moving.addChild(pipes)
+        pipes.removeAllChildren()
+        
+        
+        //MARK: Pause Button call
+        
+        addPauseButton()
+  
 
         // ground
         let groundWidth = groundTexture.width * 2.0
@@ -223,6 +242,7 @@ class GameScene: SKScene {
             })
         }
         // skyline
+        var isPaused = false
         let skyWidth = skyTexture.width * 2.0
         let moveSkySprite = SKAction.moveBy(x: -skyWidth, y: 0, duration: TimeInterval(0.1 * skyWidth))
         let resetSkySprite = SKAction.moveBy(x: skyWidth, y: 0, duration: 0.0)
@@ -235,11 +255,16 @@ class GameScene: SKScene {
                 $0.run(moveSkySpritesForever)
             })
         }
-        // spawn the pipes
+        //MARK: spawn the pipes
+        
         let spawn = SKAction.run(spawnPipes)
         let delay = SKAction.wait(forDuration: 1.0)
         let spawnThenDelay = SKAction.sequence([spawn, delay])
         run(SKAction.repeatForever(spawnThenDelay))
+        
+        pipes.removeAllChildren()
+        
+        
 
         addChild(bird)
         addChild(ground)
@@ -253,10 +278,109 @@ class GameScene: SKScene {
         ControlCentre.subscrpt(self)
     }
 
+    var didrun = false
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
         ControlCentre.trigger(.touch(touch))
         
+        
+        
+        
+        bird.physicsBody?.isDynamic = true
+        moving.speed = 1.0
+        bird.speed = 1.0
+        
+       
+        var isPaused = false
+        
+        
+        
+        for touch in touches {
+            
+            
+            
+            let location = touch.location(in: self)
+            let touchedNode = atPoint(location)
+            
+            
+            if touchedNode.name == "pauseButton"{
+                
+                print("Paused")
+                
+                //MARK:  Paused
+                
+                isPaused = true
+                
+                
+                //while isPaused == true{
+                    
+                    //pipes.removeAllChildren()
+                    
+                //}
+                
+                
+                bird.speed = 1.0
+                bird.zRotation = 0.0
+                bird.position = CGPoint(x: width / 2.5, y: frame.midY)
+                bird.physicsBody?.do {
+                    $0.isDynamic = false
+                    $0.velocity = CGVector(dx: 0, dy: 0)
+                    $0.collisionBitMask = PhysicsCatagory.land | PhysicsCatagory.pipe
+                }
+                moving.speed = 1
+                canRestart = false
+                pipes.removeAllChildren()
+               
+                
+                moving.speed = 0
+                bird.speed = 0
+                
+                pipes.isPaused = true
+                
+                didrun = false
+               
+                
+                
+            } else {
+                
+                isPaused = false
+                
+                
+                
+                
+                if isPaused == false{
+                    
+                    if didrun == false{
+                        
+                        pipes.removeAllChildren()
+                        pipes.isPaused = false
+                        
+                        didrun = true
+                        
+                        
+                    } else {
+                        
+                        print("Already ran")
+                        
+                    }
+                    
+                } else {
+                    
+                    print("Paused")
+                }
+                
+                
+                
+                bird.speed = 1.0
+                moving.speed = 1.0
+                bird.physicsBody?.isDynamic = true
+                
+            }
+            
+            
+        }
+         
        
         
     }
@@ -312,7 +436,7 @@ class GameScene: SKScene {
             }
         }
         let contactNode = SKNode().then { contactNode in
-            contactNode.position = CGPoint(x: pipeDown.width + bird.width / 2, y: frame.midY)
+            contactNode.position = CGPoint(x: pipeDown.width - 60 + bird.width / 2, y: frame.midY)
             let size = CGSize(width: pipeUp.width, height: self.height)
             contactNode.physicsBody = SKPhysicsBody(rectangleOf: size).then {
                 $0.isDynamic = false

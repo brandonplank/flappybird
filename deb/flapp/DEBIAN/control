@@ -1,6 +1,6 @@
 Package: com.brandonplank.flapp
 Name: Flappy Bird
-Version: 1.4
+Version: 1.6
 Architecture: iphoneos-arm
 Description: A Flappy Bird clone that runs on the latest iOS
 Maintainer: Brandon Plank
