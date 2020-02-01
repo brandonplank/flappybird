@@ -109,6 +109,9 @@ struct GamezPosition {
 class GameScene: SKScene {
     // NEW AUDIO SYSTEM
 
+    
+    
+    
     let impact = UIImpactFeedbackGenerator()
 
     let someNode = SKNode()
@@ -145,7 +148,7 @@ class GameScene: SKScene {
     
         
 
-        // presentTap()
+        
 
         bird.setScale(1.5)
         bird.position = CGPoint(x: width / 2.5, y: frame.midY)
@@ -213,6 +216,10 @@ class GameScene: SKScene {
     }
 
     override func didMove(to view: SKView) {
+        
+        //presentTap()
+        
+        
         canRestart = true
 
         physicsWorld.gravity = CGVector(dx: 0.0, dy: -10.0)

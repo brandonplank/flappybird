@@ -8,6 +8,7 @@
 
 import SpriteKit
 import UIKit
+import AVFoundation
 
 class GameViewController: UIViewController {
     override var shouldAutorotate: Bool { true }
@@ -43,6 +44,14 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let scene = scene, let skView = self.view as? SKView else { return }
+        
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.ambient)
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch let error {
+            print(error.localizedDescription)
+        }
+        
         skView.presentScene(scene)
         becomeFirstResponder()
     }

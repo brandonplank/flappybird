@@ -18,7 +18,7 @@ class TapBoard: SKSpriteNode {
     }
 
     convenience init(score: Int) {
-        let image = SKTexture(imageNamed: "tap").then { $0.filteringMode = .nearest }
+        let image = SKTexture(imageNamed: "taptap").then { $0.filteringMode = .nearest }
         self.init(texture: image, color: UIColor.clear, size: image.size())
     }
 }
