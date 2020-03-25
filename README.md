@@ -15,7 +15,7 @@ Install the ipa using a side-loading software such as Xcode or AltDeploy.
 
 Install the deb using a file manager such as Filza or a package manager such as Zebra.
 
-The deb can also be installed from [Brandon's repo](repo.brandonplank.org)
+The deb can also be installed from [Brandon's repo](https://repo.brandonplank.org/)
 
 
 ## Contributing
