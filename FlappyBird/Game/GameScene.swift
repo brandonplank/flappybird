@@ -43,7 +43,6 @@ class GameScene: SKScene {
     let pointAction = SKAction.playSoundFileNamed("sounds/sfx_point.wav", waitForCompletion: false)
     let hitAction = SKAction.playSoundFileNamed("sounds/sfx_hit.caf", waitForCompletion: false)
     let swooshAction = SKAction.playSoundFileNamed("sounds/sfx_swooshing.caf", waitForCompletion: false)
-    var didDie = true;
 
     let pipeTextureUp = SKTexture(imageNamed: "PipeUp").then { $0.filteringMode = .nearest }
     let pipeTextureDown = SKTexture(imageNamed: "PipeDown").then { $0.filteringMode = .nearest }
@@ -268,15 +267,22 @@ class GameScene: SKScene {
             
             pipes.setScale(1)
             
+            bird.physicsBody?.isDynamic = true
             firstTouch = false
         }
         if afterGameOver {
+            DispatchQueue.main.async {
+                self.run(self.swooshAction)
+            }
+            
             resetScene()
             
             firstTouch = true
             afterGameOver = false
         } else {
-            bird.physicsBody?.isDynamic = true
+            DispatchQueue.main.async {
+                self.run(self.flapAction)
+            }
         }
         ControlCentre.trigger(.touch(touch))
     }
@@ -288,10 +294,6 @@ class GameScene: SKScene {
 
     @objc private func touchAction() {
         if !isUserInteractionEnabled { return }
-        DispatchQueue.main.async {
-            self.run(self.flapAction)
-        }
-        
         if bird.position.y >= self.frame.height{
             bird.position.y = self.frame.height
         }
