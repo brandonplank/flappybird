@@ -9,9 +9,13 @@ This is an extremely close clone to the original FlappyBird by Dong Nguyen.
 FlappyBird is compatible with all iOS devices, and iOS versions!
 
 ## Installation
-The '.ipa' file for FlappyBird can be found on the [release page](https://github.com/brandonplank/flappybird/releases).
+The '.ipa' and '.deb' files for FlappyBird can be found on the [release page](https://github.com/ThatcherDev/flappybird/releases).
 
-Install it using a side-loading software such as Xcode or AltDeploy.
+Install the ipa using a side-loading software such as Xcode or AltDeploy.
+
+Install the deb using a file manager such as Filza or a package manager such as Zebra.
+
+The deb can also be installed from [Brandon's repo](repo.brandonplank.org)
 
 
 ## Contributing
