@@ -9,7 +9,7 @@ This is an extremely close clone to the original FlappyBird by Dong Nguyen.
 FlappyBird is compatible with iOS 10 - 13 on A6 - A13 devices.
 
 ## Installation
-The '.ipa' file for FlappyBird can be found on the [release page](https://github.com/ThatcherDev/flappybird/releases).
+The '.ipa' file for FlappyBird can be found on the [release page](https://github.com/brandonplank/flappybird/releases).
 
 Install it using a side-loading software such as Xcode or AltDeploy.
 
