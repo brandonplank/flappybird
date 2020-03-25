@@ -19,7 +19,7 @@ Xcode and CocoaPods need to be installed in order to contribute.
 
 ```
 # clone FlappyBird
-git clone https://github.com/ThatcherDev/flappybird.git
+git clone https://github.com/brandonplank/flappybird.git
 
 # change the working directory to flappybird
 cd flappybird
