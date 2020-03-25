@@ -1,0 +1,11 @@
+/Pods/
+.DS_Store
+*.xcuserstate
+project.xcworkspace/
+xcuserdata/
+*.swp
+*~.nib
+build/
+*.pbxuser
+*.perspective
+*.perspectivev3
