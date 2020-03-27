@@ -9,4 +9,6 @@ build/
 *.pbxuser
 *.perspective
 *.perspectivev3
-FlappyBird.xcodeproj/project.pbxproj
+Flappy\ Bird.app
+/compileAll/output
+!/compileAll/input
