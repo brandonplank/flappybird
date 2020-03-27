@@ -189,7 +189,7 @@
 				TargetAttributes = {
 					F02013771C60592F003F8A04 = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = W7J462TP2V;
+						DevelopmentTeam = GR3NL679U6;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -424,7 +424,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = W7J462TP2V;
+				DEVELOPMENT_TEAM = GR3NL679U6;
 				INFOPLIST_FILE = FlappyBird/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -444,7 +444,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = W7J462TP2V;
+				DEVELOPMENT_TEAM = GR3NL679U6;
 				INFOPLIST_FILE = FlappyBird/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
