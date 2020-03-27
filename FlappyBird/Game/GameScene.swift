@@ -67,7 +67,6 @@ class GameScene: SKScene {
         bird.position = CGPoint(x: width / 2.5, y: frame.midY)
         bird.physicsBody = SKPhysicsBody(circleOfRadius: bird.height / 2.0).then {
             $0.isDynamic = false
-            $0.allowsRotation = false
             $0.categoryBitMask = PhysicsCatagory.bird
             $0.collisionBitMask = PhysicsCatagory.land | PhysicsCatagory.pipe
             $0.contactTestBitMask = PhysicsCatagory.land | PhysicsCatagory.pipe
@@ -147,7 +146,7 @@ class GameScene: SKScene {
     }
     
     lazy var githubButton = SKSpriteNode(texture: SKTexture(imageNamed: "github").then { $0.filteringMode = .nearest }).then { github in
-         github.name = "github"
+        github.name = "github"
         github.setScale(1.2)
         github.zPosition = 2
     }
@@ -378,13 +377,17 @@ class GameScene: SKScene {
     }
 
     func gameOver() {
+        bird.physicsBody?.isDynamic = false
+        bird.physicsBody?.collisionBitMask = PhysicsCatagory.land
+        bird.physicsBody?.isDynamic = true
+        let anim = SKAction.animate(with: [birdTextures[0], birdTextures[1], birdTextures[2], birdTextures[1]], timePerFrame: 0.1)
+        bird.run(SKAction.repeatForever(anim))
+        
         DispatchQueue.main.async {
             self.run(self.hitAction)
             sleep(UInt32(0.5))
             self.run(self.dieAction)
         }
-        
-        bird.physicsBody?.collisionBitMask = PhysicsCatagory.land | PhysicsCatagory.pipe
         
         scoreLabelNode.removeFromParent()
         scoreLabelNodeInside.removeFromParent()
@@ -392,13 +395,13 @@ class GameScene: SKScene {
         gameover.setScale(0)
         addChild(gameover.then {
             $0.run(SKAction.sequence([
-                SKAction.scale(to: 1, duration: 0.2),
+                SKAction.scale(to: 1, duration: 0.1),
                 SKAction.scale(to: 1.25, duration: 0.1),
             ]))
         })
         
         moving.speed = 0
-        bird.speed = 0
+        bird.speed = 2
     }
     
     func addResultsAndButtons() {
@@ -406,7 +409,7 @@ class GameScene: SKScene {
         addChild(resultNode.then {
             $0.score = score
             $0.run(SKAction.sequence([
-                SKAction.scale(to: 1, duration: 0.2),
+                SKAction.scale(to: 1, duration: 0.1),
                 SKAction.scale(to: 1.25, duration: 0.1),
             ]))
         })
@@ -414,7 +417,7 @@ class GameScene: SKScene {
         playButton.setScale(0)
         addChild(playButton.then {
            $0.run(SKAction.sequence([
-                SKAction.scale(to: 1, duration: 0.2),
+                SKAction.scale(to: 1, duration: 0.1),
                 SKAction.scale(to: 1.25, duration: 0.1),
             ]))
         })
@@ -422,7 +425,7 @@ class GameScene: SKScene {
         githubButton.setScale(0)
         addChild(githubButton.then{
             $0.run(SKAction.sequence([
-                SKAction.scale(to: 1, duration: 0.2),
+                SKAction.scale(to: 1, duration: 0.1),
                 SKAction.scale(to: 1.25, duration: 0.1),
             ]))
         })
@@ -433,11 +436,8 @@ class GameScene: SKScene {
 }
 
 extension GameScene: SKPhysicsContactDelegate {
-    
     func didBegin(_ contact: SKPhysicsContact) {
-        if moving.speed <= 0 { return }
-        
-        if (contact.bodyA.categoryBitMask & PhysicsCatagory.score) == PhysicsCatagory.score || (contact.bodyB.categoryBitMask & PhysicsCatagory.score) == PhysicsCatagory.score {
+        if moving.speed == 1 && ((contact.bodyA.categoryBitMask & PhysicsCatagory.score) == PhysicsCatagory.score || (contact.bodyB.categoryBitMask & PhysicsCatagory.score) == PhysicsCatagory.score) {
             score += 1
             
             if score == 1000 {
@@ -457,11 +457,14 @@ extension GameScene: SKPhysicsContactDelegate {
                 SKAction.scale(to: 1.5, duration: 0.1),
                 SKAction.scale(to: 1.0, duration: 0.1),
             ]))
-        } else {
-            gameOver()
+        } else if moving.speed == 1 && (((contact.bodyA.categoryBitMask & PhysicsCatagory.pipe) == PhysicsCatagory.pipe || (contact.bodyB.categoryBitMask & PhysicsCatagory.pipe) == PhysicsCatagory.pipe) || ((contact.bodyA.categoryBitMask & PhysicsCatagory.land) == PhysicsCatagory.land || (contact.bodyB.categoryBitMask & PhysicsCatagory.land) == PhysicsCatagory.land)) {
             isUserInteractionEnabled = false
-            
-            let wait = SKAction.wait(forDuration: 1.6)
+            gameOver()
+        } else if bird.speed == 2 && ((contact.bodyA.categoryBitMask & PhysicsCatagory.land) == PhysicsCatagory.land || (contact.bodyB.categoryBitMask & PhysicsCatagory.land) == PhysicsCatagory.land) {
+            bird.speed = 0.5
+            let stopBird = SKAction.run{
+                self.bird.speed = 0
+            }
             let finished = SKAction.run {
                 DispatchQueue.main.async {
                     self.run(self.swooshAction)
@@ -469,11 +472,9 @@ extension GameScene: SKPhysicsContactDelegate {
                 self.addResultsAndButtons()
                 self.isUserInteractionEnabled = true
             }
-            run(SKAction.sequence([wait, finished]))
+            run(SKAction.sequence([SKAction.wait(forDuration: 0.8), stopBird, SKAction.wait(forDuration: 0.2), finished]))
         }
     }
-    
-   
 }
 
 extension GameScene: ControlCentreDelegate {
