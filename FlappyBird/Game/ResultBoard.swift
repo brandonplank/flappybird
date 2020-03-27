@@ -30,12 +30,12 @@ class ResultBoard: SKSpriteNode {
         addChild(bestScoreInside)
         addChild(medal)
         self.score = score
-        currentScore.position = CGPoint(x: frame.midX + 75, y: frame.midY + 20)
-        bestScore.position = CGPoint(x: frame.midX + 75, y: frame.midY - 25)
-        currentScoreInside.position = CGPoint(x: frame.midX + 75, y: frame.midY + 20)
-        bestScoreInside.position = CGPoint(x: frame.midX + 75, y: frame.midY - 25)
-        medal.position = CGPoint(x: frame.midX - 64, y: frame.midY + 4)
-        new.position = CGPoint(x: frame.midX + 35, y: frame.midY + 4)
+        currentScore.position = CGPoint(x: frame.midX + 75, y: frame.midY + 10)
+        bestScore.position = CGPoint(x: frame.midX + 75, y: frame.midY - 35)
+        currentScoreInside.position = CGPoint(x: frame.midX + 75, y: frame.midY + 10)
+        bestScoreInside.position = CGPoint(x: frame.midX + 75, y: frame.midY - 35)
+        medal.position = CGPoint(x: frame.midX - 64, y: frame.midY - 6)
+        new.position = CGPoint(x: frame.midX + 35, y: frame.midY - 6)
     }
     
     private lazy var currentScore = SKLabelNode(fontNamed: "04b_19").then {
@@ -64,17 +64,11 @@ class ResultBoard: SKSpriteNode {
     
     private lazy var medal = SKSpriteNode().then { medal in
         medal.zPosition = 1
-        medal.physicsBody = SKPhysicsBody(rectangleOf: medal.size).then {
-            $0.isDynamic = false
-        }
     }
     
     private lazy var new = SKSpriteNode(texture: SKTexture(imageNamed: "new")).then { new in
         new.setScale(0)
         new.zPosition = 2
-        new.physicsBody = SKPhysicsBody(rectangleOf: new.size).then {
-            $0.isDynamic = false
-        }
     }
     
     var score: Int = 0 {

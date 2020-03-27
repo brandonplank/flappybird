@@ -59,6 +59,7 @@ class GameScene: SKScene {
     }
     
     var firstTouch = true
+    var soundToPlay = ""
     var afterGameOver = false
     
     lazy var bird = SKSpriteNode(texture: SKTexture(imageNamed: "yellow-bird-1").then { $0.filteringMode = .nearest }).then { bird in
@@ -113,7 +114,17 @@ class GameScene: SKScene {
 
     lazy var resultNode = ResultBoard(score: score).then {
         $0.zPosition = GamezPosition.result
-        $0.position = CGPoint(x: self.frame.midX, y: self.frame.midY)
+        $0.position = CGPoint(x: frame.midX, y: frame.midY + 50)
+    }
+    
+    lazy var flappybird = SKSpriteNode(texture: SKTexture(imageNamed: "flappybird").then { $0.filteringMode = .nearest }).then { flappybird in
+        flappybird.setScale(1.5)
+        flappybird.position = CGPoint(x: width / 2, y: frame.midY + 200)
+    }
+    
+    lazy var gameover = SKSpriteNode(texture: SKTexture(imageNamed: "gameover").then { $0.filteringMode = .nearest }).then { gameover in
+        gameover.setScale(1.5)
+        gameover.position = CGPoint(x: width / 2, y: frame.midY + 210)
     }
     
     lazy var taptap = SKSpriteNode(texture: SKTexture(imageNamed: "taptap").then { $0.filteringMode = .nearest }).then { taptap in
@@ -130,6 +141,17 @@ class GameScene: SKScene {
         getReady.physicsBody = SKPhysicsBody(circleOfRadius: getReady.height).then {
             $0.isDynamic = false
         }
+    }
+    
+    lazy var playButton = SKSpriteNode(texture: SKTexture(imageNamed: "play").then { $0.filteringMode = .nearest }).then { play in
+        play.setScale(1.2)
+        play.name = "play"
+        play.zPosition = 2
+    }
+    
+    lazy var leaderboardButton = SKSpriteNode(texture: SKTexture(imageNamed: "leaderboard").then { $0.filteringMode = .nearest }).then { leaderboard in
+        leaderboard.setScale(1.2)
+        leaderboard.zPosition = 2
     }
     
     func setGravityAndPhysics(){
@@ -242,26 +264,50 @@ class GameScene: SKScene {
         setRandomBirdTextures()
         spawnPipesForever()
         
+        addChild(flappybird)
         addChild(moving)
         moving.addChild(pipes)
-        addChild(taptap)
-        addChild(getReady)
         addChild(bird)
+        bird.position = CGPoint(x: (width / 2), y: frame.midY + 75)
         addChild(ground)
-        addChild(scoreLabelNode)
-        addChild(scoreLabelNodeInside)
+        addChild(playButton)
+        playButton.position = CGPoint(x: (width / 2) - 80, y: frame.midY - 125)
+        addChild(leaderboardButton)
+        leaderboardButton.position = CGPoint(x: (width / 2) + 80, y: frame.midY - 125)
+        
         
         score = 0
         moving.speed = 1
         bird.speed = 1
         pipes.setScale(0)
         
+        firstTouch = false
         ControlCentre.subscrpt(self)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
-        if firstTouch {
+        let touchedNode = atPoint(touch.location(in: self))
+        
+        if touchedNode.name == "play" {
+            if afterGameOver {
+                resetScene()
+                afterGameOver = false
+            } else {
+                addChild(taptap)
+                addChild(getReady)
+                addChild(scoreLabelNode)
+                addChild(scoreLabelNodeInside)
+                bird.position = CGPoint(x: width / 2.5, y: frame.midY)
+            }
+            
+            flappybird.removeFromParent()
+            playButton.removeFromParent()
+            leaderboardButton.removeFromParent()
+            
+            firstTouch = true
+            soundToPlay = "swoosh"
+        } else if firstTouch {
             taptap.removeFromParent()
             getReady.removeFromParent()
             
@@ -269,21 +315,20 @@ class GameScene: SKScene {
             
             bird.physicsBody?.isDynamic = true
             firstTouch = false
+            soundToPlay = "flap"
         }
-        if afterGameOver {
-            DispatchQueue.main.async {
-                self.run(self.swooshAction)
-            }
-            
-            resetScene()
-            
-            firstTouch = true
-            afterGameOver = false
-        } else {
+        
+        if soundToPlay == "flap" {
             DispatchQueue.main.async {
                 self.run(self.flapAction)
             }
+        } else if soundToPlay == "swoosh" {
+            DispatchQueue.main.async {
+                self.run(self.swooshAction)
+            }
         }
+        
+        
         ControlCentre.trigger(.touch(touch))
     }
 
@@ -307,6 +352,7 @@ class GameScene: SKScene {
     func resetScene() {
         pipes.removeAllChildren()
         resultNode.removeFromParent()
+        gameover.removeFromParent()
         
         setRandomSkyTexture()
         setRandomBirdTextures()
@@ -335,21 +381,48 @@ class GameScene: SKScene {
             sleep(UInt32(0.5))
             self.run(self.dieAction)
         }
+        gameover.setScale(0)
+        addChild(gameover.then {
+            $0.run(SKAction.sequence([
+                SKAction.scale(to: 1, duration: 0.2),
+                SKAction.scale(to: 1.25, duration: 0.1),
+            ]))
+        })
         
         scoreLabelNode.removeFromParent()
         scoreLabelNodeInside.removeFromParent()
         
         moving.speed = 0
         bird.speed = 0
+        
         bird.physicsBody?.collisionBitMask = PhysicsCatagory.land
+    }
+    
+    func addResultsAndButtons() {
+        resultNode.setScale(0)
         addChild(resultNode.then {
             $0.score = score
             $0.run(SKAction.sequence([
-                SKAction.scale(to: 1, duration: 0.1),
+                SKAction.scale(to: 1, duration: 0.2),
+                SKAction.scale(to: 1.25, duration: 0.1),
+            ]))
+        })
+        playButton.setScale(0)
+        addChild(playButton.then {
+           $0.run(SKAction.sequence([
+                SKAction.scale(to: 1, duration: 0.2),
+                SKAction.scale(to: 1.25, duration: 0.1),
+            ]))
+        })
+        leaderboardButton.setScale(0)
+        addChild(leaderboardButton.then{
+            $0.run(SKAction.sequence([
+                SKAction.scale(to: 1, duration: 0.2),
                 SKAction.scale(to: 1.25, duration: 0.1),
             ]))
         })
         afterGameOver = true
+        soundToPlay = ""
     }
 }
 
@@ -382,13 +455,16 @@ extension GameScene: SKPhysicsContactDelegate {
             gameOver()
             isUserInteractionEnabled = false
             
-            let wait = SKAction.wait(forDuration: 0.6)
+            let wait = SKAction.wait(forDuration: 1.6)
             let finished = SKAction.run {
+                self.addResultsAndButtons()
                 self.isUserInteractionEnabled = true
             }
             run(SKAction.sequence([wait, finished]))
         }
     }
+    
+   
 }
 
 extension GameScene: ControlCentreDelegate {
