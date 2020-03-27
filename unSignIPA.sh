@@ -21,7 +21,7 @@ find . -name 'embedded.mobileprovision' -delete
 rm -f ./Payload/Flappy\ Bird.app/embedded.mobileprovision
 rm -rf ./Payload/Flappy\ Bird.app/_CodeSignature
 
-#touch ./Payload/Flappy\ Bird.app/embedded.mobileprovision
+touch ./Payload/Flappy\ Bird.app/embedded.mobileprovision
 mkdir ./Payload/Flappy\ Bird.app/_CodeSignature
 
 rm -f flappybird.ipa
