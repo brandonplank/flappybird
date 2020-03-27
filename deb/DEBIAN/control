@@ -1,9 +1,9 @@
 Package: org.brandonplank.flappybird
 Name: Flappy Bird
-Version: 1.7
+Version: 1.8
 Architecture: iphoneos-arm
 Description: A Flappy Bird clone that runs on the latest iOS!
 Maintainer: Brandon Plank
-Author: Brandon Plank
+Author: Brandon Plank, Thather
 Section: Games
 SileoDepiction: https://repo.brandonplank.org/depictions/org.brandonplank.flappybird/flappybird.json

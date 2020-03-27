@@ -1,2 +1,2 @@
 find . -name '.DS_Store' -delete
-dpkg-deb --build ./deb ./org.brandonplank.flapp_1.7_iphoneos-arm.deb
+dpkg-deb --build ./deb ./org.brandonplank.flappybird_1.8.deb
