@@ -189,7 +189,7 @@
 				TargetAttributes = {
 					F02013771C60592F003F8A04 = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = 2F3GJP6396;
+						DevelopmentTeam = W7J462TP2V;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -429,13 +429,13 @@
 				CODE_SIGNING_ALLOWED = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 2F3GJP6396;
+				DEVELOPMENT_TEAM = W7J462TP2V;
 				INFOPLIST_FILE = FlappyBird/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.8;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.thatcherdev.flappybird;
+				PRODUCT_BUNDLE_IDENTIFIER = org.brandonplank.flappybird;
 				PRODUCT_NAME = "Flappy Bird";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -450,12 +450,12 @@
 				CODE_SIGNING_ALLOWED = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 2F3GJP6396;
+				DEVELOPMENT_TEAM = W7J462TP2V;
 				INFOPLIST_FILE = FlappyBird/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.8;
-				PRODUCT_BUNDLE_IDENTIFIER = com.thatcherdev.flappybird;
+				PRODUCT_BUNDLE_IDENTIFIER = org.brandonplank.flappybird;
 				PRODUCT_NAME = "Flappy Bird";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
