@@ -149,9 +149,10 @@ class GameScene: SKScene {
         play.zPosition = 2
     }
     
-    lazy var leaderboardButton = SKSpriteNode(texture: SKTexture(imageNamed: "leaderboard").then { $0.filteringMode = .nearest }).then { leaderboard in
-        leaderboard.setScale(1.2)
-        leaderboard.zPosition = 2
+    lazy var githubButton = SKSpriteNode(texture: SKTexture(imageNamed: "github").then { $0.filteringMode = .nearest }).then { github in
+        github.setScale(1.2)
+        github.name = "github"
+        github.zPosition = 2
     }
     
     func setGravityAndPhysics(){
@@ -272,8 +273,8 @@ class GameScene: SKScene {
         addChild(ground)
         addChild(playButton)
         playButton.position = CGPoint(x: (width / 2) - 80, y: frame.midY - 125)
-        addChild(leaderboardButton)
-        leaderboardButton.position = CGPoint(x: (width / 2) + 80, y: frame.midY - 125)
+        addChild(githubButton)
+        githubButton.position = CGPoint(x: (width / 2) + 80, y: frame.midY - 125)
         
         
         score = 0
@@ -303,10 +304,13 @@ class GameScene: SKScene {
             
             flappybird.removeFromParent()
             playButton.removeFromParent()
-            leaderboardButton.removeFromParent()
+            githubButton.removeFromParent()
             
             firstTouch = true
             soundToPlay = "swoosh"
+        } else if touchedNode.name == "github" {
+            guard let url = URL(string: "https://www.github.com/brandonplank/flappybird") else { return }
+            UIApplication.shared.open(url)
         } else if firstTouch {
             taptap.removeFromParent()
             getReady.removeFromParent()
@@ -414,8 +418,8 @@ class GameScene: SKScene {
                 SKAction.scale(to: 1.25, duration: 0.1),
             ]))
         })
-        leaderboardButton.setScale(0)
-        addChild(leaderboardButton.then{
+        githubButton.setScale(0)
+        addChild(githubButton.then{
             $0.run(SKAction.sequence([
                 SKAction.scale(to: 1, duration: 0.2),
                 SKAction.scale(to: 1.25, duration: 0.1),
@@ -457,6 +461,9 @@ extension GameScene: SKPhysicsContactDelegate {
             
             let wait = SKAction.wait(forDuration: 1.6)
             let finished = SKAction.run {
+                DispatchQueue.main.async {
+                    self.run(self.swooshAction)
+                }
                 self.addResultsAndButtons()
                 self.isUserInteractionEnabled = true
             }
