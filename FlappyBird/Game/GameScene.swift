@@ -395,14 +395,11 @@ class GameScene: SKScene {
                 SKAction.scale(to: 1.25, duration: 0.1),
             ]))
         })
-        
         scoreLabelNode.removeFromParent()
         scoreLabelNodeInside.removeFromParent()
-        
         moving.speed = 0
         bird.speed = 0
-        
-        bird.physicsBody?.collisionBitMask = PhysicsCatagory.land
+        bird.physicsBody?.collisionBitMask = PhysicsCatagory.land | PhysicsCatagory.pipe
     }
     
     func addResultsAndButtons() {
