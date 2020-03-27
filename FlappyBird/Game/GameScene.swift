@@ -309,6 +309,9 @@ class GameScene: SKScene {
             firstTouch = true
             soundToPlay = "swoosh"
         } else if touchedNode.name == "github" {
+            DispatchQueue.main.async {
+                self.run(self.swooshAction)
+            }
             guard let url = URL(string: "https://www.github.com/brandonplank/flappybird") else { return }
             UIApplication.shared.open(url)
         } else if firstTouch {
