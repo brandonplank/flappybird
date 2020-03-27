@@ -74,14 +74,18 @@ class GameScene: SKScene {
     }
     
     func setRandomBirdTextures(){
-        let rand = Float.random(in: 0 ..< 1)
+        let rand = Float.random(in: 0 ... 1)
         for n in 0...2 {
-            if rand < 0.33 {
+            if rand < 0.25 {
                 birdTextures[n] = SKTexture(imageNamed: "yellow-bird-\(n+1)").then { $0.filteringMode = .nearest }
-            } else if rand > 0.66 {
+            } else if rand < 0.50 {
                 birdTextures[n] = SKTexture(imageNamed: "red-bird-\(n+1)").then { $0.filteringMode = .nearest }
-            } else {
+            } else if rand < 0.75 {
                 birdTextures[n] = SKTexture(imageNamed: "blue-bird-\(n+1)").then { $0.filteringMode = .nearest }
+            } else if rand < 1 {
+                birdTextures[n] = SKTexture(imageNamed: "purple-bird-\(n+1)").then { $0.filteringMode = .nearest }
+            } else {
+                birdTextures[n] = SKTexture(imageNamed: "kup-bird-\(n+1)").then { $0.filteringMode = .nearest }
             }
         }
         let anim = SKAction.animate(with: [birdTextures[0], birdTextures[1], birdTextures[2], birdTextures[1]], timePerFrame: 0.1)
