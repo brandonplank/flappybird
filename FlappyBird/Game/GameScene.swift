@@ -58,7 +58,7 @@ class GameScene: SKScene {
         didSet { scoreLabelNode.text = String(score); scoreLabelNodeInside.text = String(score) }
     }
     
-    var firstTouch = true
+    var firstTouch = false
     var soundToPlay = ""
     var afterGameOver = false
     
@@ -138,20 +138,17 @@ class GameScene: SKScene {
     lazy var getReady = SKSpriteNode(texture: SKTexture(imageNamed: "get-ready").then { $0.filteringMode = .nearest }).then { getReady in
         getReady.setScale(1.2)
         getReady.position = CGPoint(x: width / 2, y: frame.midY + 130)
-        getReady.physicsBody = SKPhysicsBody(circleOfRadius: getReady.height).then {
-            $0.isDynamic = false
-        }
     }
     
     lazy var playButton = SKSpriteNode(texture: SKTexture(imageNamed: "play").then { $0.filteringMode = .nearest }).then { play in
-        play.setScale(1.2)
         play.name = "play"
+        play.setScale(1.2)
         play.zPosition = 2
     }
     
     lazy var githubButton = SKSpriteNode(texture: SKTexture(imageNamed: "github").then { $0.filteringMode = .nearest }).then { github in
+         github.name = "github"
         github.setScale(1.2)
-        github.name = "github"
         github.zPosition = 2
     }
     
@@ -281,16 +278,15 @@ class GameScene: SKScene {
         moving.speed = 1
         bird.speed = 1
         pipes.setScale(0)
-        
-        firstTouch = false
+
         ControlCentre.subscrpt(self)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
-        let touchedNode = atPoint(touch.location(in: self))
+        let touchedNodeName = atPoint(touch.location(in: self)).name
         
-        if touchedNode.name == "play" {
+        if touchedNodeName == "play" {
             if afterGameOver {
                 resetScene()
                 afterGameOver = false
@@ -308,7 +304,7 @@ class GameScene: SKScene {
             
             firstTouch = true
             soundToPlay = "swoosh"
-        } else if touchedNode.name == "github" {
+        } else if touchedNodeName == "github" {
             DispatchQueue.main.async {
                 self.run(self.swooshAction)
             }
@@ -334,7 +330,6 @@ class GameScene: SKScene {
                 self.run(self.swooshAction)
             }
         }
-        
         
         ControlCentre.trigger(.touch(touch))
     }
@@ -388,6 +383,12 @@ class GameScene: SKScene {
             sleep(UInt32(0.5))
             self.run(self.dieAction)
         }
+        
+        bird.physicsBody?.collisionBitMask = PhysicsCatagory.land | PhysicsCatagory.pipe
+        
+        scoreLabelNode.removeFromParent()
+        scoreLabelNodeInside.removeFromParent()
+        
         gameover.setScale(0)
         addChild(gameover.then {
             $0.run(SKAction.sequence([
@@ -395,11 +396,9 @@ class GameScene: SKScene {
                 SKAction.scale(to: 1.25, duration: 0.1),
             ]))
         })
-        scoreLabelNode.removeFromParent()
-        scoreLabelNodeInside.removeFromParent()
+        
         moving.speed = 0
         bird.speed = 0
-        bird.physicsBody?.collisionBitMask = PhysicsCatagory.land | PhysicsCatagory.pipe
     }
     
     func addResultsAndButtons() {
@@ -411,6 +410,7 @@ class GameScene: SKScene {
                 SKAction.scale(to: 1.25, duration: 0.1),
             ]))
         })
+        
         playButton.setScale(0)
         addChild(playButton.then {
            $0.run(SKAction.sequence([
@@ -418,6 +418,7 @@ class GameScene: SKScene {
                 SKAction.scale(to: 1.25, duration: 0.1),
             ]))
         })
+        
         githubButton.setScale(0)
         addChild(githubButton.then{
             $0.run(SKAction.sequence([
@@ -425,6 +426,7 @@ class GameScene: SKScene {
                 SKAction.scale(to: 1.25, duration: 0.1),
             ]))
         })
+        
         afterGameOver = true
         soundToPlay = ""
     }

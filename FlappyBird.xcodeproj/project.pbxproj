@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		15D9DF9D069101E1E00001EC /* libPods-FlappyBird.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3823FE4F598880C925C1E0F0 /* libPods-FlappyBird.a */; };
 		8805121A23A50D0400A7BD57 /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = 8805121923A50D0400A7BD57 /* sounds */; };
-		88225E4723ADBCD4008AC5B2 /* SKButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88225E4623ADBCD4008AC5B2 /* SKButtonNode.swift */; };
 		88640E4923A723A10041B7C0 /* back.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 88640E4823A723A10041B7C0 /* back.jpg */; };
 		88FC007C23A94CC90006E501 /* TapBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88FC007B23A94CC90006E501 /* TapBoard.swift */; };
 		DB4BF5C2237450F200EFE4BE /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4BF5C1237450F200EFE4BE /* GameScene.swift */; };
@@ -44,7 +43,6 @@
 /* Begin PBXFileReference section */
 		3823FE4F598880C925C1E0F0 /* libPods-FlappyBird.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FlappyBird.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8805121923A50D0400A7BD57 /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sounds; sourceTree = "<group>"; };
-		88225E4623ADBCD4008AC5B2 /* SKButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKButtonNode.swift; sourceTree = "<group>"; };
 		88640E4823A723A10041B7C0 /* back.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = back.jpg; sourceTree = "<group>"; };
 		88FC007B23A94CC90006E501 /* TapBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapBoard.swift; sourceTree = "<group>"; };
 		B5DA1545EBD1BF7F133E393B /* Pods-FlappyBird.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlappyBird.debug.xcconfig"; path = "Target Support Files/Pods-FlappyBird/Pods-FlappyBird.debug.xcconfig"; sourceTree = "<group>"; };
@@ -101,7 +99,6 @@
 		DB91B0D7237269070054530A /* Game */ = {
 			isa = PBXGroup;
 			children = (
-				88225E4623ADBCD4008AC5B2 /* SKButtonNode.swift */,
 				F020137D1C60592F003F8A04 /* GameScene.sks */,
 				DB4BF5C1237450F200EFE4BE /* GameScene.swift */,
 				DB4BF5C52374765100EFE4BE /* ResultBoard.swift */,
@@ -192,7 +189,7 @@
 				TargetAttributes = {
 					F02013771C60592F003F8A04 = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = W7J462TP2V;
+						DevelopmentTeam = 2F3GJP6396;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -283,7 +280,6 @@
 				DB91B0DA237269830054530A /* ScreenMirror.swift in Sources */,
 				DBC388C923740302008A0481 /* TapViewController.swift in Sources */,
 				F02013821C60592F003F8A04 /* GameViewController.swift in Sources */,
-				88225E4723ADBCD4008AC5B2 /* SKButtonNode.swift in Sources */,
 				DB4BF5C62374765100EFE4BE /* ResultBoard.swift in Sources */,
 				DB4BF5C2237450F200EFE4BE /* GameScene.swift in Sources */,
 				DBC388CF23740E64008A0481 /* ControlCentre.swift in Sources */,
@@ -428,13 +424,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = W7J462TP2V;
+				DEVELOPMENT_TEAM = 2F3GJP6396;
 				INFOPLIST_FILE = FlappyBird/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.7;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = org.brandonplank.flappybird1;
+				PRODUCT_BUNDLE_IDENTIFIER = org.thatcherdev.flappybird;
 				PRODUCT_NAME = "Flappy Bird";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -448,12 +444,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = W7J462TP2V;
+				DEVELOPMENT_TEAM = 2F3GJP6396;
 				INFOPLIST_FILE = FlappyBird/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.7;
-				PRODUCT_BUNDLE_IDENTIFIER = org.brandonplank.flappybird1;
+				PRODUCT_BUNDLE_IDENTIFIER = org.thatcherdev.flappybird;
 				PRODUCT_NAME = "Flappy Bird";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;

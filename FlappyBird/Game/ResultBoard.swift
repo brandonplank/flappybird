@@ -30,9 +30,9 @@ class ResultBoard: SKSpriteNode {
         addChild(bestScoreInside)
         addChild(medal)
         self.score = score
-        currentScore.position = CGPoint(x: frame.midX + 75, y: frame.midY + 10)
+        currentScore.position = CGPoint(x: frame.midX + 75, y: frame.midY + 7)
         bestScore.position = CGPoint(x: frame.midX + 75, y: frame.midY - 35)
-        currentScoreInside.position = CGPoint(x: frame.midX + 75, y: frame.midY + 10)
+        currentScoreInside.position = CGPoint(x: frame.midX + 75, y: frame.midY + 7)
         bestScoreInside.position = CGPoint(x: frame.midX + 75, y: frame.midY - 35)
         medal.position = CGPoint(x: frame.midX - 64, y: frame.midY - 6)
         new.position = CGPoint(x: frame.midX + 35, y: frame.midY - 6)
