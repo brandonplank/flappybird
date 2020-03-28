@@ -357,7 +357,7 @@ class GameScene: SKScene {
         if hitGround { return }
         
         let value = bird.physicsBody!.velocity.dy * (bird.physicsBody!.velocity.dy < 0 ? 0.003 : 0.001)
-        bird.run(SKAction.rotate(toAngle: max(-1.57, value), duration: 0.05))
+        bird.run(SKAction.rotate(toAngle: max(-1.57, value), duration: 0.08))
         if value < -0.7 {
             bird.speed = 1.75
         } else {
