@@ -69,7 +69,7 @@ class GameScene: SKScene {
     lazy var bird = SKSpriteNode(texture: SKTexture(imageNamed: "yellow-bird-1").then { $0.filteringMode = .nearest }).then { bird in
         bird.setScale(1.5)
         bird.zPosition = GamezPosition.bird
-        bird.position = CGPoint(x: width / 2.5, y: frame.midY)
+        bird.position = CGPoint(x: (width / 2), y: frame.midY + 75)
         bird.physicsBody = SKPhysicsBody(circleOfRadius: bird.height / 2.0).then {
             $0.isDynamic = false
             $0.categoryBitMask = PhysicsCatagory.bird
@@ -153,12 +153,14 @@ class GameScene: SKScene {
         play.name = "play"
         play.setScale(1.2)
         play.zPosition = 2
+        play.position = CGPoint(x: (width / 2) - 80, y: frame.midY - 125)
     }
     
     lazy var githubButton = SKSpriteNode(texture: SKTexture(imageNamed: "github").then { $0.filteringMode = .nearest }).then { github in
         github.name = "github"
         github.setScale(1.2)
         github.zPosition = 2
+        github.position = CGPoint(x: (width / 2) + 80, y: frame.midY - 125)
     }
     
     func setGravityAndPhysics(){
@@ -277,12 +279,9 @@ class GameScene: SKScene {
         addChild(moving)
         moving.addChild(pipes)
         addChild(bird)
-        bird.position = CGPoint(x: (width / 2), y: frame.midY + 75)
         addChild(ground)
         addChild(playButton)
-        playButton.position = CGPoint(x: (width / 2) - 80, y: frame.midY - 125)
         addChild(githubButton)
-        githubButton.position = CGPoint(x: (width / 2) + 80, y: frame.midY - 125)
         
         
         score = 0
@@ -298,29 +297,50 @@ class GameScene: SKScene {
         let touchedNodeName = atPoint(touch.location(in: self)).name
         
         if touchedNodeName == "play" {
-            if afterGameOver {
-                resetScene()
-                afterGameOver = false
-            } else {
-                addChild(taptap)
-                addChild(getReady)
-                addChild(scoreLabelNode)
-                addChild(scoreLabelNodeInside)
-                bird.position = CGPoint(x: width / 2.5, y: frame.midY)
-                flappybird.removeFromParent()
-            }
-            
-            playButton.removeFromParent()
-            githubButton.removeFromParent()
-            
-            firstTouch = true
-            soundToPlay = "swoosh"
+            run(SKAction.sequence([
+                SKAction.run {
+                    DispatchQueue.main.async {
+                        self.run(self.swooshAction)
+                    }
+                },
+                SKAction.run {self.playButton.setScale(1.1)},
+                SKAction.wait(forDuration: 0.1),
+                SKAction.run {self.playButton.setScale(1.2)},
+                SKAction.wait(forDuration: 0.1)]),
+                completion: {
+                    if self.afterGameOver {
+                        self.resetScene()
+                        self.afterGameOver = false
+                    } else {
+                        self.addChild(self.taptap)
+                        self.addChild(self.getReady)
+                        self.addChild(self.scoreLabelNode)
+                        self.addChild(self.scoreLabelNodeInside)
+                        self.bird.position = CGPoint(x: self.width / 2.5, y: self.frame.midY)
+                        self.flappybird.removeFromParent()
+                    }
+                    self.playButton.removeFromParent()
+                    self.githubButton.removeFromParent()
+                    
+                    self.firstTouch = true
+                }
+            )
         } else if touchedNodeName == "github" {
-            DispatchQueue.main.async {
-                self.run(self.swooshAction)
-            }
-            guard let url = URL(string: "https://www.github.com/brandonplank/flappybird") else { return }
-            UIApplication.shared.open(url)
+            run(SKAction.sequence([
+                SKAction.run {
+                    DispatchQueue.main.async {
+                        self.run(self.swooshAction)
+                    }
+                },
+                SKAction.run {self.githubButton.setScale(1.1)},
+                SKAction.wait(forDuration: 0.1),
+                SKAction.run {self.githubButton.setScale(1.2)},
+                SKAction.wait(forDuration: 0.9)]),
+                completion: {
+                    guard let url = URL(string: "https://www.github.com/brandonplank/flappybird") else { return }
+                    UIApplication.shared.open(url)
+                }
+            )
         } else if firstTouch {
             taptap.removeFromParent()
             getReady.removeFromParent()
