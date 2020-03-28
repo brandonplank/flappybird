@@ -65,6 +65,8 @@ class GameScene: SKScene {
     var afterGameOver = false
     var gameOverDisplayed = false
     var hitGround = false
+    var hitPlayButton = false
+    var hitGithubButton = false
     
     lazy var scoreLabelNode = SKLabelNode(fontNamed: "04b_19").then {
         $0.fontColor = SKColor.black
@@ -282,7 +284,8 @@ class GameScene: SKScene {
         guard let touch = touches.first else { return }
         let touchedNodeName = atPoint(touch.location(in: self)).name
         
-        if touchedNodeName == "play" {
+        if touchedNodeName == "play" && !hitPlayButton {
+            hitPlayButton = true
             run(SKAction.sequence([
                 SKAction.run {
                     DispatchQueue.main.async {
@@ -308,10 +311,12 @@ class GameScene: SKScene {
                     self.playButton.removeFromParent()
                     self.githubButton.removeFromParent()
                     
+                    self.hitPlayButton = false
                     self.firstTouch = true
                 }
             )
-        } else if touchedNodeName == "github" {
+        } else if touchedNodeName == "github" && !hitGithubButton {
+            hitGithubButton = true
             run(SKAction.sequence([
                 SKAction.run {
                     DispatchQueue.main.async {
@@ -325,6 +330,7 @@ class GameScene: SKScene {
                 completion: {
                     guard let url = URL(string: "https://www.github.com/brandonplank/flappybird") else { return }
                     UIApplication.shared.open(url)
+                    self.hitGithubButton = false
                 }
             )
         } else if firstTouch {
