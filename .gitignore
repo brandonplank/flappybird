@@ -11,4 +11,4 @@ build/
 *.perspectivev3
 Flappy\ Bird.app
 /compileAll/output
-!/compileAll/input
+/compileAll/input/Flappy Bird.app
