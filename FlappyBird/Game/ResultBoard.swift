@@ -30,45 +30,44 @@ class ResultBoard: SKSpriteNode {
         addChild(bestScoreInside)
         addChild(medal)
         self.score = score
-        currentScore.position = CGPoint(x: frame.midX + 75, y: frame.midY + 7)
-        bestScore.position = CGPoint(x: frame.midX + 75, y: frame.midY - 35)
-        currentScoreInside.position = CGPoint(x: frame.midX + 75, y: frame.midY + 7)
-        bestScoreInside.position = CGPoint(x: frame.midX + 75, y: frame.midY - 35)
-        medal.position = CGPoint(x: frame.midX - 64, y: frame.midY - 6)
-        new.position = CGPoint(x: frame.midX + 35, y: frame.midY - 6)
     }
     
     private lazy var currentScore = SKLabelNode(fontNamed: "04b_19").then {
         $0.zPosition = GamezPosition.resultText + 1
         $0.fontSize = 16
         $0.fontColor = SKColor.black
+        $0.position = CGPoint(x: frame.midX + 75, y: frame.midY + 7)
     }
 
     private lazy var currentScoreInside = SKLabelNode(fontNamed: "inside").then {
         $0.zPosition = GamezPosition.resultText
         $0.fontSize = 16
         $0.fontColor = SKColor.white
+        $0.position = CGPoint(x: frame.midX + 75, y: frame.midY + 7)
     }
 
     private lazy var bestScore = SKLabelNode(fontNamed: "04b_19").then {
         $0.zPosition = GamezPosition.resultText + 1
         $0.fontSize = 16
         $0.fontColor = SKColor.black
+        $0.position = CGPoint(x: frame.midX + 75, y: frame.midY - 35)
     }
 
     private lazy var bestScoreInside = SKLabelNode(fontNamed: "inside").then {
         $0.zPosition = GamezPosition.resultText
         $0.fontSize = 16
         $0.fontColor = SKColor.white
+        $0.position = CGPoint(x: frame.midX + 75, y: frame.midY - 35)
     }
     
-    private lazy var medal = SKSpriteNode().then { medal in
-        medal.zPosition = 1
+    private lazy var medal = SKSpriteNode().then {
+        $0.zPosition = GamezPosition.resultText
+        $0.position = CGPoint(x: frame.midX - 64, y: frame.midY - 6)
     }
     
-    private lazy var new = SKSpriteNode(texture: SKTexture(imageNamed: "new")).then { new in
-        new.setScale(0)
-        new.zPosition = 2
+    private lazy var new = SKSpriteNode(texture: SKTexture(imageNamed: "new")).then {
+        $0.zPosition = GamezPosition.resultText
+        $0.position = CGPoint(x: frame.midX + 35, y: frame.midY - 6)
     }
     
     var score: Int = 0 {

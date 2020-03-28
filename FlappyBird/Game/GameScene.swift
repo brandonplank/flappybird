@@ -61,16 +61,54 @@ class GameScene: SKScene {
     }
     
     var firstTouch = false
-    var soundToPlay = ""
+    var playFlapSound = false
     var afterGameOver = false
     var gameOverDisplayed = false
     var hitGround = false
     
-    lazy var bird = SKSpriteNode(texture: SKTexture(imageNamed: "yellow-bird-1").then { $0.filteringMode = .nearest }).then { bird in
-        bird.setScale(1.5)
-        bird.zPosition = GamezPosition.bird
-        bird.position = CGPoint(x: (width / 2), y: frame.midY + 75)
-        bird.physicsBody = SKPhysicsBody(circleOfRadius: bird.height / 2.0).then {
+    lazy var scoreLabelNode = SKLabelNode(fontNamed: "04b_19").then {
+        $0.fontColor = SKColor.black
+        $0.fontSize = 50
+        $0.position = CGPoint(x: width / 2, y: 3 * height / 4)
+        $0.zPosition = GamezPosition.score
+    }
+
+    lazy var scoreLabelNodeInside = SKLabelNode(fontNamed: "inside").then {
+        $0.fontColor = SKColor.white
+        $0.fontSize = 50
+        $0.position = CGPoint(x: width / 2 - 1.5, y: 3 * height / 4)
+        $0.zPosition = GamezPosition.score
+    }
+    
+    lazy var gameover = SKSpriteNode(texture: SKTexture(imageNamed: "gameover").then { $0.filteringMode = .nearest }).then {
+        $0.setScale(1.5)
+        $0.zPosition = GamezPosition.score
+        $0.position = CGPoint(x: width / 2, y: (height / 2) + 210)
+    }
+    
+    lazy var flappybird = SKSpriteNode(texture: SKTexture(imageNamed: "flappybird").then { $0.filteringMode = .nearest }).then {         $0.setScale(1.5)
+        $0.position = CGPoint(x: width / 2, y: (height / 2) + 200)
+    }
+    
+    lazy var getReady = SKSpriteNode(texture: SKTexture(imageNamed: "get-ready").then { $0.filteringMode = .nearest }).then {         $0.setScale(1.2)
+        $0.position = CGPoint(x: width / 2, y: (height / 2) + 130)
+    }
+    
+    lazy var taptap = SKSpriteNode(texture: SKTexture(imageNamed: "taptap").then { $0.filteringMode = .nearest }).then {
+        $0.setScale(1.5)
+        $0.position = CGPoint(x: width / 2, y: height / 2)
+    }
+    
+    lazy var resultNode = ResultBoard(score: score).then {
+        $0.zPosition = GamezPosition.result
+        $0.position = CGPoint(x: width / 2, y: (height / 2) + 50)
+    }
+    
+    lazy var bird = SKSpriteNode(texture: SKTexture(imageNamed: "yellow-bird-1").then { $0.filteringMode = .nearest }).then {
+        $0.setScale(1.5)
+        $0.zPosition = GamezPosition.bird
+        $0.position = CGPoint(x: (width / 2), y: (height / 2) + 75)
+        $0.physicsBody = SKPhysicsBody(circleOfRadius: $0.height / 2.0).then {
             $0.isDynamic = false
             $0.categoryBitMask = PhysicsCatagory.bird
             $0.collisionBitMask = PhysicsCatagory.land | PhysicsCatagory.pipe
@@ -97,70 +135,25 @@ class GameScene: SKScene {
         bird.run(SKAction.repeatForever(anim))
     }
     
-    lazy var ground = SKNode().then { ground in
-        ground.position = CGPoint(x: 0, y: groundTexture.height)
-        let size = CGSize(width: self.width, height: groundTexture.height * 2.0)
-        ground.zPosition = GamezPosition.land
-        ground.physicsBody = SKPhysicsBody(rectangleOf: size).then {
+    lazy var ground = SKNode().then {
+        $0.position = CGPoint(x: 0, y: groundTexture.height)
+        $0.zPosition = GamezPosition.land
+        $0.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: width, height: groundTexture.height * 2.0)).then {
             $0.isDynamic = false
             $0.categoryBitMask = PhysicsCatagory.land
         }
     }
-
-    lazy var scoreLabelNode = SKLabelNode(fontNamed: "04b_19").then {
-        $0.fontColor = SKColor.black
-        $0.fontSize = 50
-        $0.position = CGPoint(x: frame.midX, y: 3 * self.height / 4)
-        $0.zPosition = GamezPosition.score
-    }
-
-    lazy var scoreLabelNodeInside = SKLabelNode(fontNamed: "inside").then {
-        $0.fontColor = SKColor.white
-        $0.fontSize = 50
-        $0.position = CGPoint(x: frame.midX - 1.5, y: 3 * self.height / 4)
-        $0.zPosition = GamezPosition.score
-    }
-
-    lazy var resultNode = ResultBoard(score: score).then {
-        $0.zPosition = GamezPosition.result
-        $0.position = CGPoint(x: frame.midX, y: frame.midY + 50)
-    }
     
-    lazy var flappybird = SKSpriteNode(texture: SKTexture(imageNamed: "flappybird").then { $0.filteringMode = .nearest }).then { flappybird in
-        flappybird.setScale(1.5)
-        flappybird.position = CGPoint(x: width / 2, y: frame.midY + 200)
-    }
-    
-    lazy var gameover = SKSpriteNode(texture: SKTexture(imageNamed: "gameover").then { $0.filteringMode = .nearest }).then { gameover in
-        gameover.setScale(1.5)
-        gameover.position = CGPoint(x: width / 2, y: frame.midY + 210)
-    }
-    
-    lazy var taptap = SKSpriteNode(texture: SKTexture(imageNamed: "taptap").then { $0.filteringMode = .nearest }).then { taptap in
-        taptap.setScale(1.5)
-        taptap.position = CGPoint(x: width / 2, y: frame.midY)
-        taptap.physicsBody = SKPhysicsBody(circleOfRadius: taptap.height).then {
-            $0.isDynamic = false
-        }
-    }
-    
-    lazy var getReady = SKSpriteNode(texture: SKTexture(imageNamed: "get-ready").then { $0.filteringMode = .nearest }).then { getReady in
-        getReady.setScale(1.2)
-        getReady.position = CGPoint(x: width / 2, y: frame.midY + 130)
-    }
-    
-    lazy var playButton = SKSpriteNode(texture: SKTexture(imageNamed: "play").then { $0.filteringMode = .nearest }).then { play in
-        play.name = "play"
-        play.setScale(1.2)
-        play.zPosition = 2
-        play.position = CGPoint(x: (width / 2) - 80, y: frame.midY - 125)
+    lazy var playButton = SKSpriteNode(texture: SKTexture(imageNamed: "play").then { $0.filteringMode = .nearest }).then {
+        $0.name = "play"
+        $0.setScale(1.2)
+        $0.position = CGPoint(x: (width / 2) - 80, y: (height / 2) - 125)
     }
     
     lazy var githubButton = SKSpriteNode(texture: SKTexture(imageNamed: "github").then { $0.filteringMode = .nearest }).then { github in
         github.name = "github"
         github.setScale(1.2)
-        github.zPosition = 2
-        github.position = CGPoint(x: (width / 2) + 80, y: frame.midY - 125)
+        github.position = CGPoint(x: (width / 2) + 80, y: (height / 2) - 125)
     }
     
     func setGravityAndPhysics(){
@@ -183,14 +176,8 @@ class GameScene: SKScene {
     }
     
     func setRandomSkyTexture(){
-        var skyTexture = SKTexture()
-        
         let rand = Float.random(in: 0 ..< 1)
-        if rand <= 0.5 {
-            skyTexture = SKTexture(imageNamed: "day-sky")
-        } else {
-            skyTexture = SKTexture(imageNamed: "night-sky")
-        }
+        let skyTexture = rand < 0.5 ? SKTexture(imageNamed: "night-sky") : SKTexture(imageNamed: "day-sky")
         
         let skyWidth = skyTexture.width * 1.5
         let moveSkySprite = SKAction.moveBy(x: -skyWidth, y: 0, duration: TimeInterval(0.1 * skyWidth))
@@ -222,28 +209,28 @@ class GameScene: SKScene {
     private func spawnPipes() {
         let height = UInt32(self.height / 4)
         let y = CGFloat(arc4random_uniform(height) + height)
-        let pipeDown = SKSpriteNode(texture: pipeTextureDown).then { pipeDown in
-            pipeDown.setScale(2.0)
-            pipeDown.position = CGPoint(x: 0.0, y: y + pipeDown.height + verticalPipeGap)
-            pipeDown.physicsBody = SKPhysicsBody(rectangleOf: pipeDown.size).then {
+        let pipeDown = SKSpriteNode(texture: pipeTextureDown).then {
+            $0.setScale(2.0)
+            $0.position = CGPoint(x: 0.0, y: y + $0.height + verticalPipeGap)
+            $0.physicsBody = SKPhysicsBody(rectangleOf: $0.size).then {
                 $0.isDynamic = false
                 $0.categoryBitMask = PhysicsCatagory.pipe
                 $0.contactTestBitMask = PhysicsCatagory.bird
             }
         }
-        let pipeUp = SKSpriteNode(texture: pipeTextureUp).then { pipeUp in
-            pipeUp.setScale(2.0)
-            pipeUp.position = CGPoint(x: 0.0, y: y)
-            pipeUp.physicsBody = SKPhysicsBody(rectangleOf: pipeUp.size).then {
+        let pipeUp = SKSpriteNode(texture: pipeTextureUp).then {
+            $0.setScale(2.0)
+            $0.position = CGPoint(x: 0.0, y: y)
+            $0.physicsBody = SKPhysicsBody(rectangleOf: $0.size).then {
                 $0.isDynamic = false
                 $0.categoryBitMask = PhysicsCatagory.pipe
                 $0.contactTestBitMask = PhysicsCatagory.bird
             }
         }
-        let contactNode = SKNode().then { contactNode in
-            contactNode.position = CGPoint(x: pipeDown.width - 60 + bird.width / 2, y: frame.midY)
+        let contactNode = SKNode().then {
+            $0.position = CGPoint(x: pipeDown.width - 60 + bird.width / 2, y: self.height / 2)
             let size = CGSize(width: pipeUp.width, height: self.height)
-            contactNode.physicsBody = SKPhysicsBody(rectangleOf: size).then {
+            $0.physicsBody = SKPhysicsBody(rectangleOf: size).then {
                 $0.isDynamic = false
                 $0.categoryBitMask = PhysicsCatagory.score
                 $0.contactTestBitMask = PhysicsCatagory.bird
@@ -283,7 +270,6 @@ class GameScene: SKScene {
         addChild(playButton)
         addChild(githubButton)
         
-        
         score = 0
         moving.speed = 1
         bird.speed = 1
@@ -303,7 +289,7 @@ class GameScene: SKScene {
                         self.run(self.swooshAction)
                     }
                 },
-                SKAction.run {self.playButton.setScale(1.1)},
+                SKAction.run {self.playButton.setScale(1.15)},
                 SKAction.wait(forDuration: 0.1),
                 SKAction.run {self.playButton.setScale(1.2)},
                 SKAction.wait(forDuration: 0.1)]),
@@ -316,7 +302,7 @@ class GameScene: SKScene {
                         self.addChild(self.getReady)
                         self.addChild(self.scoreLabelNode)
                         self.addChild(self.scoreLabelNodeInside)
-                        self.bird.position = CGPoint(x: self.width / 2.5, y: self.frame.midY)
+                        self.bird.position = CGPoint(x: self.width / 2.5, y: self.height / 2)
                         self.flappybird.removeFromParent()
                     }
                     self.playButton.removeFromParent()
@@ -332,7 +318,7 @@ class GameScene: SKScene {
                         self.run(self.swooshAction)
                     }
                 },
-                SKAction.run {self.githubButton.setScale(1.1)},
+                SKAction.run {self.githubButton.setScale(1.15)},
                 SKAction.wait(forDuration: 0.1),
                 SKAction.run {self.githubButton.setScale(1.2)},
                 SKAction.wait(forDuration: 0.9)]),
@@ -349,16 +335,12 @@ class GameScene: SKScene {
             
             bird.physicsBody?.isDynamic = true
             firstTouch = false
-            soundToPlay = "flap"
+            playFlapSound = true
         }
         
-        if soundToPlay == "flap" {
+        if playFlapSound {
             DispatchQueue.main.async {
                 self.run(self.flapAction)
-            }
-        } else if soundToPlay == "swoosh" {
-            DispatchQueue.main.async {
-                self.run(self.swooshAction)
             }
         }
         
@@ -370,8 +352,8 @@ class GameScene: SKScene {
         
         let value = bird.physicsBody!.velocity.dy * (bird.physicsBody!.velocity.dy < 0 ? 0.003 : 0.001)
         bird.run(SKAction.rotate(toAngle: max(-1.57, value), duration: 0.05))
-        if value < -0.5 {
-            bird.speed = 2
+        if value < -0.7 {
+            bird.speed = 1.75
         } else {
             bird.speed = 1
         }
@@ -409,7 +391,7 @@ class GameScene: SKScene {
         moving.speed = 1
         bird.speed = 1 
         bird.zRotation = 0.0
-        bird.position = CGPoint(x: width / 2.5, y: frame.midY)
+        bird.position = CGPoint(x: width / 2.5, y: height / 2)
         bird.physicsBody?.do {
             $0.isDynamic = false
             $0.velocity = CGVector(dx: 0, dy: 0)
@@ -418,7 +400,10 @@ class GameScene: SKScene {
     }
 
     func gameOver() {
+        isUserInteractionEnabled = false
         gameOverDisplayed = true
+        playFlapSound = false
+        
         bird.physicsBody?.isDynamic = false
         bird.physicsBody?.collisionBitMask = PhysicsCatagory.land
         bird.physicsBody?.isDynamic = true
@@ -459,7 +444,7 @@ class GameScene: SKScene {
         addChild(playButton.then {
            $0.run(SKAction.sequence([
                 SKAction.scale(to: 1, duration: 0.1),
-                SKAction.scale(to: 1.25, duration: 0.1),
+                SKAction.scale(to: 1.2, duration: 0.1),
             ]))
         })
         
@@ -467,18 +452,17 @@ class GameScene: SKScene {
         addChild(githubButton.then{
             $0.run(SKAction.sequence([
                 SKAction.scale(to: 1, duration: 0.1),
-                SKAction.scale(to: 1.25, duration: 0.1),
+                SKAction.scale(to: 1.2, duration: 0.1),
             ]))
         })
         
         afterGameOver = true
-        soundToPlay = ""
     }
 }
 
 extension GameScene: SKPhysicsContactDelegate {
     func didBegin(_ contact: SKPhysicsContact) {
-        if (bird.speed == 1 || bird.speed == 2) && !gameOverDisplayed && ((contact.bodyA.categoryBitMask & PhysicsCatagory.score) == PhysicsCatagory.score || (contact.bodyB.categoryBitMask & PhysicsCatagory.score) == PhysicsCatagory.score) {
+        if (bird.speed == 1 || bird.speed == 1.75) && !gameOverDisplayed && ((contact.bodyA.categoryBitMask & PhysicsCatagory.score) == PhysicsCatagory.score || (contact.bodyB.categoryBitMask & PhysicsCatagory.score) == PhysicsCatagory.score) {
             score += 1
             
             if score == 1000 {
@@ -487,7 +471,10 @@ extension GameScene: SKPhysicsContactDelegate {
             }
             
             impact.impactOccurred()
-            run(pointAction)
+            
+            DispatchQueue.main.async {
+                self.run(self.pointAction)
+            }
 
             scoreLabelNode.run(SKAction.sequence([
                 SKAction.scale(to: 1.5, duration: 0.1),
@@ -499,7 +486,6 @@ extension GameScene: SKPhysicsContactDelegate {
                 SKAction.scale(to: 1.0, duration: 0.1),
             ]))
         } else if !gameOverDisplayed && ((contact.bodyA.categoryBitMask & PhysicsCatagory.pipe) == PhysicsCatagory.pipe || (contact.bodyB.categoryBitMask & PhysicsCatagory.pipe) == PhysicsCatagory.pipe) {
-            isUserInteractionEnabled = false
             gameOver()
         } else if !hitGround && (contact.bodyA.categoryBitMask & PhysicsCatagory.land) == PhysicsCatagory.land || (contact.bodyB.categoryBitMask & PhysicsCatagory.land) == PhysicsCatagory.land  {
             hitGround = true
