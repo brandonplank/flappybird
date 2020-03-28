@@ -265,6 +265,8 @@ class GameScene: SKScene {
     }
     
     override func didMove(to view: SKView) {
+        try? AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.ambient)
+        
         setGravityAndPhysics()
         setMoving()
         setRandomSkyTexture()
@@ -481,7 +483,7 @@ extension GameScene: SKPhysicsContactDelegate {
             gameOver()
         } else if !hitGround && (contact.bodyA.categoryBitMask & PhysicsCatagory.land) == PhysicsCatagory.land || (contact.bodyB.categoryBitMask & PhysicsCatagory.land) == PhysicsCatagory.land  {
             hitGround = true
-            bird.speed = 0.3
+            bird.speed = 0.5
             
             if !gameOverDisplayed {
                 gameOver()
