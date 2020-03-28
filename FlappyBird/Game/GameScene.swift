@@ -28,8 +28,10 @@ struct PhysicsCatagory {
 }
 
 struct GamezPosition {
-    static let sky: CGFloat = -2
-    static let pipe: CGFloat = -1
+    static let sky: CGFloat = -3
+    static let pipe: CGFloat = -2
+    static let bird: CGFloat = -1
+    static let land: CGFloat = 0
     static let score: CGFloat = 1
     static let result: CGFloat = 2
     static let resultText: CGFloat = 3
@@ -61,9 +63,12 @@ class GameScene: SKScene {
     var firstTouch = false
     var soundToPlay = ""
     var afterGameOver = false
+    var gameOverDisplayed = false
+    var hitGround = false
     
     lazy var bird = SKSpriteNode(texture: SKTexture(imageNamed: "yellow-bird-1").then { $0.filteringMode = .nearest }).then { bird in
         bird.setScale(1.5)
+        bird.zPosition = GamezPosition.bird
         bird.position = CGPoint(x: width / 2.5, y: frame.midY)
         bird.physicsBody = SKPhysicsBody(circleOfRadius: bird.height / 2.0).then {
             $0.isDynamic = false
@@ -76,13 +81,13 @@ class GameScene: SKScene {
     func setRandomBirdTextures(){
         let rand = Float.random(in: 0 ... 1)
         for n in 0...2 {
-            if rand < 0.25 {
+            if rand < 0.2375 {
                 birdTextures[n] = SKTexture(imageNamed: "yellow-bird-\(n+1)").then { $0.filteringMode = .nearest }
-            } else if rand < 0.50 {
+            } else if rand < 0.475 {
                 birdTextures[n] = SKTexture(imageNamed: "red-bird-\(n+1)").then { $0.filteringMode = .nearest }
-            } else if rand < 0.75 {
+            } else if rand < 0.7125 {
                 birdTextures[n] = SKTexture(imageNamed: "blue-bird-\(n+1)").then { $0.filteringMode = .nearest }
-            } else if rand < 1 {
+            } else if rand < 0.95 {
                 birdTextures[n] = SKTexture(imageNamed: "purple-bird-\(n+1)").then { $0.filteringMode = .nearest }
             } else {
                 birdTextures[n] = SKTexture(imageNamed: "kup-bird-\(n+1)").then { $0.filteringMode = .nearest }
@@ -95,6 +100,7 @@ class GameScene: SKScene {
     lazy var ground = SKNode().then { ground in
         ground.position = CGPoint(x: 0, y: groundTexture.height)
         let size = CGSize(width: self.width, height: groundTexture.height * 2.0)
+        ground.zPosition = GamezPosition.land
         ground.physicsBody = SKPhysicsBody(rectangleOf: size).then {
             $0.isDynamic = false
             $0.categoryBitMask = PhysicsCatagory.land
@@ -299,9 +305,9 @@ class GameScene: SKScene {
                 addChild(scoreLabelNode)
                 addChild(scoreLabelNodeInside)
                 bird.position = CGPoint(x: width / 2.5, y: frame.midY)
+                flappybird.removeFromParent()
             }
             
-            flappybird.removeFromParent()
             playButton.removeFromParent()
             githubButton.removeFromParent()
             
@@ -338,8 +344,15 @@ class GameScene: SKScene {
     }
 
     override func update(_ currentTime: TimeInterval) {
+        if hitGround { return }
+        
         let value = bird.physicsBody!.velocity.dy * (bird.physicsBody!.velocity.dy < 0 ? 0.003 : 0.001)
-        bird.zRotation = min(max(-1, value), 0.5)
+        bird.run(SKAction.rotate(toAngle: max(-1.57, value), duration: 0.05))
+        if value < -0.5 {
+            bird.speed = 2
+        } else {
+            bird.speed = 1
+        }
     }
 
     @objc private func touchAction() {
@@ -367,6 +380,8 @@ class GameScene: SKScene {
         addChild(scoreLabelNode)
         addChild(scoreLabelNodeInside)
         
+        gameOverDisplayed = false
+        hitGround = false
         pipes.setScale(0)
         score = 0
         moving.speed = 1
@@ -381,6 +396,7 @@ class GameScene: SKScene {
     }
 
     func gameOver() {
+        gameOverDisplayed = true
         bird.physicsBody?.isDynamic = false
         bird.physicsBody?.collisionBitMask = PhysicsCatagory.land
         bird.physicsBody?.isDynamic = true
@@ -405,7 +421,6 @@ class GameScene: SKScene {
         })
         
         moving.speed = 0
-        bird.speed = 2
     }
     
     func addResultsAndButtons() {
@@ -441,7 +456,7 @@ class GameScene: SKScene {
 
 extension GameScene: SKPhysicsContactDelegate {
     func didBegin(_ contact: SKPhysicsContact) {
-        if moving.speed == 1 && ((contact.bodyA.categoryBitMask & PhysicsCatagory.score) == PhysicsCatagory.score || (contact.bodyB.categoryBitMask & PhysicsCatagory.score) == PhysicsCatagory.score) {
+        if (bird.speed == 1 || bird.speed == 2) && !gameOverDisplayed && ((contact.bodyA.categoryBitMask & PhysicsCatagory.score) == PhysicsCatagory.score || (contact.bodyB.categoryBitMask & PhysicsCatagory.score) == PhysicsCatagory.score) {
             score += 1
             
             if score == 1000 {
@@ -461,22 +476,27 @@ extension GameScene: SKPhysicsContactDelegate {
                 SKAction.scale(to: 1.5, duration: 0.1),
                 SKAction.scale(to: 1.0, duration: 0.1),
             ]))
-        } else if moving.speed == 1 && (((contact.bodyA.categoryBitMask & PhysicsCatagory.pipe) == PhysicsCatagory.pipe || (contact.bodyB.categoryBitMask & PhysicsCatagory.pipe) == PhysicsCatagory.pipe) || ((contact.bodyA.categoryBitMask & PhysicsCatagory.land) == PhysicsCatagory.land || (contact.bodyB.categoryBitMask & PhysicsCatagory.land) == PhysicsCatagory.land)) {
+        } else if !gameOverDisplayed && ((contact.bodyA.categoryBitMask & PhysicsCatagory.pipe) == PhysicsCatagory.pipe || (contact.bodyB.categoryBitMask & PhysicsCatagory.pipe) == PhysicsCatagory.pipe) {
             isUserInteractionEnabled = false
             gameOver()
-        } else if bird.speed == 2 && ((contact.bodyA.categoryBitMask & PhysicsCatagory.land) == PhysicsCatagory.land || (contact.bodyB.categoryBitMask & PhysicsCatagory.land) == PhysicsCatagory.land) {
-            bird.speed = 0.5
-            let stopBird = SKAction.run{
-                self.bird.speed = 0
+        } else if !hitGround && (contact.bodyA.categoryBitMask & PhysicsCatagory.land) == PhysicsCatagory.land || (contact.bodyB.categoryBitMask & PhysicsCatagory.land) == PhysicsCatagory.land  {
+            hitGround = true
+            bird.speed = 0.3
+            
+            if !gameOverDisplayed {
+                gameOver()
             }
-            let finished = SKAction.run {
+            
+            bird.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+
+            let addResultNode = SKAction.run {
                 DispatchQueue.main.async {
                     self.run(self.swooshAction)
                 }
                 self.addResultsAndButtons()
                 self.isUserInteractionEnabled = true
             }
-            run(SKAction.sequence([SKAction.wait(forDuration: 0.8), stopBird, SKAction.wait(forDuration: 0.2), finished]))
+            run(SKAction.sequence([SKAction.wait(forDuration: 0.8), SKAction.run{self.bird.speed = 0}, SKAction.wait(forDuration: 0.2), addResultNode]))
         }
     }
 }
