@@ -16,6 +16,7 @@
 		DB91B0DA237269830054530A /* ScreenMirror.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB91B0D9237269830054530A /* ScreenMirror.swift */; };
 		DBC388C923740302008A0481 /* TapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC388C823740302008A0481 /* TapViewController.swift */; };
 		DBC388CF23740E64008A0481 /* ControlCentre.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC388CE23740E64008A0481 /* ControlCentre.swift */; };
+		DDA4D7012432B92B00F8CB61 /* SettingsPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA4D7002432B92B00F8CB61 /* SettingsPanel.swift */; };
 		DDE60CBE2429584B004D2F95 /* libThen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDE60CBD2429584B004D2F95 /* libThen.a */; };
 		DDE60CC6242965B3004D2F95 /* inside__.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DDE60CC5242965B3004D2F95 /* inside__.ttf */; };
 		DDF8790B242599980004E6E9 /* outside__.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DDF8790A242599980004E6E9 /* outside__.ttf */; };
@@ -52,6 +53,7 @@
 		DB91B0D9237269830054530A /* ScreenMirror.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenMirror.swift; sourceTree = "<group>"; };
 		DBC388C823740302008A0481 /* TapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapViewController.swift; sourceTree = "<group>"; };
 		DBC388CE23740E64008A0481 /* ControlCentre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlCentre.swift; sourceTree = "<group>"; };
+		DDA4D7002432B92B00F8CB61 /* SettingsPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPanel.swift; sourceTree = "<group>"; };
 		DDE60CBD2429584B004D2F95 /* libThen.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libThen.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDE60CC5242965B3004D2F95 /* inside__.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = inside__.ttf; sourceTree = "<group>"; };
 		DDF8790A242599980004E6E9 /* outside__.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = outside__.ttf; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 				DB4BF5C52374765100EFE4BE /* ResultBoard.swift */,
 				F02013811C60592F003F8A04 /* GameViewController.swift */,
 				88FC007B23A94CC90006E501 /* TapBoard.swift */,
+				DDA4D7002432B92B00F8CB61 /* SettingsPanel.swift */,
 			);
 			path = Game;
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 			files = (
 				DB91B0DA237269830054530A /* ScreenMirror.swift in Sources */,
 				DBC388C923740302008A0481 /* TapViewController.swift in Sources */,
+				DDA4D7012432B92B00F8CB61 /* SettingsPanel.swift in Sources */,
 				F02013821C60592F003F8A04 /* GameViewController.swift in Sources */,
 				DB4BF5C62374765100EFE4BE /* ResultBoard.swift in Sources */,
 				DB4BF5C2237450F200EFE4BE /* GameScene.swift in Sources */,
