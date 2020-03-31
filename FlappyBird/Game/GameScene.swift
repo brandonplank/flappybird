@@ -286,13 +286,12 @@ class GameScene: SKScene {
         }
         playSounds = UserDefaults.standard.bool(forKey: "playSounds")
         if playSounds {
-            try? AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.ambient)
             settingsNode.soundToggle.position = CGPoint(x: 83, y: 31.5)
         } else {
             settingsNode.soundToggleBackground.setScale(0)
             settingsNode.soundToggle.position = CGPoint(x: 54, y: 31.5)
         }
-
+        
         if UserDefaults.standard.object(forKey: "newBirds") == nil {
             UserDefaults.standard.set(true, forKey: "newBirds")
         }
@@ -527,8 +526,10 @@ class GameScene: SKScene {
         let anim = SKAction.animate(with: [birdTextures[0], birdTextures[1], birdTextures[2], birdTextures[1]], timePerFrame: 0.1)
         bird.run(SKAction.repeatForever(anim))
 
-        playSound(sound: SKAction.sequence([self.hitAction, SKAction.wait(forDuration: Double(UInt32(0.5))), self.dieAction]))
-
+        playSound(sound: hitAction)
+        run(SKAction.wait(forDuration: TimeInterval(UInt32(0.5))))
+        playSound(sound: dieAction)
+        
         scoreLabelNode.removeFromParent()
         scoreLabelNodeInside.removeFromParent()
 

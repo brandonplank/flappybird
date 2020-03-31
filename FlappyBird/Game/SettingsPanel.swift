@@ -26,10 +26,10 @@ class SettingsPanel: SKSpriteNode {
     
     lazy var backButton = SKSpriteNode().then {
         $0.name = "settingsBack"
-        $0.position = CGPoint(x: -70, y: 72)
+        $0.position = CGPoint(x: -85, y: 68)
         $0.zPosition = 1
         $0.color = UIColor.clear
-        $0.size = CGSize(width: 80, height: 25)
+        $0.size = CGSize(width: 30, height: 35)
     }
     
     lazy var soundToggle = SKSpriteNode(texture: SKTexture(imageNamed: "toggle").then { $0.filteringMode = .nearest }).then {
