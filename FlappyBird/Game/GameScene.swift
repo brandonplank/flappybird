@@ -50,7 +50,7 @@ class GameScene: SKScene {
     let pipeTextureDown = SKTexture(imageNamed: "PipeDown").then { $0.filteringMode = .nearest }
     let groundTexture = SKTexture(imageNamed: "land").then { $0.filteringMode = .nearest }
     var birdTextures = [SKTexture(), SKTexture(), SKTexture()]
-    var skyNodes = [SKSpriteNode(), SKSpriteNode(), SKSpriteNode(), SKSpriteNode()]
+    var skyNodes = [SKSpriteNode]()
 
     let verticalPipeGap: CGFloat = 130.0
     var moving = SKNode()
@@ -218,15 +218,16 @@ class GameScene: SKScene {
             let spriteNode = SKSpriteNode(texture: skyTexture).then {
                 $0.setScale(1.5)
                 $0.zPosition = GamezPosition.sky
-                $0.position = CGPoint(x: CGFloat(i) * $0.width, y: $0.height / 3.5 + groundTexture.height * 2.0)
+                $0.position = CGPoint(x: CGFloat(i) * ($0.width - 1), y: $0.height / 3.5 + groundTexture.height * 2.0)
                 $0.run(moveSkySpritesForever)
             }
-            if skyNodes[i].parent != nil {
+            if skyNodes.count < 2 + Int(width / skyWidth) {
+                skyNodes.append(spriteNode)
+            } else {
                 skyNodes[i].removeFromParent()
+                skyNodes[i] = spriteNode
             }
-            skyNodes[i].removeFromParent()
             moving.addChild(spriteNode)
-            skyNodes[i] = spriteNode
         }
     }
 
