@@ -111,7 +111,7 @@ class GameScene: SKScene {
 
     lazy var settingsNode = SettingsPanel().then {
         $0.setScale(1.2)
-        $0.zPosition = GamezPosition.resultText + 3
+        $0.zPosition = GamezPosition.resultText + 4
         $0.position = CGPoint(x: width / 2, y: (height / 2))
     }
 
@@ -290,10 +290,10 @@ class GameScene: SKScene {
         }
         playSounds = UserDefaults.standard.bool(forKey: "playSounds")
         if playSounds {
-            settingsNode.soundToggle.position = CGPoint(x: 83, y: 31.5)
+            settingsNode.soundToggle.position = CGPoint(x: SettingsPositions.toggleOnX, y: SettingsPositions.soundToggleY)
         } else {
             settingsNode.soundToggleBackground.setScale(0)
-            settingsNode.soundToggle.position = CGPoint(x: 54, y: 31.5)
+            settingsNode.soundToggle.position = CGPoint(x: SettingsPositions.toggleOffX, y: SettingsPositions.soundToggleY)
         }
         
         if UserDefaults.standard.object(forKey: "newBirds") == nil {
@@ -301,10 +301,10 @@ class GameScene: SKScene {
         }
         newBirds = UserDefaults.standard.bool(forKey: "newBirds")
         if newBirds {
-            settingsNode.newBirdsToggle.position = CGPoint(x: 83, y: -28.5)
+            settingsNode.newBirdsToggle.position = CGPoint(x: SettingsPositions.toggleOnX, y: SettingsPositions.newBirdsToggleY)
         } else {
             settingsNode.newBirdsToggleBackground.setScale(0)
-            settingsNode.newBirdsToggle.position = CGPoint(x: 54, y: -28.5)
+            settingsNode.newBirdsToggle.position = CGPoint(x: SettingsPositions.toggleOffX, y: SettingsPositions.newBirdsToggleY)
         }
 
         setGravityAndPhysics()
@@ -384,19 +384,19 @@ class GameScene: SKScene {
                     self.addChild(self.settingsNode)
                     self.scaleTwice(node: self.settingsNode, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
                     
-                    self.hitSettingsButton = false
+                    self.run(SKAction.sequence([SKAction.wait(forDuration: 0.2), SKAction.run{self.hitSettingsButton = false}]))
                 }
             )
         } else if touchedNodeName == "toggleSounds" {
             if playSounds {
-                settingsNode.soundToggle.run(SKAction.move(to: CGPoint(x: 54, y: 31.5), duration: 0.2))
+                settingsNode.soundToggle.run(SKAction.move(to: CGPoint(x: SettingsPositions.toggleOffX, y: SettingsPositions.soundToggleY), duration: 0.2))
                 scaleTwice(node: settingsNode.soundToggleBackground, firstScale: 0.8, firstScaleDuration: 0.1, secondScale: 0.0, secondScaleDuration: 0.05)
                 
                 playSounds = false
                 UserDefaults.standard.set(false, forKey: "playSounds")
                 UserDefaults.standard.synchronize()
             } else {
-                settingsNode.soundToggle.run(SKAction.move(to: CGPoint(x: 83, y: 31.5), duration: 0.2))
+                settingsNode.soundToggle.run(SKAction.move(to: CGPoint(x: SettingsPositions.toggleOnX, y: SettingsPositions.soundToggleY), duration: 0.2))
                 scaleTwice(node: settingsNode.soundToggleBackground, firstScale: 0.8, firstScaleDuration: 0.05, secondScale: 1.0, secondScaleDuration: 0.1)
                 
                 playSounds = true
@@ -407,14 +407,14 @@ class GameScene: SKScene {
         } else if touchedNodeName == "toggleNewBirds" {
             playSound(sound: swooshAction)
             if newBirds {
-                settingsNode.newBirdsToggle.run(SKAction.move(to: CGPoint(x: 54, y: -28.5), duration: 0.2))
+                settingsNode.newBirdsToggle.run(SKAction.move(to: CGPoint(x: SettingsPositions.toggleOffX, y: SettingsPositions.newBirdsToggleY), duration: 0.2))
                 scaleTwice(node: settingsNode.newBirdsToggleBackground, firstScale: 0.8, firstScaleDuration: 0.1, secondScale: 0.0, secondScaleDuration: 0.05)
                 
                 newBirds = false
                 UserDefaults.standard.set(false, forKey: "newBirds")
                 UserDefaults.standard.synchronize()
             } else {
-                settingsNode.newBirdsToggle.run(SKAction.move(to: CGPoint(x: 83, y: -28.5), duration: 0.2))
+                settingsNode.newBirdsToggle.run(SKAction.move(to: CGPoint(x: SettingsPositions.toggleOnX, y: SettingsPositions.newBirdsToggleY), duration: 0.2))
                 scaleTwice(node: settingsNode.newBirdsToggleBackground, firstScale: 0.8, firstScaleDuration: 0.05, secondScale: 1.0, secondScaleDuration: 0.1)
                 
                 newBirds = true
@@ -422,21 +422,28 @@ class GameScene: SKScene {
                 UserDefaults.standard.synchronize()
             }
         } else if touchedNodeName == "settingsBack" {
-            playSound(sound: swooshAction)
-            
-            scaleTwice(node: settingsNode, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 0.0, secondScaleDuration: 0.1)
-            settingsNode.removeFromParent()
-            
-            scaleTwice(node: playButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
-            scaleTwice(node: settingsButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.25, secondScaleDuration: 0.1)
-            
-            if self.afterGameOver {
-                scaleTwice(node: resultNode, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
-            } else {
-                scaleTwice(node: bird, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.5, secondScaleDuration: 0.1)
-                scaleTwice(node: githubButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
-            }
-        } else if touchedNodeName == "github" {
+            run(SKAction.sequence([
+                SKAction.run { self.playSound(sound: self.swooshAction) },
+                SKAction.run { self.settingsNode.backButton.setScale(0.8) },
+                SKAction.wait(forDuration: 0.1),
+                SKAction.run { self.settingsNode.backButton.setScale(1.0) },
+                SKAction.wait(forDuration: 0.1)]),
+                completion: {
+                    self.scaleTwice(node: self.settingsNode, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 0.0, secondScaleDuration: 0.1)
+                    self.settingsNode.removeFromParent()
+                    self.scaleTwice(node: self.playButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
+                    self.scaleTwice(node: self.settingsButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.25, secondScaleDuration: 0.1)
+                    
+                    if self.afterGameOver {
+                        self.scaleTwice(node: self.resultNode, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
+                    } else {
+                        self.scaleTwice(node: self.bird, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.5, secondScaleDuration: 0.1)
+                        self.scaleTwice(node: self.githubButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
+                    }
+                }
+            )
+        } else if touchedNodeName == "github" && !hitGithubButton {
+            self.hitGithubButton = true
             run(SKAction.sequence([
                 SKAction.run { self.playSound(sound: self.swooshAction) },
                 SKAction.run { self.githubButton.setScale(1.15) },
@@ -538,41 +545,25 @@ class GameScene: SKScene {
         scoreLabelNodeInside.removeFromParent()
 
         gameover.setScale(0)
-        addChild(gameover.then {
-            $0.run(SKAction.sequence([
-                SKAction.scale(to: 1, duration: 0.1),
-                SKAction.scale(to: 1.25, duration: 0.1),
-                ]))
-        })
-
+        addChild(gameover)
+        scaleTwice(node: gameover, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.24, secondScaleDuration: 0.1)
+        
         moving.speed = 0
     }
 
     func addResultsAndButtons() {
         resultNode.setScale(0)
-        addChild(resultNode.then {
-            $0.score = score
-            $0.run(SKAction.sequence([
-                SKAction.scale(to: 1, duration: 0.1),
-                SKAction.scale(to: 1.25, duration: 0.1),
-                ]))
-        })
+        resultNode.score = score
+        addChild(resultNode)
+        scaleTwice(node: resultNode, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.25, secondScaleDuration: 0.1)
 
         playButton.setScale(0)
-        addChild(playButton.then {
-            $0.run(SKAction.sequence([
-                SKAction.scale(to: 1, duration: 0.1),
-                SKAction.scale(to: 1.2, duration: 0.1),
-                ]))
-        })
+        addChild(playButton)
+        scaleTwice(node: playButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
 
         settingsButton.setScale(0)
-        addChild(settingsButton.then {
-            $0.run(SKAction.sequence([
-                SKAction.scale(to: 1, duration: 0.1),
-                SKAction.scale(to: 1.2, duration: 0.1),
-                ]))
-        })
+        addChild(settingsButton)
+        scaleTwice(node: settingsButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
 
         afterGameOver = true
     }
@@ -607,15 +598,8 @@ extension GameScene: SKPhysicsContactDelegate {
 
             self.playSound(sound: self.pointAction)
 
-            scoreLabelNode.run(SKAction.sequence([
-                SKAction.scale(to: 1.5, duration: 0.1),
-                SKAction.scale(to: 1.0, duration: 0.1),
-                ]))
-
-            scoreLabelNodeInside.run(SKAction.sequence([
-                SKAction.scale(to: 1.5, duration: 0.1),
-                SKAction.scale(to: 1.0, duration: 0.1),
-                ]))
+            scaleTwice(node: scoreLabelNode, firstScale: 1.5, firstScaleDuration: 0.1, secondScale: 1.0, secondScaleDuration: 0.1)
+            scaleTwice(node: scoreLabelNodeInside, firstScale: 1.5, firstScaleDuration: 0.1, secondScale: 1.0, secondScaleDuration: 0.1)
         } else if !gameOverDisplayed && ((contact.bodyA.categoryBitMask & PhysicsCatagory.pipe) == PhysicsCatagory.pipe || (contact.bodyB.categoryBitMask & PhysicsCatagory.pipe) == PhysicsCatagory.pipe) {
             gameOver()
         } else if !hitGround && (contact.bodyA.categoryBitMask & PhysicsCatagory.land) == PhysicsCatagory.land || (contact.bodyB.categoryBitMask & PhysicsCatagory.land) == PhysicsCatagory.land {

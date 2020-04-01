@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		15D9DF9D069101E1E00001EC /* libPods-FlappyBird.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3823FE4F598880C925C1E0F0 /* libPods-FlappyBird.a */; };
 		8805121A23A50D0400A7BD57 /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = 8805121923A50D0400A7BD57 /* sounds */; };
-		88640E4923A723A10041B7C0 /* back.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 88640E4823A723A10041B7C0 /* back.jpg */; };
 		88FC007C23A94CC90006E501 /* TapBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88FC007B23A94CC90006E501 /* TapBoard.swift */; };
 		DB4BF5C2237450F200EFE4BE /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4BF5C1237450F200EFE4BE /* GameScene.swift */; };
 		DB4BF5C62374765100EFE4BE /* ResultBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4BF5C52374765100EFE4BE /* ResultBoard.swift */; };
@@ -44,7 +43,6 @@
 /* Begin PBXFileReference section */
 		3823FE4F598880C925C1E0F0 /* libPods-FlappyBird.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FlappyBird.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8805121923A50D0400A7BD57 /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sounds; sourceTree = "<group>"; };
-		88640E4823A723A10041B7C0 /* back.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = back.jpg; sourceTree = "<group>"; };
 		88FC007B23A94CC90006E501 /* TapBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapBoard.swift; sourceTree = "<group>"; };
 		B5DA1545EBD1BF7F133E393B /* Pods-FlappyBird.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlappyBird.debug.xcconfig"; path = "Target Support Files/Pods-FlappyBird/Pods-FlappyBird.debug.xcconfig"; sourceTree = "<group>"; };
 		C7A4D537DD9B4E0129F8D6B5 /* Pods-FlappyBird.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlappyBird.release.xcconfig"; path = "Target Support Files/Pods-FlappyBird/Pods-FlappyBird.release.xcconfig"; sourceTree = "<group>"; };
@@ -144,7 +142,6 @@
 			children = (
 				DDF8790A242599980004E6E9 /* outside__.ttf */,
 				DDE60CC5242965B3004D2F95 /* inside__.ttf */,
-				88640E4823A723A10041B7C0 /* back.jpg */,
 				8805121923A50D0400A7BD57 /* sounds */,
 				DB91B0D82372691A0054530A /* External Display */,
 				DB91B0D7237269070054530A /* Game */,
@@ -226,7 +223,6 @@
 				F020138A1C60592F003F8A04 /* LaunchScreen.storyboard in Resources */,
 				F02013871C60592F003F8A04 /* Assets.xcassets in Resources */,
 				DDF8790B242599980004E6E9 /* outside__.ttf in Resources */,
-				88640E4923A723A10041B7C0 /* back.jpg in Resources */,
 				F02013851C60592F003F8A04 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
