@@ -3,12 +3,6 @@
 *.xcuserstate
 project.xcworkspace/
 xcuserdata/
-*.swp
-*~.nib
 build/
-*.pbxuser
-*.perspective
-*.perspectivev3
-Flappy\ Bird.app
 /compileAll/output
 /compileAll/input/Flappy Bird.app

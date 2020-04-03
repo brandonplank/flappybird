@@ -3,7 +3,7 @@
 //  FlappyBird
 //
 //  Created by Brandon Plank on 12/2/19.
-//  Modified by Thatcher Clough on 3/30/20.
+//  Modified by Thatcher Clough on 4/1/20.
 //  Copyright (c) 2020 Brandon Plank. All rights reserved.
 //
 
