@@ -10,15 +10,14 @@ import Foundation
 import SpriteKit
 
 struct SettingsPositions {
-    static let toggleOnX: CGFloat = 79.5
-    static let toggleOffX: CGFloat = 58.5
+    static let toggleOnX: CGFloat = 66
+    static let toggleOffX: CGFloat = 46
     
-    static let togglesX: CGFloat = 69
-    static let soundToggleY: CGFloat = 26.5
-    static let newBirdsToggleY: CGFloat = -28.5
+    static let soundToggleY: CGFloat = 15.5
+    static let newBirdsToggleY: CGFloat = -20.5
     
     static let backButtonX: CGFloat = -92
-    static let backButtonY: CGFloat = 67
+    static let backButtonY: CGFloat = 42
 }
 
 class SettingsPanel: SKSpriteNode {
@@ -27,13 +26,11 @@ class SettingsPanel: SKSpriteNode {
         self.init(texture: SKTexture(imageNamed: "settings-panel").then { $0.filteringMode = .nearest })
         addChild(backButton)
         addChild(backButtonTouchBox)
-        
-        addChild(soundToggle)
-        addChild(soundToggleBackground)
-        addChild(soundButton)
 
+        addChild(soundToggle)
+        addChild(soundButton)
+        
         addChild(newBirdsToggle)
-        addChild(newBirdsToggleBackground)
         addChild(newBirdsButton)
     }
     
@@ -51,38 +48,28 @@ class SettingsPanel: SKSpriteNode {
     }
     
     lazy var soundToggle = SKSpriteNode(texture: SKTexture(imageNamed: "toggle").then { $0.filteringMode = .nearest }).then {
-        $0.position = CGPoint(x: SettingsPositions.togglesX, y: SettingsPositions.soundToggleY)
+        $0.position = CGPoint(x: SettingsPositions.toggleOnX, y: SettingsPositions.soundToggleY)
         $0.zPosition = 2
-    }
-    
-    lazy var soundToggleBackground = SKSpriteNode(texture: SKTexture(imageNamed: "toggle-background").then { $0.filteringMode = .nearest }).then {
-        $0.position = CGPoint(x: SettingsPositions.togglesX, y: SettingsPositions.soundToggleY)
-        $0.zPosition = 1
     }
     
     lazy var soundButton = SKSpriteNode().then {
         $0.name = "toggleSounds"
-        $0.position = CGPoint(x: SettingsPositions.togglesX, y: SettingsPositions.soundToggleY)
+        $0.position = CGPoint(x: SettingsPositions.toggleOffX + (SettingsPositions.toggleOnX - SettingsPositions.toggleOffX) / 2, y: SettingsPositions.soundToggleY)
         $0.zPosition = 3
         $0.color = UIColor.clear
-        $0.size = CGSize(width: 55, height: 30)
+        $0.size = CGSize(width: 45, height: 25)
     }
     
     lazy var newBirdsToggle = SKSpriteNode(texture: SKTexture(imageNamed: "toggle").then { $0.filteringMode = .nearest }).then {
-        $0.position = CGPoint(x: SettingsPositions.togglesX, y: SettingsPositions.newBirdsToggleY)
+        $0.position = CGPoint(x: SettingsPositions.toggleOnX, y: SettingsPositions.newBirdsToggleY)
         $0.zPosition = 2
-    }
-    
-    lazy var newBirdsToggleBackground = SKSpriteNode(texture: SKTexture(imageNamed: "toggle-background").then { $0.filteringMode = .nearest }).then {
-        $0.position = CGPoint(x: SettingsPositions.togglesX, y: SettingsPositions.newBirdsToggleY)
-        $0.zPosition = 1
     }
     
     lazy var newBirdsButton = SKSpriteNode().then {
         $0.name = "toggleNewBirds"
-        $0.position = CGPoint(x: SettingsPositions.togglesX, y: SettingsPositions.newBirdsToggleY)
+        $0.position = CGPoint(x: SettingsPositions.toggleOffX + (SettingsPositions.toggleOnX - SettingsPositions.toggleOffX) / 2, y: SettingsPositions.newBirdsToggleY)
         $0.zPosition = 3
         $0.color = UIColor.clear
-        $0.size = CGSize(width: 55, height: 30)
+        $0.size = CGSize(width: 45, height: 25)
     }
 }

@@ -293,7 +293,6 @@ class GameScene: SKScene {
         if playSounds {
             settingsNode.soundToggle.position = CGPoint(x: SettingsPositions.toggleOnX, y: SettingsPositions.soundToggleY)
         } else {
-            settingsNode.soundToggleBackground.setScale(0)
             settingsNode.soundToggle.position = CGPoint(x: SettingsPositions.toggleOffX, y: SettingsPositions.soundToggleY)
         }
         
@@ -304,7 +303,6 @@ class GameScene: SKScene {
         if newBirds {
             settingsNode.newBirdsToggle.position = CGPoint(x: SettingsPositions.toggleOnX, y: SettingsPositions.newBirdsToggleY)
         } else {
-            settingsNode.newBirdsToggleBackground.setScale(0)
             settingsNode.newBirdsToggle.position = CGPoint(x: SettingsPositions.toggleOffX, y: SettingsPositions.newBirdsToggleY)
         }
 
@@ -390,15 +388,19 @@ class GameScene: SKScene {
             )
         } else if touchedNodeName == "toggleSounds" {
             if playSounds {
-                settingsNode.soundToggle.run(SKAction.move(to: CGPoint(x: SettingsPositions.toggleOffX, y: SettingsPositions.soundToggleY), duration: 0.2))
-                scaleTwice(node: settingsNode.soundToggleBackground, firstScale: 0.8, firstScaleDuration: 0.1, secondScale: 0.0, secondScaleDuration: 0.05)
+                settingsNode.soundToggle.run(SKAction.sequence([
+                    SKAction.move(to: CGPoint(x: SettingsPositions.toggleOffX + 6, y: SettingsPositions.soundToggleY), duration: 0.08),
+                    SKAction.move(to: CGPoint(x: SettingsPositions.toggleOffX, y: SettingsPositions.soundToggleY), duration: 0.12)
+                ]))
                 
                 playSounds = false
                 UserDefaults.standard.set(false, forKey: "playSounds")
                 UserDefaults.standard.synchronize()
             } else {
-                settingsNode.soundToggle.run(SKAction.move(to: CGPoint(x: SettingsPositions.toggleOnX, y: SettingsPositions.soundToggleY), duration: 0.2))
-                scaleTwice(node: settingsNode.soundToggleBackground, firstScale: 0.8, firstScaleDuration: 0.05, secondScale: 1.0, secondScaleDuration: 0.1)
+                settingsNode.soundToggle.run(SKAction.sequence([
+                    SKAction.move(to: CGPoint(x: SettingsPositions.toggleOnX - 6, y: SettingsPositions.soundToggleY), duration: 0.08),
+                    SKAction.move(to: CGPoint(x: SettingsPositions.toggleOnX, y: SettingsPositions.soundToggleY), duration: 0.12)
+                ]))
                 
                 playSounds = true
                 UserDefaults.standard.set(true, forKey: "playSounds")
@@ -408,15 +410,19 @@ class GameScene: SKScene {
         } else if touchedNodeName == "toggleNewBirds" {
             playSound(sound: swooshAction)
             if newBirds {
-                settingsNode.newBirdsToggle.run(SKAction.move(to: CGPoint(x: SettingsPositions.toggleOffX, y: SettingsPositions.newBirdsToggleY), duration: 0.2))
-                scaleTwice(node: settingsNode.newBirdsToggleBackground, firstScale: 0.8, firstScaleDuration: 0.1, secondScale: 0.0, secondScaleDuration: 0.05)
+                 settingsNode.newBirdsToggle.run(SKAction.sequence([
+                    SKAction.move(to: CGPoint(x: SettingsPositions.toggleOffX + 6, y: SettingsPositions.newBirdsToggleY), duration: 0.08),
+                    SKAction.move(to: CGPoint(x: SettingsPositions.toggleOffX, y: SettingsPositions.newBirdsToggleY), duration: 0.12)
+                ]))
                 
                 newBirds = false
                 UserDefaults.standard.set(false, forKey: "newBirds")
                 UserDefaults.standard.synchronize()
             } else {
-                settingsNode.newBirdsToggle.run(SKAction.move(to: CGPoint(x: SettingsPositions.toggleOnX, y: SettingsPositions.newBirdsToggleY), duration: 0.2))
-                scaleTwice(node: settingsNode.newBirdsToggleBackground, firstScale: 0.8, firstScaleDuration: 0.05, secondScale: 1.0, secondScaleDuration: 0.1)
+                settingsNode.newBirdsToggle.run(SKAction.sequence([
+                    SKAction.move(to: CGPoint(x: SettingsPositions.toggleOnX - 6, y: SettingsPositions.newBirdsToggleY), duration: 0.08),
+                    SKAction.move(to: CGPoint(x: SettingsPositions.toggleOnX, y: SettingsPositions.newBirdsToggleY), duration: 0.12)
+                ]))
                 
                 newBirds = true
                 UserDefaults.standard.set(true, forKey: "newBirds")
