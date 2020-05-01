@@ -8,16 +8,17 @@
 
 import Foundation
 import SpriteKit
+import Then
 
 struct SettingsPositions {
     static let toggleOnX: CGFloat = 66
     static let toggleOffX: CGFloat = 46
     
-    static let soundToggleY: CGFloat = 15.5
-    static let newBirdsToggleY: CGFloat = -20.5
+    static let soundToggleY: CGFloat = 17.5
+    static let newBirdsToggleY: CGFloat = -18.5
     
     static let backButtonX: CGFloat = -92
-    static let backButtonY: CGFloat = 42
+    static let backButtonY: CGFloat = 44
 }
 
 class SettingsPanel: SKSpriteNode {

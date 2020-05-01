@@ -1,10 +1,11 @@
 //
 //  AppDelegate.swift
-//  FlappyBird
+//  Flappy Bird
 //
-//  Created by Brandon Plank on 12/2/19.
-//  Copyright (c) 2016 Brandon Plank. All rights reserved.
+//  Created by Thatcher Clough on 4/30/20.
+//  Copyright © 2020 Brandon Plank & Thatcher Clough. All rights reserved.
 //
+
 import UIKit
 import AVFoundation
 
@@ -13,7 +14,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         try? AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.ambient)
-        ScreenMirror.share.start()
         return true
     }
 }

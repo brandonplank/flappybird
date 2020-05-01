@@ -9,6 +9,7 @@
 //
 
 import SpriteKit
+import Then
 
 class ResultBoard: SKSpriteNode {
     override init(texture: SKTexture?, color: UIColor, size: CGSize) {

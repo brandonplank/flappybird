@@ -112,7 +112,7 @@ class GameScene: SKScene {
     lazy var settingsNode = SettingsPanel().then {
         $0.setScale(1.2)
         $0.zPosition = GamezPosition.resultText + 4
-        $0.position = CGPoint(x: width / 2, y: (height / 2))
+        $0.position = CGPoint(x: width / 2, y: (height / 2) + 15)
     }
 
     lazy var bird = SKSpriteNode(texture: SKTexture(imageNamed: "yellow-bird-1").then { $0.filteringMode = .nearest }).then {

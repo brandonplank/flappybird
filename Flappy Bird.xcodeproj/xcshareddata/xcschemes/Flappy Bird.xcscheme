@@ -1,28 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
    LastUpgradeVersion = "1130"
-   version = "1.7">
+   version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
-      <PreActions>
-         <ExecutionAction
-            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
-            <ActionContent
-               title = "Run Script"
-               scriptText = "# if [ &quot;${CONFIGURATION}&quot; = &quot;Debug&quot; ]; then&#10;&quot;${PODS_ROOT}/SwiftFormat/CommandLineTool/swiftformat&quot; --disable unusedArguments,numberFormatting,redundantReturn,andOperator,anyObjectProtocol,trailingClosures,redundantFileprivate --ranges nospace --swiftversion &quot;5.0&quot; &quot;${SRCROOT}/FlappyBrid/&quot;&#10;echo &quot;format debug build swift code&quot;&#10;else&#10;echo &quot;Not Debug Env, skip format&quot;&#10;">
-               <EnvironmentBuildable>
-                  <BuildableReference
-                     BuildableIdentifier = "primary"
-                     BlueprintIdentifier = "F02013771C60592F003F8A04"
-                     BuildableName = "Flappy Bird.app"
-                     BlueprintName = "FlappyBird"
-                     ReferencedContainer = "container:FlappyBird.xcodeproj">
-                  </BuildableReference>
-               </EnvironmentBuildable>
-            </ActionContent>
-         </ExecutionAction>
-      </PreActions>
       <BuildActionEntries>
          <BuildActionEntry
             buildForTesting = "YES"
@@ -32,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F02013771C60592F003F8A04"
+               BlueprintIdentifier = "DD2376FD245B73B500B570A3"
                BuildableName = "Flappy Bird.app"
-               BlueprintName = "FlappyBird"
-               ReferencedContainer = "container:FlappyBird.xcodeproj">
+               BlueprintName = "Flappy Bird"
+               ReferencedContainer = "container:Flappy Bird.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -49,9 +31,9 @@
       </Testables>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Debug"
-      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
-      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      buildConfiguration = "Release"
+      selectedDebuggerIdentifier = ""
+      selectedLauncherIdentifier = "Xcode.IDEFoundation.Launcher.PosixSpawn"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
@@ -62,10 +44,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F02013771C60592F003F8A04"
+            BlueprintIdentifier = "DD2376FD245B73B500B570A3"
             BuildableName = "Flappy Bird.app"
-            BlueprintName = "FlappyBird"
-            ReferencedContainer = "container:FlappyBird.xcodeproj">
+            BlueprintName = "Flappy Bird"
+            ReferencedContainer = "container:Flappy Bird.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -79,10 +61,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F02013771C60592F003F8A04"
+            BlueprintIdentifier = "DD2376FD245B73B500B570A3"
             BuildableName = "Flappy Bird.app"
-            BlueprintName = "FlappyBird"
-            ReferencedContainer = "container:FlappyBird.xcodeproj">
+            BlueprintName = "Flappy Bird"
+            ReferencedContainer = "container:Flappy Bird.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
