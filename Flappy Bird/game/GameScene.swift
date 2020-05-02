@@ -128,8 +128,8 @@ class GameScene: SKScene {
     }
     
     let floatUpAndDown = SKAction.sequence([
-        SKAction.moveBy(x: 0, y: 15, duration: 0.5),
-        SKAction.moveBy(x: 0, y: -15, duration: 0.5)
+        SKAction.moveBy(x: 0, y: 20, duration: 0.5),
+        SKAction.moveBy(x: 0, y: -20, duration: 0.5)
     ])
 
     func setRandomBirdTextures() {
@@ -342,7 +342,7 @@ class GameScene: SKScene {
 
         if touchedNodeName == "play" && !hitPlayButton {
             hitPlayButton = true
-            run(SKAction.sequence([
+           run(SKAction.sequence([
                 SKAction.run { self.playSound(sound: self.swooshAction) },
                 SKAction.run { self.playButton.setScale(1.15) },
                 SKAction.wait(forDuration: 0.1),
@@ -365,7 +365,6 @@ class GameScene: SKScene {
                     self.playButton.removeFromParent()
                     self.settingsButton.removeFromParent()
                     self.githubButton.removeFromParent()
-
                     self.hitPlayButton = false
                     self.firstTouch = true
                 }
@@ -474,9 +473,17 @@ class GameScene: SKScene {
             )
         } else if firstTouch {
             bird.removeAction(forKey: "float")
-            taptap.removeFromParent()
-            getReady.removeFromParent()
-
+            taptap.run(SKAction.sequence([
+                SKAction.scale(to: 0.0, duration: 0.1),
+                SKAction.removeFromParent(),
+                SKAction.scale(to: 1.5, duration: 0.0)
+            ]))
+            
+            getReady.run(SKAction.sequence([
+                SKAction.scale(to: 0.0, duration: 0.1),
+                SKAction.removeFromParent(),
+                SKAction.scale(to: 1.2, duration: 0.0)
+            ]))
             pipes.setScale(1)
 
             bird.physicsBody?.isDynamic = true
@@ -497,7 +504,7 @@ class GameScene: SKScene {
         let value = bird.physicsBody!.velocity.dy * (bird.physicsBody!.velocity.dy < 0 ? 0.003 : 0.001)
         bird.run(SKAction.rotate(toAngle: max(-1.57, value), duration: 0.08))
         if value < -0.7 {
-            bird.speed = 1.75
+            bird.speed = 2
         } else {
             bird.speed = 1
         }
@@ -527,6 +534,8 @@ class GameScene: SKScene {
         addChild(getReady)
         addChild(scoreLabelNode)
         addChild(scoreLabelNodeInside)
+        scoreLabelNode.run(SKAction.scale(to: 1.0, duration: 0.0))
+        scoreLabelNodeInside.run(SKAction.scale(to: 1.0, duration: 0.0))
 
         gameOverDisplayed = false
         hitGround = false
@@ -548,6 +557,19 @@ class GameScene: SKScene {
         gameOverDisplayed = true
         playFlapSound = false
 
+        if let view = self.view {
+            let flash = UIView(frame: view.bounds)
+            flash.backgroundColor = UIColor.white
+            flash.alpha = 0.0
+
+            view.addSubview(flash)
+            UIView.animate(withDuration: 0.15, animations: {flash.alpha = 0.9}, completion: {(finished:Bool) in
+                UIView.animate(withDuration: 0.3, animations: {flash.alpha = 0.0}, completion: {(finished:Bool) in
+                    flash.removeFromSuperview()
+                })
+            })
+        }
+        
         bird.physicsBody?.isDynamic = false
         bird.physicsBody?.collisionBitMask = PhysicsCatagory.land
         bird.physicsBody?.isDynamic = true
@@ -555,15 +577,16 @@ class GameScene: SKScene {
         bird.run(SKAction.repeatForever(anim))
 
         playSound(sound: hitAction)
-        run(SKAction.wait(forDuration: TimeInterval(UInt32(0.5))))
+        run(SKAction.wait(forDuration: TimeInterval(UInt32(0.2))))
         playSound(sound: dieAction)
-        
-        scoreLabelNode.removeFromParent()
-        scoreLabelNodeInside.removeFromParent()
 
         gameover.setScale(0)
         addChild(gameover)
-        scaleTwice(node: gameover, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.24, secondScaleDuration: 0.1)
+        run(SKAction.sequence([SKAction.wait(forDuration: 0.1),
+            SKAction.run{self.scoreLabelNode.removeFromParent()},
+            SKAction.run{self.scoreLabelNodeInside.removeFromParent()},
+            SKAction.run{self.scaleTwice(node: self.gameover, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.25, secondScaleDuration: 0.1)},
+        ]))
         
         moving.speed = 0
     }
@@ -603,7 +626,7 @@ class GameScene: SKScene {
 
 extension GameScene: SKPhysicsContactDelegate {
     func didBegin(_ contact: SKPhysicsContact) {
-        if (bird.speed == 1 || bird.speed == 1.75) && !gameOverDisplayed && ((contact.bodyA.categoryBitMask & PhysicsCatagory.score) == PhysicsCatagory.score || (contact.bodyB.categoryBitMask & PhysicsCatagory.score) == PhysicsCatagory.score) {
+        if (bird.speed == 1 || bird.speed == 2) && !gameOverDisplayed && ((contact.bodyA.categoryBitMask & PhysicsCatagory.score) == PhysicsCatagory.score || (contact.bodyB.categoryBitMask & PhysicsCatagory.score) == PhysicsCatagory.score) {
             score += 1
 
             if score == 1000 {
