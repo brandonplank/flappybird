@@ -39,30 +39,30 @@ struct GamezPosition {
 
 class GameScene: SKScene {
     let impact = UIImpactFeedbackGenerator()
-
+    
     let flapAction = SKAction.playSoundFileNamed("sounds/sfx_wing.caf", waitForCompletion: false)
     let dieAction = SKAction.playSoundFileNamed("sounds/sfx_die.caf", waitForCompletion: false)
     let pointAction = SKAction.playSoundFileNamed("sounds/sfx_point.wav", waitForCompletion: false)
     let hitAction = SKAction.playSoundFileNamed("sounds/sfx_hit.caf", waitForCompletion: false)
     let swooshAction = SKAction.playSoundFileNamed("sounds/sfx_swooshing.caf", waitForCompletion: false)
-
+    
     let pipeTextureUp = SKTexture(imageNamed: "PipeUp").then { $0.filteringMode = .nearest }
     let pipeTextureDown = SKTexture(imageNamed: "PipeDown").then { $0.filteringMode = .nearest }
     let groundTexture = SKTexture(imageNamed: "land").then { $0.filteringMode = .nearest }
     var birdTextures = [SKTexture(), SKTexture(), SKTexture()]
     var skyNodes = [SKSpriteNode]()
-
+    
     let verticalPipeGap: CGFloat = 130.0
     var moving = SKNode()
     var pipes = SKNode()
-
+    
     var score = 0 {
         didSet { scoreLabelNode.text = String(score); scoreLabelNodeInside.text = String(score) }
     }
-
+    
     var playSounds = true
     var newBirds = true
-
+    
     var firstTouch = false
     var playFlapSound = false
     var afterGameOver = false
@@ -71,7 +71,7 @@ class GameScene: SKScene {
     var hitPlayButton = false
     var hitSettingsButton = false
     var hitGithubButton = false
-
+    
     lazy var scoreLabelNode = SKLabelNode(fontNamed: "04b_19").then {
         $0.fontColor = SKColor.black
         $0.fontSize = 50
@@ -84,37 +84,37 @@ class GameScene: SKScene {
         $0.position = CGPoint(x: width / 2 - 1.5, y: 3 * height / 4)
         $0.zPosition = GamezPosition.score
     }
-
+    
     lazy var gameover = SKSpriteNode(texture: SKTexture(imageNamed: "gameover").then { $0.filteringMode = .nearest }).then {
         $0.setScale(1.5)
         $0.zPosition = GamezPosition.score
         $0.position = CGPoint(x: width / 2, y: (height / 2) + 210)
     }
-
+    
     lazy var flappybird = SKSpriteNode(texture: SKTexture(imageNamed: "flappybird").then { $0.filteringMode = .nearest }).then { $0.setScale(1.5)
         $0.position = CGPoint(x: width / 2, y: (height / 2) + 200)
     }
-
+    
     lazy var getReady = SKSpriteNode(texture: SKTexture(imageNamed: "get-ready").then { $0.filteringMode = .nearest }).then { $0.setScale(1.2)
         $0.position = CGPoint(x: width / 2, y: (height / 2) + 130)
     }
-
+    
     lazy var taptap = SKSpriteNode(texture: SKTexture(imageNamed: "taptap").then { $0.filteringMode = .nearest }).then {
         $0.setScale(1.5)
         $0.position = CGPoint(x: width / 2, y: height / 2)
     }
-
+    
     lazy var resultNode = ResultBoard(score: score).then {
         $0.zPosition = GamezPosition.result
         $0.position = CGPoint(x: width / 2, y: (height / 2) + 50)
     }
-
+    
     lazy var settingsNode = SettingsPanel().then {
         $0.setScale(1.2)
         $0.zPosition = GamezPosition.resultText + 4
         $0.position = CGPoint(x: width / 2, y: (height / 2) + 15)
     }
-
+    
     lazy var bird = SKSpriteNode(texture: SKTexture(imageNamed: "yellow-bird-1").then { $0.filteringMode = .nearest }).then {
         $0.setScale(1.5)
         $0.zPosition = GamezPosition.bird
@@ -128,10 +128,10 @@ class GameScene: SKScene {
     }
     
     let floatUpAndDown = SKAction.sequence([
-        SKAction.moveBy(x: 0, y: 20, duration: 0.5),
-        SKAction.moveBy(x: 0, y: -20, duration: 0.5)
+        SKAction.moveBy(x: 0, y: 35, duration: 1.0),
+        SKAction.moveBy(x: 0, y: -35, duration: 1.0)
     ])
-
+    
     func setRandomBirdTextures() {
         let rand = Float.random(in: 0 ..< 1)
         for n in 0...2 {
@@ -164,7 +164,7 @@ class GameScene: SKScene {
         let anim = SKAction.animate(with: [birdTextures[0], birdTextures[1], birdTextures[2], birdTextures[1]], timePerFrame: 0.1)
         bird.run(SKAction.repeatForever(anim))
     }
-
+    
     lazy var ground = SKNode().then {
         $0.position = CGPoint(x: 0, y: groundTexture.height)
         $0.zPosition = GamezPosition.land
@@ -173,30 +173,30 @@ class GameScene: SKScene {
             $0.categoryBitMask = PhysicsCatagory.land
         }
     }
-
+    
     lazy var playButton = SKSpriteNode(texture: SKTexture(imageNamed: "play").then { $0.filteringMode = .nearest }).then {
         $0.name = "play"
         $0.setScale(1.2)
         $0.position = CGPoint(x: (width / 2) - 80, y: (height / 2) - 125)
     }
-
+    
     lazy var settingsButton = SKSpriteNode(texture: SKTexture(imageNamed: "settings").then { $0.filteringMode = .nearest }).then {
         $0.name = "settings"
         $0.setScale(1.2)
         $0.position = CGPoint(x: (width / 2) + 80, y: (height / 2) - 125)
     }
-
+    
     lazy var githubButton = SKSpriteNode(texture: SKTexture(imageNamed: "github").then { $0.filteringMode = .nearest }).then {
         $0.name = "github"
         $0.setScale(1.2)
         $0.position = CGPoint(x: (width / 2), y: (height / 2) - 25)
     }
-
+    
     func setGravityAndPhysics() {
         physicsWorld.gravity = CGVector(dx: 0.0, dy: -10.0)
         physicsWorld.contactDelegate = self
     }
-
+    
     func setMoving() {
         let groundWidth = groundTexture.width * 2.0
         let moveGroundSprite = SKAction.moveBy(x: -groundWidth, y: 0, duration: TimeInterval(0.005 * groundWidth))
@@ -204,17 +204,17 @@ class GameScene: SKScene {
         let moveGroundSpritesForever = SKAction.repeatForever(SKAction.sequence([moveGroundSprite, resetGroundSprite]))
         for i in 0..<2 + Int(width / groundWidth) {
             moving.addChild(SKSpriteNode(texture: groundTexture).then {
-                    $0.setScale(2.0)
-                    $0.position = CGPoint(x: CGFloat(i) * $0.width, y: $0.height / 2.0)
-                    $0.run(moveGroundSpritesForever)
-                })
+                $0.setScale(2.0)
+                $0.position = CGPoint(x: CGFloat(i) * $0.width, y: $0.height / 2.0)
+                $0.run(moveGroundSpritesForever)
+            })
         }
     }
-
+    
     func setRandomSkyTexture() {
         let rand = Float.random(in: 0 ..< 1)
         let skyTexture = rand < 0.5 ? SKTexture(imageNamed: "night-sky") : SKTexture(imageNamed: "day-sky")
-
+        
         let skyWidth = skyTexture.width * 1.5
         let moveSkySprite = SKAction.moveBy(x: -skyWidth, y: 0, duration: TimeInterval(0.1 * skyWidth))
         let resetSkySprite = SKAction.moveBy(x: skyWidth, y: 0, duration: 0.0)
@@ -235,14 +235,14 @@ class GameScene: SKScene {
             moving.addChild(spriteNode)
         }
     }
-
+    
     func spawnPipesForever() {
         let spawn = SKAction.run(spawnPipes)
         let delay = SKAction.wait(forDuration: 1.0)
         let spawnThenDelay = SKAction.sequence([spawn, delay])
         run(SKAction.repeatForever(spawnThenDelay))
     }
-
+    
     private func spawnPipes() {
         let height = UInt32(self.height / 4)
         let y = CGFloat(arc4random_uniform(height) + height)
@@ -273,23 +273,23 @@ class GameScene: SKScene {
                 $0.contactTestBitMask = PhysicsCatagory.bird
             }
         }
-
+        
         // the pipes move actions
-        let distanceToMove = width + 2.0 * pipeTextureUp.width
+        let distanceToMove = (width + 2.0 * pipeTextureUp.width) + 25
         let movePipes = SKAction.moveBy(x: -distanceToMove, y: 0.0, duration: TimeInterval(0.005 * distanceToMove))
         let removePipes = SKAction.removeFromParent()
         let movePipesAndRemove = SKAction.sequence([movePipes, removePipes])
-
+        
         pipes.addChild(SKNode().then {
-                $0.position = CGPoint(x: width + pipeTextureUp.width * 2, y: 0)
-                $0.zPosition = GamezPosition.pipe
-                $0.addChild(pipeDown)
-                $0.addChild(pipeUp)
-                $0.addChild(contactNode)
-                $0.run(movePipesAndRemove)
-            })
+            $0.position = CGPoint(x: width + pipeTextureUp.width * 2, y: 0)
+            $0.zPosition = GamezPosition.pipe
+            $0.addChild(pipeDown)
+            $0.addChild(pipeUp)
+            $0.addChild(contactNode)
+            $0.run(movePipesAndRemove)
+        })
     }
-
+    
     override func didMove(to view: SKView) {
         if UserDefaults.standard.object(forKey: "playSounds") == nil {
             UserDefaults.standard.set(true, forKey: "playSounds")
@@ -310,13 +310,13 @@ class GameScene: SKScene {
         } else {
             settingsNode.newBirdsToggle.position = CGPoint(x: SettingsPositions.toggleOffX, y: SettingsPositions.newBirdsToggleY)
         }
-
+        
         setGravityAndPhysics()
         setMoving()
         setRandomSkyTexture()
         setRandomBirdTextures()
         spawnPipesForever()
-
+        
         addChild(flappybird)
         addChild(moving)
         moving.addChild(pipes)
@@ -332,22 +332,23 @@ class GameScene: SKScene {
         pipes.setScale(0)
         
         bird.run(SKAction.repeatForever(floatUpAndDown), withKey:"float")
-
+        
         ControlCentre.subscrpt(self)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
         let touchedNodeName = atPoint(touch.location(in: self)).name
-
+        
         if touchedNodeName == "play" && !hitPlayButton {
             hitPlayButton = true
-           run(SKAction.sequence([
+            run(SKAction.sequence([
+                SKAction.run{self.flashScreen(color: UIColor.black, fadeInDuration: 0.25, peakAlpha: 1.0, fadeOutDuration: 0.25)},
                 SKAction.run { self.playSound(sound: self.swooshAction) },
                 SKAction.run { self.playButton.setScale(1.15) },
                 SKAction.wait(forDuration: 0.1),
                 SKAction.run { self.playButton.setScale(1.2) },
-                SKAction.wait(forDuration: 0.1)]),
+                SKAction.wait(forDuration: 0.18)]),
                 completion: {
                     if self.afterGameOver {
                         self.resetScene()
@@ -367,7 +368,7 @@ class GameScene: SKScene {
                     self.githubButton.removeFromParent()
                     self.hitPlayButton = false
                     self.firstTouch = true
-                }
+            }
             )
         } else if touchedNodeName == "settings" && !hitSettingsButton {
             hitSettingsButton = true
@@ -392,7 +393,7 @@ class GameScene: SKScene {
                     self.scaleTwice(node: self.settingsNode, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
                     
                     self.run(SKAction.sequence([SKAction.wait(forDuration: 0.2), SKAction.run{self.hitSettingsButton = false}]))
-                }
+            }
             )
         } else if touchedNodeName == "toggleSounds" {
             if playSounds {
@@ -418,7 +419,7 @@ class GameScene: SKScene {
         } else if touchedNodeName == "toggleNewBirds" {
             playSound(sound: swooshAction)
             if newBirds {
-                 settingsNode.newBirdsToggle.run(SKAction.sequence([
+                settingsNode.newBirdsToggle.run(SKAction.sequence([
                     SKAction.move(to: CGPoint(x: SettingsPositions.toggleOffX + 6, y: SettingsPositions.newBirdsToggleY), duration: 0.08),
                     SKAction.move(to: CGPoint(x: SettingsPositions.toggleOffX, y: SettingsPositions.newBirdsToggleY), duration: 0.12)
                 ]))
@@ -455,7 +456,7 @@ class GameScene: SKScene {
                         self.scaleTwice(node: self.bird, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.5, secondScaleDuration: 0.1)
                         self.scaleTwice(node: self.githubButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
                     }
-                }
+            }
             )
         } else if touchedNodeName == "github" && !hitGithubButton {
             self.hitGithubButton = true
@@ -469,7 +470,7 @@ class GameScene: SKScene {
                     guard let url = URL(string: "https://www.github.com/brandonplank/flappybird") else { return }
                     UIApplication.shared.open(url)
                     self.hitGithubButton = false
-                }
+            }
             )
         } else if firstTouch {
             bird.removeAction(forKey: "float")
@@ -485,22 +486,22 @@ class GameScene: SKScene {
                 SKAction.scale(to: 1.2, duration: 0.0)
             ]))
             pipes.setScale(1)
-
+            
             bird.physicsBody?.isDynamic = true
             firstTouch = false
             playFlapSound = true
         }
-
+        
         if playFlapSound {
             playSound(sound: flapAction)
         }
-
+        
         ControlCentre.trigger(.touch(touch))
     }
-
+    
     override func update(_ currentTime: TimeInterval) {
         if hitGround { return }
-
+        
         let value = bird.physicsBody!.velocity.dy * (bird.physicsBody!.velocity.dy < 0 ? 0.003 : 0.001)
         bird.run(SKAction.rotate(toAngle: max(-1.57, value), duration: 0.08))
         if value < -0.7 {
@@ -509,34 +510,34 @@ class GameScene: SKScene {
             bird.speed = 1
         }
     }
-
+    
     @objc private func touchAction() {
         if !isUserInteractionEnabled { return }
         if bird.position.y >= self.frame.height {
             bird.position.y = self.frame.height
         }
-
+        
         if moving.speed > 0 {
             bird.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
             bird.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 20))
         }
     }
-
+    
     func resetScene() {
         pipes.removeAllChildren()
         resultNode.removeFromParent()
         gameover.removeFromParent()
-
+        
         setRandomSkyTexture()
         setRandomBirdTextures()
-
+        
         addChild(taptap)
         addChild(getReady)
         addChild(scoreLabelNode)
         addChild(scoreLabelNodeInside)
         scoreLabelNode.run(SKAction.scale(to: 1.0, duration: 0.0))
         scoreLabelNodeInside.run(SKAction.scale(to: 1.0, duration: 0.0))
-
+        
         gameOverDisplayed = false
         hitGround = false
         pipes.setScale(0)
@@ -551,63 +552,52 @@ class GameScene: SKScene {
             $0.collisionBitMask = PhysicsCatagory.land | PhysicsCatagory.pipe
         }
     }
-
+    
     func gameOver() {
         isUserInteractionEnabled = false
         gameOverDisplayed = true
         playFlapSound = false
-
-        if let view = self.view {
-            let flash = UIView(frame: view.bounds)
-            flash.backgroundColor = UIColor.white
-            flash.alpha = 0.0
-
-            view.addSubview(flash)
-            UIView.animate(withDuration: 0.15, animations: {flash.alpha = 0.9}, completion: {(finished:Bool) in
-                UIView.animate(withDuration: 0.3, animations: {flash.alpha = 0.0}, completion: {(finished:Bool) in
-                    flash.removeFromSuperview()
-                })
-            })
-        }
+        
+        flashScreen(color: UIColor.white, fadeInDuration: 0.1, peakAlpha: 0.9, fadeOutDuration: 0.25)
         
         bird.physicsBody?.isDynamic = false
         bird.physicsBody?.collisionBitMask = PhysicsCatagory.land
         bird.physicsBody?.isDynamic = true
         let anim = SKAction.animate(with: [birdTextures[0], birdTextures[1], birdTextures[2], birdTextures[1]], timePerFrame: 0.1)
         bird.run(SKAction.repeatForever(anim))
-
+        
         playSound(sound: hitAction)
         run(SKAction.wait(forDuration: TimeInterval(UInt32(0.2))))
         playSound(sound: dieAction)
-
+        
         gameover.setScale(0)
         addChild(gameover)
         run(SKAction.sequence([SKAction.wait(forDuration: 0.1),
-            SKAction.run{self.scoreLabelNode.removeFromParent()},
-            SKAction.run{self.scoreLabelNodeInside.removeFromParent()},
-            SKAction.run{self.scaleTwice(node: self.gameover, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.25, secondScaleDuration: 0.1)},
+                               SKAction.run{self.scoreLabelNode.removeFromParent()},
+                               SKAction.run{self.scoreLabelNodeInside.removeFromParent()},
+                               SKAction.run{self.scaleTwice(node: self.gameover, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.25, secondScaleDuration: 0.1)},
         ]))
         
         moving.speed = 0
     }
-
+    
     func addResultsAndButtons() {
         resultNode.setScale(0)
         resultNode.score = score
         addChild(resultNode)
         scaleTwice(node: resultNode, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.25, secondScaleDuration: 0.1)
-
+        
         playButton.setScale(0)
         addChild(playButton)
         scaleTwice(node: playButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
-
+        
         settingsButton.setScale(0)
         addChild(settingsButton)
         scaleTwice(node: settingsButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
-
+        
         afterGameOver = true
     }
-
+    
     func playSound(sound: SKAction) {
         if playSounds {
             DispatchQueue.main.async {
@@ -622,22 +612,36 @@ class GameScene: SKScene {
             SKAction.scale(to: secondScale, duration: secondScaleDuration)
         ]))
     }
+    
+    func flashScreen(color: UIColor, fadeInDuration: TimeInterval, peakAlpha: CGFloat, fadeOutDuration: TimeInterval){
+        let flash = SKShapeNode(rect: CGRect(x: -5, y: -5, width: width + 10 ,height: height + 10))
+        flash.zPosition = 7
+        flash.fillColor = color
+        flash.alpha = 0.0
+        self.addChild(flash)
+        
+        flash.run(SKAction.sequence([
+            SKAction.fadeAlpha(to: peakAlpha, duration: fadeInDuration),
+            SKAction.fadeAlpha(to: 0.0, duration: fadeOutDuration),
+            SKAction.removeFromParent()
+        ]))
+    }
 }
 
 extension GameScene: SKPhysicsContactDelegate {
     func didBegin(_ contact: SKPhysicsContact) {
         if (bird.speed == 1 || bird.speed == 2) && !gameOverDisplayed && ((contact.bodyA.categoryBitMask & PhysicsCatagory.score) == PhysicsCatagory.score || (contact.bodyB.categoryBitMask & PhysicsCatagory.score) == PhysicsCatagory.score) {
             score += 1
-
+            
             if score == 1000 {
                 guard let url = URL(string: "https://www.youtube.com/watch?v=dQw4w9WgXcQ") else { return }
                 UIApplication.shared.open(url)
             }
-
+            
             impact.impactOccurred()
-
+            
             self.playSound(sound: self.pointAction)
-
+            
             scaleTwice(node: scoreLabelNode, firstScale: 1.5, firstScaleDuration: 0.1, secondScale: 1.0, secondScaleDuration: 0.1)
             scaleTwice(node: scoreLabelNodeInside, firstScale: 1.5, firstScaleDuration: 0.1, secondScale: 1.0, secondScaleDuration: 0.1)
         } else if !gameOverDisplayed && ((contact.bodyA.categoryBitMask & PhysicsCatagory.pipe) == PhysicsCatagory.pipe || (contact.bodyB.categoryBitMask & PhysicsCatagory.pipe) == PhysicsCatagory.pipe) {
@@ -645,13 +649,13 @@ extension GameScene: SKPhysicsContactDelegate {
         } else if !hitGround && (contact.bodyA.categoryBitMask & PhysicsCatagory.land) == PhysicsCatagory.land || (contact.bodyB.categoryBitMask & PhysicsCatagory.land) == PhysicsCatagory.land {
             hitGround = true
             bird.speed = 0.5
-
+            
             if !gameOverDisplayed {
                 gameOver()
             }
-
+            
             bird.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-
+            
             let addResultNode = SKAction.run {
                 self.playSound(sound: self.swooshAction)
                 self.addResultsAndButtons()
