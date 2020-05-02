@@ -126,6 +126,11 @@ class GameScene: SKScene {
             $0.contactTestBitMask = PhysicsCatagory.land | PhysicsCatagory.pipe
         }
     }
+    
+    let floatUpAndDown = SKAction.sequence([
+        SKAction.moveBy(x: 0, y: 15, duration: 0.5),
+        SKAction.moveBy(x: 0, y: -15, duration: 0.5)
+    ])
 
     func setRandomBirdTextures() {
         let rand = Float.random(in: 0 ..< 1)
@@ -325,6 +330,8 @@ class GameScene: SKScene {
         moving.speed = 1
         bird.speed = 1
         pipes.setScale(0)
+        
+        bird.run(SKAction.repeatForever(floatUpAndDown), withKey:"float")
 
         ControlCentre.subscrpt(self)
     }
@@ -346,6 +353,7 @@ class GameScene: SKScene {
                         self.resetScene()
                         self.afterGameOver = false
                     } else {
+                        self.bird.removeAction(forKey: "float")
                         self.addChild(self.taptap)
                         self.addChild(self.getReady)
                         self.addChild(self.scoreLabelNode)
@@ -353,6 +361,7 @@ class GameScene: SKScene {
                         self.bird.position = CGPoint(x: self.width / 2.5, y: self.height / 2)
                         self.flappybird.removeFromParent()
                     }
+                    self.bird.run(SKAction.repeatForever(self.floatUpAndDown), withKey: "float")
                     self.playButton.removeFromParent()
                     self.settingsButton.removeFromParent()
                     self.githubButton.removeFromParent()
@@ -464,6 +473,7 @@ class GameScene: SKScene {
                 }
             )
         } else if firstTouch {
+            bird.removeAction(forKey: "float")
             taptap.removeFromParent()
             getReady.removeFromParent()
 
