@@ -15,7 +15,7 @@ class GameViewController: UIViewController {
        override var shouldAutorotate: Bool { false }
        override var prefersStatusBarHidden: Bool { true }
        override var canBecomeFirstResponder: Bool { true }
-       var preferredFramesPerSecond: Int { 60 }
+       var preferredFramesPerSecond: Int { 120 }
 
        lazy var scene = GameScene(fileNamed: "GameScene")?.then {
            $0.scaleMode = .aspectFill
