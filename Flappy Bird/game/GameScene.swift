@@ -513,13 +513,11 @@ class GameScene: SKScene {
     
     @objc private func touchAction() {
         if !isUserInteractionEnabled { return }
-        if bird.position.y >= self.frame.height {
-            bird.position.y = self.frame.height
-        }
-        
         if moving.speed > 0 {
-            bird.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-            bird.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 20))
+            if(!(bird.position.y >= self.frame.height)){
+                bird.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+                bird.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 20))
+            }
         }
     }
     
