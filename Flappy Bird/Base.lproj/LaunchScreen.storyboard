@@ -22,32 +22,23 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="back" translatesAutoresizingMaskIntoConstraints="NO" id="HnX-j0-WYc">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mLn-45-cuz">
-                                <rect key="frame" x="20" y="534" width="374" height="320"/>
-                                <mutableString key="text">Copyright (c) 2020 Brandon Plank
-Copyright (c) 2020 ThatcherDev
-Copyright (c) 2014 .Gears
-
-We do not own most of the Flappy Bird assets, or the Flappy Bird name, some of the assets
-were extracted straight from the game. They are the work and copyright of original 
-creator Dong Nguyen and .GEARS games (http://www.dotgears.com/).
-
-I took this Tweet (https://twitter.com/dongatory/status/431060041009856512 /
-http://i.imgur.com/AcyWyqf.png) by Dong Nguyen, the creator of the game, as an open 
-invitation to reuse the game concept and assets in an open source project. 
-There is no intention to steal the game, or claim the Flappy Bird name as my own.
-
-If the copyright holder would like for the assets to be removed, please open an 
-issue to start the conversation.
-</mutableString>
-                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="9"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T0j-Kl-aDm">
                                 <rect key="frame" x="204.5" y="437.5" width="5" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mLn-45-cuz">
+                                <rect key="frame" x="57" y="736" width="300" height="147"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <string key="text">Copyright © 2020 Brandon Plank
+Copyright © 2020 ThatcherDev
+Copyright © 2014 .GEARS
+
+We do not own most of the Flappy Bird assets, or the Flappy Bird name, and some of the assets were extracted straight from the game. They are the work and copyright of the  original 
+creator Dong Nguyen and .GEARS games. See license for more details.</string>
+                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="9"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -56,12 +47,8 @@ issue to start the conversation.
                             <constraint firstAttribute="trailing" secondItem="HnX-j0-WYc" secondAttribute="trailing" id="7aj-kJ-Ifs"/>
                             <constraint firstItem="T0j-Kl-aDm" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="9rr-v6-d2N"/>
                             <constraint firstItem="T0j-Kl-aDm" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="GYO-FP-Piq"/>
-                            <constraint firstItem="mLn-45-cuz" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" id="PTV-2b-Hoi"/>
                             <constraint firstAttribute="bottom" secondItem="HnX-j0-WYc" secondAttribute="bottom" id="TO4-Nu-9AB"/>
-                            <constraint firstItem="mLn-45-cuz" firstAttribute="trailing" secondItem="Ze5-6b-2t3" secondAttribute="trailingMargin" id="Uoi-27-AJU"/>
                             <constraint firstItem="HnX-j0-WYc" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="e6d-V5-w70"/>
-                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="mLn-45-cuz" secondAttribute="bottom" constant="8" id="lxr-7P-anw"/>
-                            <constraint firstItem="mLn-45-cuz" firstAttribute="top" secondItem="T0j-Kl-aDm" secondAttribute="bottom" constant="75.5" id="n8Z-7I-W5S"/>
                             <constraint firstItem="HnX-j0-WYc" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="zNQ-8a-Xrw"/>
                         </constraints>
                     </view>
