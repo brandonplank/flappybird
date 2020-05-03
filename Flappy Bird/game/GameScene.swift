@@ -72,6 +72,12 @@ class GameScene: SKScene {
     var hitSettingsButton = false
     var hitGithubButton = false
     
+    let notification = UINotificationFeedbackGenerator()
+    
+    func birdHasDied(){
+        notification.notificationOccurred(.error)
+    }
+    
     lazy var scoreLabelNode = SKLabelNode(fontNamed: "04b_19").then {
         $0.fontColor = SKColor.black
         $0.fontSize = 50
@@ -341,6 +347,7 @@ class GameScene: SKScene {
         let touchedNodeName = atPoint(touch.location(in: self)).name
         
         if touchedNodeName == "play" && !hitPlayButton {
+            impact.impactOccurred()
             hitPlayButton = true
             run(SKAction.sequence([
                 SKAction.run{self.flashScreen(color: UIColor.black, fadeInDuration: 0.25, peakAlpha: 1.0, fadeOutDuration: 0.25)},
@@ -371,6 +378,7 @@ class GameScene: SKScene {
             }
             )
         } else if touchedNodeName == "settings" && !hitSettingsButton {
+            impact.impactOccurred()
             hitSettingsButton = true
             run(SKAction.sequence([
                 SKAction.run { self.playSound(sound: self.swooshAction) },
@@ -396,6 +404,7 @@ class GameScene: SKScene {
             }
             )
         } else if touchedNodeName == "toggleSounds" {
+            impact.impactOccurred()
             if playSounds {
                 settingsNode.soundToggle.run(SKAction.sequence([
                     SKAction.move(to: CGPoint(x: SettingsPositions.toggleOffX + 6, y: SettingsPositions.soundToggleY), duration: 0.08),
@@ -417,6 +426,7 @@ class GameScene: SKScene {
                 playSound(sound: swooshAction)
             }
         } else if touchedNodeName == "toggleNewBirds" {
+            impact.impactOccurred()
             playSound(sound: swooshAction)
             if newBirds {
                 settingsNode.newBirdsToggle.run(SKAction.sequence([
@@ -438,6 +448,7 @@ class GameScene: SKScene {
                 UserDefaults.standard.synchronize()
             }
         } else if touchedNodeName == "settingsBack" {
+            impact.impactOccurred()
             run(SKAction.sequence([
                 SKAction.run { self.playSound(sound: self.swooshAction) },
                 SKAction.run { self.settingsNode.backButton.setScale(0.8) },
@@ -555,7 +566,7 @@ class GameScene: SKScene {
         isUserInteractionEnabled = false
         gameOverDisplayed = true
         playFlapSound = false
-        
+        birdHasDied()
         flashScreen(color: UIColor.white, fadeInDuration: 0.1, peakAlpha: 0.9, fadeOutDuration: 0.25)
         
         bird.physicsBody?.isDynamic = false
