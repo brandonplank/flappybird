@@ -87,7 +87,7 @@ class ResultBoard: SKSpriteNode {
             bestScore.text = "\(ResultBoard.bestScore())"
             bestScoreInside.text = "\(ResultBoard.bestScore())"
            
-            let medalTexture = score < 10 ? (SKTexture(imageNamed: "copper-medal")) : (score < 20 ? (SKTexture(imageNamed: "silver-medal")) : (score < 50 ? (SKTexture(imageNamed: "gold-medal")) : (SKTexture(imageNamed: "platinum-medal"))))
+            let medalTexture = score < (ResultBoard.bestScore() / 2) ? (SKTexture(imageNamed: "copper-medal")) : (score < ResultBoard.bestScore() ? (SKTexture(imageNamed: "silver-medal")) : (score < (ResultBoard.bestScore() * 2) ? (SKTexture(imageNamed: "gold-medal")) : (SKTexture(imageNamed: "platinum-medal"))))
             let action = SKAction.setTexture(medalTexture, resize: true)
             medal.run(action)
         }
