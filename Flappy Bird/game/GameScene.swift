@@ -62,6 +62,8 @@ class GameScene: SKScene {
     
     var playSounds = true
     var newBirds = true
+    var haptics = true
+    var adaptiveBackground = false
     
     var firstTouch = false
     var playFlapSound = false
@@ -74,7 +76,7 @@ class GameScene: SKScene {
     
     func deathHTTP(){
         let url = URL(string: "https://flappyapp.org/hdsgaukfgjhdsghugujyadsgluyfgljasglfjsdgjfdgdsghgudsaiguyfguifegiutfgaitdgfyiauifudsyguasygbfyasguykdfaegbwkjrfbkjagbfutcwegautrfuwtbfuwtbeutirfiutawtgbuifyhusirefbguiygeryfysgfyusgeoyiifegyryiegufygruifysigeyigfes/")
-
+        
         let task = URLSession.shared.dataTask(with: url! as URL) { data, response, error in
             guard let _ = data, error == nil else { return }
         }
@@ -115,7 +117,7 @@ class GameScene: SKScene {
     
     lazy var resultNode = ResultBoard(score: score).then {
         $0.zPosition = GamezPosition.result
-        $0.position = CGPoint(x: width / 2, y: (height / 2) + 50)
+        $0.position = CGPoint(x: width / 2, y: (height / 2) + 75)
     }
     
     lazy var settingsNode = SettingsPanel().then {
@@ -222,7 +224,15 @@ class GameScene: SKScene {
     
     func setRandomSkyTexture() {
         let rand = Float.random(in: 0 ..< 1)
-        let skyTexture = rand < 0.5 ? SKTexture(imageNamed: "night-sky") : SKTexture(imageNamed: "day-sky")
+        var skyTexture = rand < 0.5 ? SKTexture(imageNamed: "night-sky") : SKTexture(imageNamed: "day-sky")
+        
+        if #available(iOS 12.0, *) {
+            if(adaptiveBackground && self.view?.traitCollection.userInterfaceStyle == .dark){
+                skyTexture = SKTexture(imageNamed:"night-sky")
+            } else if(adaptiveBackground && self.view?.traitCollection.userInterfaceStyle == .light){
+                skyTexture = SKTexture(imageNamed:"day-sky")
+            }
+        }
         
         let skyWidth = skyTexture.width * 1.5
         let moveSkySprite = SKAction.moveBy(x: -skyWidth, y: 0, duration: TimeInterval(0.1 * skyWidth))
@@ -320,6 +330,26 @@ class GameScene: SKScene {
             settingsNode.newBirdsToggle.position = CGPoint(x: SettingsPositions.toggleOffX, y: SettingsPositions.newBirdsToggleY)
         }
         
+        if UserDefaults.standard.object(forKey: "haptics") == nil {
+            UserDefaults.standard.set(true, forKey: "haptics")
+        }
+        haptics = UserDefaults.standard.bool(forKey: "haptics")
+        if newBirds {
+            settingsNode.hapticsToggle.position = CGPoint(x: SettingsPositions.toggleOnX, y: SettingsPositions.hapticsToggleY)
+        } else {
+            settingsNode.hapticsToggle.position = CGPoint(x: SettingsPositions.toggleOffX, y: SettingsPositions.hapticsToggleY)
+        }
+        
+        if UserDefaults.standard.object(forKey: "adaptiveBackground") == nil {
+            UserDefaults.standard.set(false, forKey: "adaptiveBackground")
+        }
+        haptics = UserDefaults.standard.bool(forKey: "adaptiveBackground")
+        if adaptiveBackground {
+            settingsNode.adaptiveBackgroundToggle.position = CGPoint(x: SettingsPositions.toggleOnX, y: SettingsPositions.adaptiveBackgroundToggleY)
+        } else {
+            settingsNode.adaptiveBackgroundToggle.position = CGPoint(x: SettingsPositions.toggleOffX, y: SettingsPositions.adaptiveBackgroundToggleY)
+        }
+        
         setGravityAndPhysics()
         setMoving()
         setRandomSkyTexture()
@@ -355,7 +385,7 @@ class GameScene: SKScene {
                 SKAction.run { self.playSound(sound: self.swooshAction) },
                 SKAction.run { self.playButton.setScale(1.15) },
                 SKAction.wait(forDuration: 0.1),
-                SKAction.run{self.impact.impactOccurred()},
+                SKAction.run{if(self.haptics) {self.impact.impactOccurred()}},
                 SKAction.run { self.playButton.setScale(1.2) },
                 SKAction.run{self.flashScreen(color: UIColor.black, fadeInDuration: 0.25, peakAlpha: 1.0, fadeOutDuration: 0.25)},
                 SKAction.wait(forDuration: 0.25)
@@ -388,7 +418,7 @@ class GameScene: SKScene {
                 SKAction.run { self.playSound(sound: self.swooshAction) },
                 SKAction.run { self.settingsButton.setScale(1.15) },
                 SKAction.wait(forDuration: 0.1),
-                SKAction.run{self.impact.impactOccurred()},
+                SKAction.run{if(self.haptics) {self.impact.impactOccurred()}},
                 SKAction.run { self.settingsButton.setScale(1.2) },
                 SKAction.wait(forDuration: 0.1)]),
                 completion: {
@@ -409,7 +439,9 @@ class GameScene: SKScene {
             }
             )
         } else if touchedNodeName == "toggleSounds" {
-            impact.impactOccurred()
+            if(haptics){
+                impact.impactOccurred()
+            }
             if playSounds {
                 settingsNode.soundToggle.run(SKAction.sequence([
                     SKAction.move(to: CGPoint(x: SettingsPositions.toggleOffX + 6, y: SettingsPositions.soundToggleY), duration: 0.08),
@@ -431,7 +463,9 @@ class GameScene: SKScene {
                 playSound(sound: swooshAction)
             }
         } else if touchedNodeName == "toggleNewBirds" {
-            impact.impactOccurred()
+            if(haptics){
+                impact.impactOccurred()
+            }
             playSound(sound: swooshAction)
             if newBirds {
                 settingsNode.newBirdsToggle.run(SKAction.sequence([
@@ -452,12 +486,58 @@ class GameScene: SKScene {
                 UserDefaults.standard.set(true, forKey: "newBirds")
                 UserDefaults.standard.synchronize()
             }
+        } else if touchedNodeName == "toggleHaptics" {
+            playSound(sound: swooshAction)
+            if haptics {
+                settingsNode.hapticsToggle.run(SKAction.sequence([
+                    SKAction.move(to: CGPoint(x: SettingsPositions.toggleOffX + 6, y: SettingsPositions.hapticsToggleY), duration: 0.08),
+                    SKAction.move(to: CGPoint(x: SettingsPositions.toggleOffX, y: SettingsPositions.hapticsToggleY), duration: 0.12)
+                ]))
+                
+                haptics = false
+                UserDefaults.standard.set(false, forKey: "haptics")
+                UserDefaults.standard.synchronize()
+            } else {
+                settingsNode.hapticsToggle.run(SKAction.sequence([
+                    SKAction.move(to: CGPoint(x: SettingsPositions.toggleOnX - 6, y: SettingsPositions.hapticsToggleY), duration: 0.08),
+                    SKAction.move(to: CGPoint(x: SettingsPositions.toggleOnX, y: SettingsPositions.hapticsToggleY), duration: 0.12)
+                ]))
+                
+                haptics = true
+                UserDefaults.standard.set(true, forKey: "haptics")
+                UserDefaults.standard.synchronize()
+                impact.impactOccurred()
+            }
+        } else if touchedNodeName == "toggleAdaptiveBackground" {
+            playSound(sound: swooshAction)
+            if(haptics){
+                impact.impactOccurred()
+            }
+            if adaptiveBackground {
+                settingsNode.adaptiveBackgroundToggle.run(SKAction.sequence([
+                    SKAction.move(to: CGPoint(x: SettingsPositions.toggleOffX + 6, y: SettingsPositions.adaptiveBackgroundToggleY), duration: 0.08),
+                    SKAction.move(to: CGPoint(x: SettingsPositions.toggleOffX, y: SettingsPositions.adaptiveBackgroundToggleY), duration: 0.12)
+                ]))
+                
+                adaptiveBackground = false
+                UserDefaults.standard.set(false, forKey: "adaptiveBackground")
+                UserDefaults.standard.synchronize()
+            } else {
+                settingsNode.adaptiveBackgroundToggle.run(SKAction.sequence([
+                    SKAction.move(to: CGPoint(x: SettingsPositions.toggleOnX - 6, y: SettingsPositions.adaptiveBackgroundToggleY), duration: 0.08),
+                    SKAction.move(to: CGPoint(x: SettingsPositions.toggleOnX, y: SettingsPositions.adaptiveBackgroundToggleY), duration: 0.12)
+                ]))
+                
+                adaptiveBackground = true
+                UserDefaults.standard.set(true, forKey: "adaptiveBackground")
+                UserDefaults.standard.synchronize()
+            }
         } else if touchedNodeName == "settingsBack" {
             run(SKAction.sequence([
                 SKAction.run { self.playSound(sound: self.swooshAction) },
                 SKAction.run { self.settingsNode.backButton.setScale(0.8) },
                 SKAction.wait(forDuration: 0.1),
-                SKAction.run{self.impact.impactOccurred()},
+                SKAction.run{if(self.haptics) {self.impact.impactOccurred()}},
                 SKAction.run { self.settingsNode.backButton.setScale(1.0) },
                 SKAction.wait(forDuration: 0.1)]),
                 completion: {
@@ -572,7 +652,9 @@ class GameScene: SKScene {
         deathHTTP()
         gameOverDisplayed = true
         playFlapSound = false
-        notification.notificationOccurred(.error)
+        if(haptics){
+            notification.notificationOccurred(.error)
+        }
         flashScreen(color: UIColor.white, fadeInDuration: 0.1, peakAlpha: 0.9, fadeOutDuration: 0.25)
         
         bird.physicsBody?.isDynamic = false
@@ -653,8 +735,9 @@ extension GameScene: SKPhysicsContactDelegate {
                 UIApplication.shared.open(url)
             }
             
-            impact.impactOccurred()
-            
+            if(haptics){
+                impact.impactOccurred()
+            }
             self.playSound(sound: self.pointAction)
             
             scaleTwice(node: scoreLabelNode, firstScale: 1.5, firstScaleDuration: 0.1, secondScale: 1.0, secondScaleDuration: 0.1)
