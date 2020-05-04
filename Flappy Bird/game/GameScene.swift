@@ -743,7 +743,6 @@ extension GameScene: SKPhysicsContactDelegate {
             scaleTwice(node: scoreLabelNode, firstScale: 1.5, firstScaleDuration: 0.1, secondScale: 1.0, secondScaleDuration: 0.1)
             scaleTwice(node: scoreLabelNodeInside, firstScale: 1.5, firstScaleDuration: 0.1, secondScale: 1.0, secondScaleDuration: 0.1)
         } else if !gameOverDisplayed && ((contact.bodyA.categoryBitMask & PhysicsCatagory.pipe) == PhysicsCatagory.pipe || (contact.bodyB.categoryBitMask & PhysicsCatagory.pipe) == PhysicsCatagory.pipe) {
-            bird.speed = 0.5
             gameOver()
             bird.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
             bird.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 15))
