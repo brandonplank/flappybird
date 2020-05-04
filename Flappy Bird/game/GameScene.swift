@@ -656,7 +656,10 @@ class GameScene: SKScene {
         }
         flashScreen(color: UIColor.white, fadeInDuration: 0.1, peakAlpha: 0.9, fadeOutDuration: 0.25)
         
+        bird.physicsBody?.isDynamic = false
         bird.physicsBody?.collisionBitMask = PhysicsCatagory.land
+        bird.physicsBody?.isDynamic = true
+        
         let anim = SKAction.animate(with: [birdTextures[0], birdTextures[1], birdTextures[2], birdTextures[1]], timePerFrame: 0.1)
         bird.run(SKAction.repeatForever(anim))
         
