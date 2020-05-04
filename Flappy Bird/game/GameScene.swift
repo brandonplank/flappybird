@@ -334,7 +334,7 @@ class GameScene: SKScene {
             UserDefaults.standard.set(true, forKey: "haptics")
         }
         haptics = UserDefaults.standard.bool(forKey: "haptics")
-        if newBirds {
+        if haptics {
             settingsNode.hapticsToggle.position = CGPoint(x: SettingsPositions.toggleOnX, y: SettingsPositions.hapticsToggleY)
         } else {
             settingsNode.hapticsToggle.position = CGPoint(x: SettingsPositions.toggleOffX, y: SettingsPositions.hapticsToggleY)
@@ -343,7 +343,7 @@ class GameScene: SKScene {
         if UserDefaults.standard.object(forKey: "adaptiveBackground") == nil {
             UserDefaults.standard.set(false, forKey: "adaptiveBackground")
         }
-        haptics = UserDefaults.standard.bool(forKey: "adaptiveBackground")
+        adaptiveBackground = UserDefaults.standard.bool(forKey: "adaptiveBackground")
         if adaptiveBackground {
             settingsNode.adaptiveBackgroundToggle.position = CGPoint(x: SettingsPositions.toggleOnX, y: SettingsPositions.adaptiveBackgroundToggleY)
         } else {
