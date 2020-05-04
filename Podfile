@@ -8,4 +8,3 @@ target 'Flappy Bird' do
 
   pod 'Then'
 end
-

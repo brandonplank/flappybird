@@ -68,9 +68,7 @@ class GameScene: SKScene {
     var afterGameOver = false
     var gameOverDisplayed = false
     var hitGround = false
-    var hitPlayButton = false
-    var hitSettingsButton = false
-    var hitGithubButton = false
+    var hitButton = false
     
     let notification = UINotificationFeedbackGenerator()
     
@@ -78,8 +76,7 @@ class GameScene: SKScene {
         let url = URL(string: "https://flappyapp.org/hdsgaukfgjhdsghugujyadsgluyfgljasglfjsdgjfdgdsghgudsaiguyfguifegiutfgaitdgfyiauifudsyguasygbfyasguykdfaegbwkjrfbkjagbfutcwegautrfuwtbfuwtbeutirfiutawtgbuifyhusirefbguiygeryfysgfyusgeoyiifegyryiegufygruifysigeyigfes/")
 
         let task = URLSession.shared.dataTask(with: url! as URL) { data, response, error in
-
-          guard let data = data, error == nil else { return }
+            guard let _ = data, error == nil else { return }
         }
         task.resume()
     }
@@ -352,8 +349,8 @@ class GameScene: SKScene {
         guard let touch = touches.first else { return }
         let touchedNodeName = atPoint(touch.location(in: self)).name
         
-        if touchedNodeName == "play" && !hitPlayButton {
-            hitPlayButton = true
+        if touchedNodeName == "play" && !hitButton {
+            hitButton = true
             run(SKAction.sequence([
                 SKAction.run { self.playSound(sound: self.swooshAction) },
                 SKAction.run { self.playButton.setScale(1.15) },
@@ -381,12 +378,12 @@ class GameScene: SKScene {
                     self.playButton.removeFromParent()
                     self.settingsButton.removeFromParent()
                     self.githubButton.removeFromParent()
-                    self.hitPlayButton = false
+                    self.hitButton = false
                     self.firstTouch = true
             }
             )
-        } else if touchedNodeName == "settings" && !hitSettingsButton {
-            hitSettingsButton = true
+        } else if touchedNodeName == "settings" && !hitButton {
+            hitButton = true
             run(SKAction.sequence([
                 SKAction.run { self.playSound(sound: self.swooshAction) },
                 SKAction.run { self.settingsButton.setScale(1.15) },
@@ -408,7 +405,7 @@ class GameScene: SKScene {
                     self.addChild(self.settingsNode)
                     self.scaleTwice(node: self.settingsNode, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
                     
-                    self.run(SKAction.sequence([SKAction.wait(forDuration: 0.2), SKAction.run{self.hitSettingsButton = false}]))
+                    self.run(SKAction.sequence([SKAction.wait(forDuration: 0.2), SKAction.run{self.hitButton = false}]))
             }
             )
         } else if touchedNodeName == "toggleSounds" {
@@ -477,8 +474,8 @@ class GameScene: SKScene {
                     }
             }
             )
-        } else if touchedNodeName == "github" && !hitGithubButton {
-            self.hitGithubButton = true
+        } else if touchedNodeName == "github" && !hitButton {
+            self.hitButton = true
             run(SKAction.sequence([
                 SKAction.run { self.playSound(sound: self.swooshAction) },
                 SKAction.run { self.githubButton.setScale(1.15) },
@@ -488,7 +485,7 @@ class GameScene: SKScene {
                 completion: {
                     guard let url = URL(string: "https://www.github.com/brandonplank/flappybird") else { return }
                     UIApplication.shared.open(url)
-                    self.hitGithubButton = false
+                    self.hitButton = false
             }
             )
         } else if firstTouch {
