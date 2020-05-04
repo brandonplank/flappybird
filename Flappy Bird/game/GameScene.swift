@@ -598,9 +598,9 @@ class GameScene: SKScene {
     override func update(_ currentTime: TimeInterval) {
         if hitGround { return }
         
-        let value = bird.physicsBody!.velocity.dy * (bird.physicsBody!.velocity.dy < 0 ? 0.003 : 0.001)
-        bird.run(SKAction.rotate(toAngle: max(-1.57, value), duration: 0.08))
-        if value < -0.7 {
+        let birdRotation = bird.physicsBody!.velocity.dy * (bird.physicsBody!.velocity.dy < 0 ? 0.003 : 0.001)
+        bird.run(SKAction.rotate(toAngle: max(-1.57, birdRotation), duration: 0.08))
+        if birdRotation < -0.7 {
             bird.speed = 2
         } else {
             bird.speed = 1
@@ -649,7 +649,6 @@ class GameScene: SKScene {
     
     func gameOver() {
         isUserInteractionEnabled = false
-        deathHTTP()
         gameOverDisplayed = true
         playFlapSound = false
         if(haptics){
@@ -657,9 +656,7 @@ class GameScene: SKScene {
         }
         flashScreen(color: UIColor.white, fadeInDuration: 0.1, peakAlpha: 0.9, fadeOutDuration: 0.25)
         
-        bird.physicsBody?.isDynamic = false
         bird.physicsBody?.collisionBitMask = PhysicsCatagory.land
-        bird.physicsBody?.isDynamic = true
         let anim = SKAction.animate(with: [birdTextures[0], birdTextures[1], birdTextures[2], birdTextures[1]], timePerFrame: 0.1)
         bird.run(SKAction.repeatForever(anim))
         
@@ -674,8 +671,8 @@ class GameScene: SKScene {
                                SKAction.run{self.scoreLabelNodeInside.removeFromParent()},
                                SKAction.run{self.scaleTwice(node: self.gameover, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.25, secondScaleDuration: 0.1)},
         ]))
-        
         moving.speed = 0
+        deathHTTP()
     }
     
     func addResultsAndButtons() {
