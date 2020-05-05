@@ -42,7 +42,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     setKillswitch(false)
                 }
             } catch {
-                print("Failed to load the killswitch address. Not doing anything.")
                 if (getKillswitch() == true){
                     print("The killswitch is active")
                     setKillswitch(true)
@@ -53,7 +52,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             }
         } else {
-           print("Failed to load the killswitch address. Not doing anything.")
             if (getKillswitch() == true){
                 print("The killswitch is active")
                 setKillswitch(true)
