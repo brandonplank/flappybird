@@ -105,8 +105,6 @@ class ResultBoard: SKSpriteNode {
                     }
                 }
             }
-            
-            
             bestScore.text = "\(ResultBoard.bestScore())"
             bestScoreInside.text = "\(ResultBoard.bestScore())"
             
