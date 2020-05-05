@@ -19,7 +19,7 @@ class ResultBoard: SKSpriteNode {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     convenience init(score: Int) {
         let image = SKTexture(imageNamed: "scoreboard").then { $0.filteringMode = .nearest }
         self.init(texture: image, color: UIColor.clear, size: image.size())
@@ -39,21 +39,21 @@ class ResultBoard: SKSpriteNode {
         $0.fontColor = SKColor.black
         $0.position = CGPoint(x: frame.midX + 75, y: frame.midY + 7)
     }
-
+    
     private lazy var currentScoreInside = SKLabelNode(fontNamed: "inside").then {
         $0.zPosition = GamezPosition.resultText
         $0.fontSize = 16
         $0.fontColor = SKColor.white
         $0.position = CGPoint(x: frame.midX + 75, y: frame.midY + 7)
     }
-
+    
     private lazy var bestScore = SKLabelNode(fontNamed: "04b_19").then {
         $0.zPosition = GamezPosition.resultText + 1
         $0.fontSize = 16
         $0.fontColor = SKColor.black
         $0.position = CGPoint(x: frame.midX + 75, y: frame.midY - 35)
     }
-
+    
     private lazy var bestScoreInside = SKLabelNode(fontNamed: "inside").then {
         $0.zPosition = GamezPosition.resultText
         $0.fontSize = 16
@@ -69,12 +69,14 @@ class ResultBoard: SKSpriteNode {
     private lazy var new = SKSpriteNode(texture: SKTexture(imageNamed: "new")).then {
         $0.zPosition = GamezPosition.resultText
         $0.position = CGPoint(x: frame.midX + 35, y: frame.midY - 6)
+        $0.setScale(0)
     }
     
     var score: Int = 0 {
         didSet {
             let newHighScore = score > ResultBoard.bestScore()
             let duration: Double = 1.5 //seconds
+            
             bestScore.text = "0"
             bestScoreInside.text = "0"
             if newHighScore {
@@ -86,7 +88,10 @@ class ResultBoard: SKSpriteNode {
                                 self.bestScore.text = "\(i)"
                                 self.bestScoreInside.text = "\(i)"
                                 if i == self.score {
-                                    self.new.setScale(1)
+                                    self.new.run(SKAction.sequence([
+                                        SKAction.scale(to: 0.7, duration: 0.05),
+                                        SKAction.scale(to: 1.0, duration: 0.1)
+                                    ]))
                                 }
                             }
                         }
@@ -97,6 +102,7 @@ class ResultBoard: SKSpriteNode {
             } else {
                 new.setScale(0)
             }
+            
             currentScore.text = "0"
             currentScoreInside.text = "0"
             DispatchQueue.global().async {
@@ -123,7 +129,7 @@ private extension ResultBoard {
     class func bestScore() -> Int {
         return UserDefaults.standard.integer(forKey: "bestScore")
     }
-
+    
     class func setBestScore(_ score: Int) {
         UserDefaults.standard.set(score, forKey: "bestScore")
         UserDefaults.standard.synchronize()
