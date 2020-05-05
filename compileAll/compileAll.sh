@@ -30,6 +30,7 @@ Section: Games
 SileoDepiction: https://repo.brandonplank.org/depictions/org.brandonplank.flappybird/flappybird.json
 " >> ./deb/DEBIAN/control
 cp -r ./Flappy\ Bird.app ./deb/Applications
+cp -r ./postinst ./deb/DEBIAN
 dpkg-deb --build ./deb ./org.brandonplank.flappybird_$version.deb
 mv ./org.brandonplank.flappybird_$version.deb ../output
 rm -rf deb
