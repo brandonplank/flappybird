@@ -734,6 +734,9 @@ extension GameScene: SKPhysicsContactDelegate {
                 guard let url = URL(string: "https://www.youtube.com/watch?v=dQw4w9WgXcQ") else { return }
                 UIApplication.shared.open(url)
             }
+            if score == 999999999{
+                //mario dodge
+            }
             
             if(haptics){
                 impact.impactOccurred()
