@@ -85,13 +85,15 @@ class ResultBoard: SKSpriteNode {
                             if (i >= ResultBoard.bestScore()){
                                 self.bestScore.text = "\(i)"
                                 self.bestScoreInside.text = "\(i)"
+                                if i == self.score {
+                                    self.new.setScale(1)
+                                }
                             }
                         }
                         usleep(sleepTime)
                     }
                     ResultBoard.setBestScore(self.score)
                 }
-                new.setScale(1)
             } else {
                 new.setScale(0)
             }
