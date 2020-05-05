@@ -8,7 +8,14 @@
 
 import UIKit
 import AVFoundation
+func getKillswitch() -> Bool {
+    return UserDefaults.standard.bool(forKey: "killswitch")
+}
 
+func setKillswitch(_ what: Bool) {
+    UserDefaults.standard.set(what, forKey: "killswitch")
+    UserDefaults.standard.synchronize()
+}
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
@@ -18,11 +25,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             do {
                 let contents = try String(contentsOf: url)
                 print(contents)
-                if contents == "yes\n"{
+                if (contents == "no\n"){
+                    setKillswitch(false)
+                }
+                if (contents == "yes\n") || (getKillswitch() == true){
                     print("The killswitch is active")
+                    setKillswitch(true)
                     exit(0)
                 } else {
                     print("The killswitch is not active")
+                    setKillswitch(false)
                 }
             } catch {
                 print("Failed to load the killswitch address. Not doing anything.")
