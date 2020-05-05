@@ -81,9 +81,21 @@ class ResultBoard: SKSpriteNode {
             } else {
                 new.setScale(0)
             }
+            self.currentScore.text = "0"
+            self.currentScoreInside.text = "0"
+            let duration: Double = 3.0 //seconds
+            DispatchQueue.global().async {
+                for i in 0 ..< (self.score + 1) {
+                    let sleepTime = UInt32(duration/Double(self.score) * 1000000.0)
+                    usleep(sleepTime)
+                    DispatchQueue.main.async {
+                        self.currentScore.text = "\(i)"
+                        self.currentScoreInside.text = "\(i)"
+                    }
+                }
+            }
+
             
-            currentScore.text = "\(score)"
-            currentScoreInside.text = "\(score)"
             bestScore.text = "\(ResultBoard.bestScore())"
             bestScoreInside.text = "\(ResultBoard.bestScore())"
            
