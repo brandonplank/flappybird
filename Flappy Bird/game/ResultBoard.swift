@@ -83,7 +83,7 @@ class ResultBoard: SKSpriteNode {
             }
             self.currentScore.text = "0"
             self.currentScoreInside.text = "0"
-            let duration: Double = 3.0 //seconds
+            let duration: Double = 1.5 //seconds
             DispatchQueue.global().async {
                 for i in 0 ..< (self.score + 1) {
                     let sleepTime = UInt32(duration/Double(self.score) * 1000000.0)
