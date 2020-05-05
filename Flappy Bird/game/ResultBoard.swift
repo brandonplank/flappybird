@@ -14,6 +14,20 @@ import Then
 class ResultBoard: SKSpriteNode {
     override init(texture: SKTexture?, color: UIColor, size: CGSize) {
         super.init(texture: texture, color: color, size: size)
+        
+        let moveRand = SKAction.customAction(withDuration: 0.0) { (node, _) in
+            let newX = CGFloat(Float.random(in: -88...(-50)))
+            let newY = CGFloat(Float.random(in: -18...18))
+            node.run(SKAction.move(to: CGPoint(x: newX, y: newY), duration: 0.0))
+        }
+        
+        sparkle.run(SKAction.repeatForever(SKAction.sequence([
+            moveRand,
+            SKAction.scale(to: 1.0, duration: 0.4),
+            SKAction.wait(forDuration: 0.4),
+            SKAction.scale(to: 0.0, duration: 0.4)
+        ])))
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -25,6 +39,7 @@ class ResultBoard: SKSpriteNode {
         self.init(texture: image, color: UIColor.clear, size: image.size())
         
         addChild(new)
+        addChild(sparkle)
         addChild(currentScore)
         addChild(bestScore)
         addChild(currentScoreInside)
@@ -70,6 +85,11 @@ class ResultBoard: SKSpriteNode {
         $0.zPosition = GamezPosition.resultText
         $0.position = CGPoint(x: frame.midX + 35, y: frame.midY - 6)
         $0.setScale(0)
+    }
+    
+    private lazy var sparkle = SKSpriteNode(texture: SKTexture(imageNamed: "sparkle")).then {
+        $0.setScale(0)
+        $0.zPosition = GamezPosition.resultText+1
     }
     
     var score: Int = 0 {
