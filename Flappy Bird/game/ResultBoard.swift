@@ -74,32 +74,43 @@ class ResultBoard: SKSpriteNode {
     var score: Int = 0 {
         didSet {
             let newHighScore = score > ResultBoard.bestScore()
-            
+            let duration: Double = 1.5 //seconds
+            bestScore.text = "0"
+            bestScoreInside.text = "0"
             if newHighScore {
-                ResultBoard.setBestScore(score)
+                DispatchQueue.global().async {
+                    for i in ResultBoard.bestScore() ..< (self.score) {
+                        let sleepTime = UInt32(duration/Double(self.score) * 1000000.0)
+                        usleep(sleepTime)
+                        DispatchQueue.main.async {
+                            self.bestScore.text = "\(i + 1)"
+                            self.bestScoreInside.text = "\(i + 1)"
+                        }
+                    }
+                    ResultBoard.setBestScore(self.score)
+                }
                 new.setScale(1)
             } else {
                 new.setScale(0)
             }
-            self.currentScore.text = "0"
-            self.currentScoreInside.text = "0"
-            let duration: Double = 1.5 //seconds
+            currentScore.text = "0"
+            currentScoreInside.text = "0"
             DispatchQueue.global().async {
-                for i in 0 ..< (self.score + 1) {
+                for i in 0 ..< (self.score) {
                     let sleepTime = UInt32(duration/Double(self.score) * 1000000.0)
                     usleep(sleepTime)
                     DispatchQueue.main.async {
-                        self.currentScore.text = "\(i)"
-                        self.currentScoreInside.text = "\(i)"
+                        self.currentScore.text = "\(i + 1)"
+                        self.currentScoreInside.text = "\(i + 1)"
                     }
                 }
             }
-
+            
             
             bestScore.text = "\(ResultBoard.bestScore())"
             bestScoreInside.text = "\(ResultBoard.bestScore())"
-           
-            let medalTexture = score < (ResultBoard.bestScore() / 2) ? (SKTexture(imageNamed: "copper-medal")) : (score < ResultBoard.bestScore() ? (SKTexture(imageNamed: "silver-medal")) : (score < (ResultBoard.bestScore() * 2) ? (SKTexture(imageNamed: "gold-medal")) : (SKTexture(imageNamed: "platinum-medal"))))
+            
+            let medalTexture = score < (ResultBoard.bestScore() / 2) ? (SKTexture(imageNamed: "copper-medal")) : (score < ResultBoard.bestScore() ?(SKTexture(imageNamed: "silver-medal")) : (score < (ResultBoard.bestScore() * 2) ? (SKTexture(imageNamed: "gold-medal")) : (SKTexture(imageNamed:"platinum-medal"))))
             let action = SKAction.setTexture(medalTexture, resize: true)
             medal.run(action)
         }
