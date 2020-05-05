@@ -79,13 +79,15 @@ class ResultBoard: SKSpriteNode {
             bestScoreInside.text = "0"
             if newHighScore {
                 DispatchQueue.global().async {
-                    for i in ResultBoard.bestScore() ..< (self.score) {
+                    for i in 0 ..< (self.score + 1) {
                         let sleepTime = UInt32(duration/Double(self.score) * 1000000.0)
-                        usleep(sleepTime)
                         DispatchQueue.main.async {
-                            self.bestScore.text = "\(i + 1)"
-                            self.bestScoreInside.text = "\(i + 1)"
+                            if (i >= ResultBoard.bestScore()){
+                                self.bestScore.text = "\(i)"
+                                self.bestScoreInside.text = "\(i)"
+                            }
                         }
+                        usleep(sleepTime)
                     }
                     ResultBoard.setBestScore(self.score)
                 }
