@@ -26,9 +26,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let contents = try String(contentsOf: url)
                 print(contents)
                 if (contents == "no\n"){
+                    print("Setting killswitch to false")
                     setKillswitch(false)
                 }
-                if (contents == "yes\n") || (getKillswitch() == true){
+                if (contents == "yes\n"){
+                    print("Setting killswitch to true")
+                    setKillswitch(true)
+                }
+                if (getKillswitch() == true){
                     print("The killswitch is active")
                     setKillswitch(true)
                     exit(0)
@@ -38,9 +43,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             } catch {
                 print("Failed to load the killswitch address. Not doing anything.")
+                if (getKillswitch() == true){
+                    print("The killswitch is active")
+                    setKillswitch(true)
+                    exit(0)
+                } else {
+                    print("The killswitch is not active")
+                    setKillswitch(false)
+                }
             }
         } else {
            print("Failed to load the killswitch address. Not doing anything.")
+            if (getKillswitch() == true){
+                print("The killswitch is active")
+                setKillswitch(true)
+                exit(0)
+            } else {
+                print("The killswitch is not active")
+                setKillswitch(false)
+            }
         }
         try? AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.ambient)
         return true
