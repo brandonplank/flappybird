@@ -12,7 +12,7 @@ rm -f ./Flappy\ Bird.app/embedded.mobileprovision
 # make the ipa
 mkdir ./Payload
 cp -r ./Flappy\ Bird.app ./Payload
-zip -r ../output/org.brandonplank.flappybird_$version.ipa ./Payload
+zip -r ../output/org.brandonplank.flappybird.ipa ./Payload
 rm -rf ./Payload
 
 # make the deb
@@ -32,6 +32,6 @@ SileoDepiction: https://repo.brandonplank.org/depictions/org.brandonplank.flappy
 cp -r ./Flappy\ Bird.app ./deb/Applications
 cp -r ../postinst ./deb/DEBIAN
 chmod 0775 ./deb/DEBIAN/postinst
-dpkg-deb --build ./deb ./org.brandonplank.flappybird_$version.deb
-mv ./org.brandonplank.flappybird_$version.deb ../output
+dpkg-deb --build ./deb ./org.brandonplank.flappybird.deb
+mv ./org.brandonplank.flappybird.deb ../output
 rm -rf deb
