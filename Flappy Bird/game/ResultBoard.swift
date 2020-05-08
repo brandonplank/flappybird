@@ -99,6 +99,7 @@ class ResultBoard: SKSpriteNode {
             
             bestScore.text = "0"
             bestScoreInside.text = "0"
+            new.setScale(0) //always remove until called.
             if newHighScore {
                 DispatchQueue.global().async {
                     for i in 0 ..< (self.score + 1) {
