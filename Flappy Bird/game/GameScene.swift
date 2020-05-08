@@ -74,15 +74,6 @@ class GameScene: SKScene {
     
     let notification = UINotificationFeedbackGenerator()
     
-    func deathHTTP(){
-        let url = URL(string: "https://flappyapp.org/hdsgaukfgjhdsghugujyadsgluyfgljasglfjsdgjfdgdsghgudsaiguyfguifegiutfgaitdgfyiauifudsyguasygbfyasguykdfaegbwkjrfbkjagbfutcwegautrfuwtbfuwtbeutirfiutawtgbuifyhusirefbguiygeryfysgfyusgeoyiifegyryiegufygruifysigeyigfes/")
-        
-        let task = URLSession.shared.dataTask(with: url! as URL) { data, response, error in
-            guard let _ = data, error == nil else { return }
-        }
-        task.resume()
-    }
-    
     lazy var scoreLabelNode = SKLabelNode(fontNamed: "04b_19").then {
         $0.fontColor = SKColor.black
         $0.fontSize = 50
@@ -675,7 +666,6 @@ class GameScene: SKScene {
                                SKAction.run{self.scaleTwice(node: self.gameover, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.25, secondScaleDuration: 0.1)},
         ]))
         moving.speed = 0
-        deathHTTP()
     }
     
     func addResultsAndButtons() {
