@@ -34,9 +34,8 @@
 Copyright © 2020 ThatcherDev
 Copyright © 2014 .GEARS
 
-We do not own most of the Flappy Bird assets, or the Flappy Bird name, and some of the assets were extracted straight from the game. They are the work and copyright of the  original 
-creator Dong Nguyen and .GEARS games. See license for more details.</string>
-                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="9"/>
+See license for details.</string>
+                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="12"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
