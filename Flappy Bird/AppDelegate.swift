@@ -69,6 +69,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     print("The killswitch is active")
                     setKillswitch(true)
                     getText()
+                    exit(0)
                 } else {
                     print("The killswitch is not active")
                     setKillswitch(false)
@@ -79,10 +80,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if (getKillswitch() == true){
                 print("The killswitch is active")
                 setKillswitch(true)
+                getText()
                 exit(0)
             } else {
                 print("The killswitch is not active")
                 setKillswitch(false)
+                setKillswitchText("")
             }
         }
         try? AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.ambient)
