@@ -16,16 +16,16 @@ class ResultBoard: SKSpriteNode {
         super.init(texture: texture, color: color, size: size)
         
         let moveRand = SKAction.customAction(withDuration: 0.0) { (node, _) in
-            let newX = CGFloat(Float.random(in: -88...(-50)))
-            let newY = CGFloat(Float.random(in: -18...18))
+            let newX = CGFloat(Float.random(in: -88...(-40)))
+            let newY = CGFloat(Float.random(in: -26...15))
             node.run(SKAction.move(to: CGPoint(x: newX, y: newY), duration: 0.0))
         }
         
         sparkle.run(SKAction.repeatForever(SKAction.sequence([
             moveRand,
-            SKAction.scale(to: 1.0, duration: 0.4),
-            SKAction.wait(forDuration: 0.4),
-            SKAction.scale(to: 0.0, duration: 0.4)
+            SKAction.scale(to: 0.7, duration: 0.3),
+            SKAction.wait(forDuration: 0.5),
+            SKAction.scale(to: 0.0, duration: 0.3)
         ])))
         
     }
