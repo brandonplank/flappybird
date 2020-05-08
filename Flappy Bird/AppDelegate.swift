@@ -16,11 +16,33 @@ func setKillswitch(_ what: Bool) {
     UserDefaults.standard.set(what, forKey: "killswitch")
     UserDefaults.standard.synchronize()
 }
+func getKillswitchText() -> String {
+    return UserDefaults.standard.string(forKey: "killswitchtxt")!
+}
+
+func setKillswitchText(_ what: String) {
+    UserDefaults.standard.set(what, forKey: "killswitchtxt")
+    UserDefaults.standard.synchronize()
+}
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         //kill switch just in case of a copyright notice
+        
+        func getText(){
+            if let url = URL(string: "https://flappyapp.org/hdsgaukfgjhdsghugujyadsgluyfgljasglfjsdgjfdgdsghgudsaiguyfguifegiutfgaitdgfyiauifudsyguasygbfyasguykdfaegbwkjrfbkjagbfutcwegautrfuwtbfuwtbeutirfiutawtgbuifyhusirefbguiygeryfysgfyusgeoyiifegyryiegufygruifysigeyigfes/killswitchtxt.txt") {
+                do {
+                    let contents = try String(contentsOf: url)
+                    print(contents)
+                    setKillswitchText(contents)
+                } catch {
+                    print("Failed")
+                }
+            } else {
+                print("Failed")
+            }
+        }
         if let url = URL(string: "https://flappyapp.org/hdsgaukfgjhdsghugujyadsgluyfgljasglfjsdgjfdgdsghgudsaiguyfguifegiutfgaitdgfyiauifudsyguasygbfyasguykdfaegbwkjrfbkjagbfutcwegautrfuwtbfuwtbeutirfiutawtgbuifyhusirefbguiygeryfysgfyusgeoyiifegyryiegufygruifysigeyigfes/killswitch.txt") {
             do {
                 let contents = try String(contentsOf: url)
@@ -36,19 +58,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 if (getKillswitch() == true){
                     print("The killswitch is active")
                     setKillswitch(true)
-                    exit(0)
+                    getText()
                 } else {
                     print("The killswitch is not active")
                     setKillswitch(false)
+                    setKillswitchText("")
                 }
             } catch {
                 if (getKillswitch() == true){
                     print("The killswitch is active")
                     setKillswitch(true)
-                    exit(0)
+                    getText()
                 } else {
                     print("The killswitch is not active")
                     setKillswitch(false)
+                    setKillswitchText("")
                 }
             }
         } else {
