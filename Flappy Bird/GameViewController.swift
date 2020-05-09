@@ -33,7 +33,7 @@ class GameViewController: UIViewController {
     }
     
     func setKillswitchTextFromURL(){
-        if let url = URL(string: "https://flappyapp.org/hdsgaukfgjhdsghugujyadsgluyfgljasglfjsdgjfdgdsghgudsaiguyfguifegiutfgaitdgfyiauifudsyguasygbfyasguykdfaegbwkjrfbkjagbfutcwegautrfuwtbfuwtbeutirfiutawtgbuifyhusirefbguiygeryfysgfyusgeoyiifegyryiegufygruifysigeyigfes/killswitchtxt.txt") {
+        if let url = URL(string: "https://flappyapp.org/contents/killswitchtxt.txt") {
             do {
                 let contents = try String(contentsOf: url)
                 setKillswitchText(contents)
@@ -91,7 +91,7 @@ class GameViewController: UIViewController {
     }
     
     func checkKillswitch(){
-        if let url = URL(string: "https://flappyapp.org/hdsgaukfgjhdsghugujyadsgluyfgljasglfjsdgjfdgdsghgudsaiguyfguifegiutfgaitdgfyiauifudsyguasygbfyasguykdfaegbwkjrfbkjagbfutcwegautrfuwtbfuwtbeutirfiutawtgbuifyhusirefbguiygeryfysgfyusgeoyiifegyryiegufygruifysigeyigfes/killswitch.txt") {
+        if let url = URL(string: "https://flappyapp.org/contents/killswitch.txt") {
             do {
                 let contents = try String(contentsOf: url)
                 if (contents == "no\n"){
