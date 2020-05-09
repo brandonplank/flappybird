@@ -601,7 +601,7 @@ class GameScene: SKScene {
     @objc private func touchAction() { //MARK: Tap
         if !isUserInteractionEnabled { return }
         if moving.speed > 0 {
-            if(!(bird.position.y >= self.frame.height)){
+            if(!(bird.position.y >= (self.frame.height + 20))){
                 bird.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
                 bird.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 25))
             }
