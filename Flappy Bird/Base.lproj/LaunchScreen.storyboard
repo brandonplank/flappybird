@@ -29,13 +29,20 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mLn-45-cuz">
-                                <rect key="frame" x="57" y="736" width="300" height="147"/>
-                                <string key="text">Copyright © 2020 Brandon Plank
-Copyright © 2020 ThatcherDev
-Copyright © 2014 .GEARS
+                                <rect key="frame" x="57" y="840" width="300" height="43"/>
+                                <string key="text">Copyright © 2020 Brandon Plank, ThatcherDev
 
 See license for details.</string>
                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="12"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="In loving memory of Lucy Mae, aka Pup Dog 🐶" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WkK-WT-10S">
+                                <rect key="frame" x="57" y="788" width="300" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="8In-If-d5l"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -43,14 +50,16 @@ See license for details.</string>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="HnX-j0-WYc" secondAttribute="trailing" id="7aj-kJ-Ifs"/>
+                            <constraint firstItem="mLn-45-cuz" firstAttribute="top" secondItem="WkK-WT-10S" secondAttribute="bottom" constant="8" id="9AG-k1-h2t"/>
                             <constraint firstAttribute="bottom" secondItem="mLn-45-cuz" secondAttribute="bottom" constant="13" id="9Ry-0j-DHY"/>
                             <constraint firstItem="T0j-Kl-aDm" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="9rr-v6-d2N"/>
                             <constraint firstItem="T0j-Kl-aDm" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="GYO-FP-Piq"/>
                             <constraint firstItem="mLn-45-cuz" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="57" id="NwF-Cf-B2t"/>
                             <constraint firstAttribute="bottom" secondItem="HnX-j0-WYc" secondAttribute="bottom" id="TO4-Nu-9AB"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="WkK-WT-10S" secondAttribute="trailing" constant="37" id="VVb-oX-uEQ"/>
                             <constraint firstAttribute="trailing" secondItem="mLn-45-cuz" secondAttribute="trailing" constant="57" id="VWT-03-Zke"/>
                             <constraint firstItem="HnX-j0-WYc" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="e6d-V5-w70"/>
-                            <constraint firstItem="mLn-45-cuz" firstAttribute="top" secondItem="T0j-Kl-aDm" secondAttribute="bottom" constant="277.5" id="mCo-mb-V4P"/>
+                            <constraint firstItem="WkK-WT-10S" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="37" id="q3l-h9-05U"/>
                             <constraint firstItem="HnX-j0-WYc" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="zNQ-8a-Xrw"/>
                         </constraints>
                     </view>

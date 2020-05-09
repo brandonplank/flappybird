@@ -195,7 +195,7 @@ class GameScene: SKScene {
     }
     
     func setGravityAndPhysics() {
-        physicsWorld.gravity = CGVector(dx: 0.0, dy: -10.0)
+        physicsWorld.gravity = CGVector(dx: 0.0, dy: -15.0)
         physicsWorld.contactDelegate = self
     }
     
@@ -598,12 +598,12 @@ class GameScene: SKScene {
         }
     }
     
-    @objc private func touchAction() {
+    @objc private func touchAction() { //MARK: Tap
         if !isUserInteractionEnabled { return }
         if moving.speed > 0 {
             if(!(bird.position.y >= self.frame.height)){
                 bird.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-                bird.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 20))
+                bird.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 25))
             }
         }
     }
@@ -738,7 +738,7 @@ extension GameScene: SKPhysicsContactDelegate {
         } else if !gameOverDisplayed && ((contact.bodyA.categoryBitMask & PhysicsCatagory.pipe) == PhysicsCatagory.pipe || (contact.bodyB.categoryBitMask & PhysicsCatagory.pipe) == PhysicsCatagory.pipe) {
             gameOver()
             bird.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-            bird.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 15))
+            bird.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 20))
         } else if !hitGround && (contact.bodyA.categoryBitMask & PhysicsCatagory.land) == PhysicsCatagory.land || (contact.bodyB.categoryBitMask & PhysicsCatagory.land) == PhysicsCatagory.land {
             hitGround = true
             bird.speed = 0.5
