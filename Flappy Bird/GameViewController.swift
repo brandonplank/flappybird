@@ -14,6 +14,8 @@ import Then
 import Firebase
 import Network
 
+let gameVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+
 class GameViewController: UIViewController {
     
     func getKillswitch() -> Bool {
@@ -95,6 +97,23 @@ class GameViewController: UIViewController {
                         }
                     }
                 }
+                //Check For updates.
+                firebaseRef.child("Latest Version").observeSingleEvent(of: .value){
+                    (snapshot ) in let latestVersion = snapshot.value as! String
+                    print(gameVersion!)
+                    if (gameVersion! < latestVersion){
+                        let alert = UIAlertController(title: "Update", message: "Game version \(latestVersion) is avalible, please update to the latest version for the newest features and bug fixes!\nOffical download from\nhttps://flappyapp.org", preferredStyle: .alert)
+                        let exitButton = UIAlertAction(title: "Ok", style: .default, handler: { action in
+                            self.dismiss(animated: true)
+                        })
+                        alert.addAction(exitButton)
+                        DispatchQueue.main.async(execute: {
+                            self.present(alert, animated: true)
+                        })
+                    }
+                }
+                
+                
             } else {
                 print("No network connected");
                 if (self.getKillswitch() == true){
