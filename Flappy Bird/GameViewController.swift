@@ -112,8 +112,6 @@ class GameViewController: UIViewController {
                         })
                     }
                 }
-                
-                
             } else {
                 print("No network connected");
                 if (self.getKillswitch() == true){
