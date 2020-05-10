@@ -7,4 +7,7 @@ target 'Flappy Bird' do
   use_modular_headers!
 
   pod 'Then'
+  pod 'Firebase/Core'
+  pod 'Firebase/Database'
+  pod 'Firebase/Analytics'
 end

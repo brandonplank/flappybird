@@ -9,6 +9,7 @@
 
 import AVFoundation
 import SpriteKit
+import Firebase
 
 extension SKTexture {
     var width: CGFloat { size().width }
@@ -39,6 +40,7 @@ struct GamezPosition {
 
 class GameScene: SKScene {
     let impact = UIImpactFeedbackGenerator()
+    let firebaseRef = Database.database().reference()
     
     let flapAction = SKAction.playSoundFileNamed("sounds/sfx_wing.caf", waitForCompletion: false)
     let dieAction = SKAction.playSoundFileNamed("sounds/sfx_die.caf", waitForCompletion: false)
@@ -71,8 +73,17 @@ class GameScene: SKScene {
     var gameOverDisplayed = false
     var hitGround = false
     var hitButton = false
+    var number: Int = 0
     
     let notification = UINotificationFeedbackGenerator()
+    
+    func deathFunction(){
+        firebaseRef.child("Game/Death Count").observeSingleEvent(of: .value){
+            (snapshot ) in self.number = snapshot.value as! Int
+        }
+        print("Number = \(number)")
+        firebaseRef.child("Game/Death Count").setValue(number + 1)
+    }
     
     lazy var scoreLabelNode = SKLabelNode(fontNamed: "04b_19").then {
         $0.fontColor = SKColor.black
@@ -666,6 +677,7 @@ class GameScene: SKScene {
                                SKAction.run{self.scaleTwice(node: self.gameover, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.25, secondScaleDuration: 0.1)},
         ]))
         moving.speed = 0
+        deathFunction()
     }
     
     func addResultsAndButtons() {
