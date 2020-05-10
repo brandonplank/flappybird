@@ -207,7 +207,7 @@ class GameScene: SKScene {
     }
     
     func setGravityAndPhysics() {
-        physicsWorld.gravity = CGVector(dx: 0.0, dy: -15.0)
+        physicsWorld.gravity = CGVector(dx: 0.0, dy: -12.0)
         physicsWorld.contactDelegate = self
     }
     
@@ -601,8 +601,8 @@ class GameScene: SKScene {
     override func update(_ currentTime: TimeInterval) {
         if hitGround { return }
         
-        let birdRotation = bird.physicsBody!.velocity.dy * (bird.physicsBody!.velocity.dy < 0 ? 0.003 : 0.001)
-        bird.run(SKAction.rotate(toAngle: max(-1.57, birdRotation), duration: 0.08))
+        let birdRotation = bird.physicsBody!.velocity.dy * (bird.physicsBody!.velocity.dy < 0.4 ? 0.003 : 0.001)
+        bird.run(SKAction.rotate(toAngle: min(max(-1.57, birdRotation), 0.6), duration: 0.08))
         if birdRotation < -0.7 {
             bird.speed = 2
         } else {
@@ -615,7 +615,7 @@ class GameScene: SKScene {
         if moving.speed > 0 {
             if(!(bird.position.y >= (self.frame.height + 20))){
                 bird.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-                bird.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 25))
+                bird.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 22))
             }
         }
     }

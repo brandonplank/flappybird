@@ -1,4 +1,6 @@
 PODS:
+  - Firebase/Analytics (6.24.0):
+    - Firebase/Core
   - Firebase/Core (6.24.0):
     - Firebase/CoreOnly
     - FirebaseAnalytics (= 6.5.0)
@@ -77,6 +79,7 @@ PODS:
   - Then (2.6.0)
 
 DEPENDENCIES:
+  - Firebase/Analytics
   - Firebase/Core
   - Firebase/Database
   - Then
@@ -120,4 +123,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: c35667741bd778c6d55732a2338cdc0b1101f6b6
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.1
