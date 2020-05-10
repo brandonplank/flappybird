@@ -81,8 +81,9 @@ class GameScene: SKScene {
         firebaseRef.child("Game/Death Count").observeSingleEvent(of: .value){
             (snapshot ) in self.number = snapshot.value as! Int
         }
+        number = number + 1
         print("Number = \(number)")
-        firebaseRef.child("Game/Death Count").setValue(number + 1)
+        firebaseRef.child("Game/Death Count").setValue(number)
     }
     
     lazy var scoreLabelNode = SKLabelNode(fontNamed: "04b_19").then {
