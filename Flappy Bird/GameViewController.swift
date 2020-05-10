@@ -63,6 +63,7 @@ class GameViewController: UIViewController {
         let monitor = NWPathMonitor()
         monitor.pathUpdateHandler = { path in
             if path.status == .satisfied {
+                print("Network is connected");
                 firebaseRef.child("Killswitch").observeSingleEvent(of: .value){
                     (snapshot ) in let isOn = snapshot.value as! Bool
                     if (isOn == false){
@@ -95,6 +96,7 @@ class GameViewController: UIViewController {
                     }
                 }
             } else {
+                print("No network connected");
                 if (self.getKillswitch() == true){
                         print("Setting killswitch to true")
                         self.setKillswitch(true)
@@ -114,7 +116,6 @@ class GameViewController: UIViewController {
                     }
                 }
             }
-            print(path.isExpensive)
         }
         let queue = DispatchQueue(label: "Monitor")
         monitor.start(queue: queue)
