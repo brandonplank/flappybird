@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		88F7D1DE2468B0BB0066CFC1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 88F7D1DD2468B0BB0066CFC1 /* GoogleService-Info.plist */; };
 		8ED227C76EB92DE92A0D01FE /* libPods-Flappy Bird.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B97CC781040A747856E992D3 /* libPods-Flappy Bird.a */; };
 		DD237702245B73B500B570A3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD237701245B73B500B570A3 /* AppDelegate.swift */; };
 		DD23770A245B73B500B570A3 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD237709245B73B500B570A3 /* GameViewController.swift */; };
@@ -14,8 +15,6 @@
 		DD23770F245B73B700B570A3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DD23770E245B73B700B570A3 /* Assets.xcassets */; };
 		DD237712245B73B700B570A3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DD237710245B73B700B570A3 /* LaunchScreen.storyboard */; };
 		DD23771A245B744F00B570A3 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = DD237719245B744F00B570A3 /* Podfile */; };
-		DD29BC822468A434001FB19D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD29BC812468A434001FB19D /* GoogleService-Info.plist */; };
-		DD29BC842468A4F2001FB19D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD29BC832468A4F2001FB19D /* GoogleService-Info.plist */; };
 		DD898AFD245CCFC400478094 /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = DD898AFC245CCFC400478094 /* sounds */; };
 		DD898B13245CD23A00478094 /* SettingsPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD898B0F245CD23A00478094 /* SettingsPanel.swift */; };
 		DD898B14245CD23A00478094 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = DD898B10245CD23A00478094 /* GameScene.sks */; };
@@ -29,6 +28,7 @@
 
 /* Begin PBXFileReference section */
 		38E50141811F7ADD628887B2 /* Pods-Flappy Bird.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flappy Bird.release.xcconfig"; path = "Target Support Files/Pods-Flappy Bird/Pods-Flappy Bird.release.xcconfig"; sourceTree = "<group>"; };
+		88F7D1DD2468B0BB0066CFC1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		95DB7C1FDF531A35ED1B493F /* Pods-Flappy Bird.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flappy Bird.debug.xcconfig"; path = "Target Support Files/Pods-Flappy Bird/Pods-Flappy Bird.debug.xcconfig"; sourceTree = "<group>"; };
 		B97CC781040A747856E992D3 /* libPods-Flappy Bird.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Flappy Bird.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD2376FE245B73B500B570A3 /* Flappy Bird.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Flappy Bird.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -39,8 +39,6 @@
 		DD237711245B73B700B570A3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DD237713245B73B700B570A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Flappy Bird/Info.plist"; sourceTree = SOURCE_ROOT; };
 		DD237719245B744F00B570A3 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		DD29BC812468A434001FB19D /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
-		DD29BC832468A4F2001FB19D /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		DD898AFC245CCFC400478094 /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sounds; sourceTree = "<group>"; };
 		DD898B0F245CD23A00478094 /* SettingsPanel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsPanel.swift; sourceTree = "<group>"; };
 		DD898B10245CD23A00478094 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -105,7 +103,6 @@
 		DD237700245B73B500B570A3 /* Flappy Bird */ = {
 			isa = PBXGroup;
 			children = (
-				DD29BC812468A434001FB19D /* GoogleService-Info.plist */,
 				DD898B17245CD26600478094 /* fonts */,
 				DD898B0E245CD23A00478094 /* game */,
 				DD898AFC245CCFC400478094 /* sounds */,
@@ -114,7 +111,7 @@
 				DD23770B245B73B500B570A3 /* Main.storyboard */,
 				DD23770E245B73B700B570A3 /* Assets.xcassets */,
 				DD237710245B73B700B570A3 /* LaunchScreen.storyboard */,
-				DD29BC832468A4F2001FB19D /* GoogleService-Info.plist */,
+				88F7D1DD2468B0BB0066CFC1 /* GoogleService-Info.plist */,
 				DD237713245B73B700B570A3 /* Info.plist */,
 			);
 			path = "Flappy Bird";
@@ -199,8 +196,7 @@
 				DD898B1A245CD2C200478094 /* Actions.sks in Resources */,
 				DD23770F245B73B700B570A3 /* Assets.xcassets in Resources */,
 				DD237712245B73B700B570A3 /* LaunchScreen.storyboard in Resources */,
-				DD29BC822468A434001FB19D /* GoogleService-Info.plist in Resources */,
-				DD29BC842468A4F2001FB19D /* GoogleService-Info.plist in Resources */,
+				88F7D1DE2468B0BB0066CFC1 /* GoogleService-Info.plist in Resources */,
 				DD898B14245CD23A00478094 /* GameScene.sks in Resources */,
 				DD898B18245CD26600478094 /* fonts in Resources */,
 			);
@@ -395,8 +391,9 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 2F3GJP6396;
+				DEVELOPMENT_TEAM = T8ALTGMVXN;
 				INFOPLIST_FILE = "Flappy Bird/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -421,8 +418,9 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 2F3GJP6396;
+				DEVELOPMENT_TEAM = T8ALTGMVXN;
 				INFOPLIST_FILE = "Flappy Bird/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

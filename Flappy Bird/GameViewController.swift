@@ -11,6 +11,8 @@ import Foundation
 import SpriteKit
 import GameplayKit
 import Then
+import Firebase
+import Network
 
 class GameViewController: UIViewController {
     
@@ -32,23 +34,6 @@ class GameViewController: UIViewController {
         UserDefaults.standard.synchronize()
     }
     
-    func setKillswitchTextFromURL(){
-        if let url = URL(string: "https://flappyapp.org/contents/killswitchtxt.txt") {
-            do {
-                let contents = try String(contentsOf: url)
-                setKillswitchText(contents)
-            } catch {
-                if (UserDefaults.standard.object(forKey: "killswitchtxt") == nil){
-                    setKillswitchText("A killswitch has been activated. App will now close.")
-                }
-            }
-        } else {
-            if (UserDefaults.standard.object(forKey: "killswitchtxt") == nil){
-                setKillswitchText("A killswitch has been activated. App will now close.")
-            }
-        }
-    }
-    
     override var shouldAutorotate: Bool { false }
     override var prefersStatusBarHidden: Bool { true }
     override var canBecomeFirstResponder: Bool { true }
@@ -59,54 +44,79 @@ class GameViewController: UIViewController {
     }
     
     override func loadView() {
-        checkKillswitch()
         view = SKView().then {
             $0.ignoresSiblingOrder = true
             $0.showsFPS = false
             $0.showsNodeCount = false
         }
     }
-    
+    var global_msg: String?
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let scene = scene, let skView = self.view as? SKView else { return }
         skView.presentScene(scene)
         becomeFirstResponder()
+        //Firebase stuff
         
-        if (getKillswitch() == true){
-            print("The killswitch is active")
-            setKillswitchTextFromURL()
-            
-            let alert = UIAlertController(title: "Killswitch", message: getKillswitchText(), preferredStyle: .alert)
-            let exitButton = UIAlertAction(title: "Exit", style: .default, handler: { action in
-                exit(0)
-            })
-            alert.addAction(exitButton)
-            DispatchQueue.main.async(execute: {
-                self.present(alert, animated: true)
-            })
-        } else {
-            print("The killswitch is not active")
-        }
-    }
-    
-    func checkKillswitch(){
-        if let url = URL(string: "https://flappyapp.org/contents/killswitch.txt") {
-            do {
-                let contents = try String(contentsOf: url)
-                if (contents == "no\n"){
-                    print("Setting killswitch to false")
-                    setKillswitch(false)
+        let firebaseRef = Database.database().reference()
+        
+        let monitor = NWPathMonitor()
+        monitor.pathUpdateHandler = { path in
+            if path.status == .satisfied {
+                firebaseRef.child("Killswitch").observeSingleEvent(of: .value){
+                    (snapshot ) in let isOn = snapshot.value as! Bool
+                    if (isOn == false){
+                        print("Setting killswitch to false")
+                        self.setKillswitch(false)
+                        return
+                    }
+                    if (isOn == true) || (self.getKillswitch() == true){
+                        print("Setting killswitch to true")
+                        self.setKillswitch(true)
+                        print("The killswitch is active")
+                        firebaseRef.child("Killswitch Message").observeSingleEvent(of: .value){
+                            (snapshot ) in let message = snapshot.value as! String
+                            if (message == ""){
+                                self.setKillswitchText("A killswitch has been activated. App will now close.")
+                            } else {
+                                self.global_msg = message
+                                print(self.global_msg!)
+                                self.setKillswitchText(self.global_msg!)
+                                let alert = UIAlertController(title: "Killswitch", message: self.global_msg, preferredStyle: .alert)
+                                let exitButton = UIAlertAction(title: "Exit", style: .default, handler: { action in
+                                    exit(0)
+                                })
+                                alert.addAction(exitButton)
+                                DispatchQueue.main.async(execute: {
+                                    self.present(alert, animated: true)
+                                })
+                            }
+                        }
+                    }
                 }
-                if (contents == "yes\n"){
-                    print("Setting killswitch to true")
-                    setKillswitch(true)
+            } else {
+                if (self.getKillswitch() == true){
+                        print("Setting killswitch to true")
+                        self.setKillswitch(true)
+                        print("The killswitch is active")
+                        if (self.getKillswitchText() == ""){
+                            self.setKillswitchText("A killswitch has been activated. App will now close.")
+                            self.global_msg = self.getKillswitchText()
+                        } else {
+                            let alert = UIAlertController(title: "Killswitch", message: self.getKillswitchText(), preferredStyle: .alert)
+                            let exitButton = UIAlertAction(title: "Exit", style: .default, handler: { action in
+                                exit(0)
+                            })
+                            alert.addAction(exitButton)
+                            DispatchQueue.main.async(execute: {
+                                self.present(alert, animated: true)
+                        })
+                    }
                 }
-            } catch {
-                print("Could not get killswitch data")
             }
-        } else {
-            print("Could not get killswitch data")
+            print(path.isExpensive)
         }
+        let queue = DispatchQueue(label: "Monitor")
+        monitor.start(queue: queue)
     }
 }
