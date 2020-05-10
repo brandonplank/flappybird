@@ -73,17 +73,17 @@ class GameScene: SKScene {
     var gameOverDisplayed = false
     var hitGround = false
     var hitButton = false
-    var number: Int = 0
+    var number: Int?
     
     let notification = UINotificationFeedbackGenerator()
     
     func deathFunction(){
         firebaseRef.child("Game/Death Count").observeSingleEvent(of: .value){
-            (snapshot ) in self.number = snapshot.value as! Int
+            (snapshot ) in var number = snapshot.value as! Int
+            number = number + 1
+            print("Number = \(number)")
+            self.firebaseRef.child("Game/Death Count").setValue(number)
         }
-        number = number + 1
-        print("Number = \(number)")
-        firebaseRef.child("Game/Death Count").setValue(number)
     }
     
     lazy var scoreLabelNode = SKLabelNode(fontNamed: "04b_19").then {
