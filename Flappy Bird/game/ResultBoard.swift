@@ -16,6 +16,7 @@ import SwiftKeychainWrapper
 
 class ResultBoard: SKSpriteNode {
     
+    
     let firebaseRef = Database.database().reference()
     
     override init(texture: SKTexture?, color: UIColor, size: CGSize) {
@@ -41,23 +42,13 @@ class ResultBoard: SKSpriteNode {
     }
     
     convenience init(score: Int) {
-        let uuid = UIDevice.current.identifierForVendor!.uuidString
-        var identifier: String
-        
-        var retrievedUUID: String? = KeychainWrapper.standard.string(forKey: "flappyUUID")
-        if retrievedUUID == nil{
-            KeychainWrapper.standard.set(uuid, forKey: "flappyUUID")
-            identifier = retrievedUUID!
-            retrievedUUID = KeychainWrapper.standard.string(forKey: "flappyUUID")
-            print("Creating keychain")
-        } else {
-            identifier = retrievedUUID!
-            print("Already have keychain")
-        }
+        var uid = "Put uid here"
+        let scorePath = "Device scores/\(uid)/score"
+
     
         let image = SKTexture(imageNamed: "scoreboard").then { $0.filteringMode = .nearest }
         self.init(texture: image, color: UIColor.clear, size: image.size())
-        firebaseRef.child("Device scores/\(identifier)/score").observeSingleEvent(of: .value){ //Your saved score
+        firebaseRef.child(scorePath).observeSingleEvent(of: .value){ //Your saved score
             (snapshot ) in
             let savedScore = snapshot.value as? Int
             DispatchQueue.main.async {
@@ -70,7 +61,7 @@ class ResultBoard: SKSpriteNode {
                         ResultBoard.setBestScore(savedScore!)
                     }
                 } else {
-                    self.firebaseRef.child("Device scores/\(identifier)/score").setValue(score)
+                    self.firebaseRef.child(scorePath).setValue(score)
                 }
             }
         }
@@ -131,31 +122,22 @@ class ResultBoard: SKSpriteNode {
     
     var score: Int = 0 {
         didSet {
-            let uuid = UIDevice.current.identifierForVendor!.uuidString
-            var identifier: String
-            var retrievedUUID: String? = KeychainWrapper.standard.string(forKey: "flappyUUID")
-            if retrievedUUID == nil{
-                KeychainWrapper.standard.set(uuid, forKey: "flappyUUID")
-                retrievedUUID = KeychainWrapper.standard.string(forKey: "flappyUUID")
-                identifier = retrievedUUID!
-                print("Creating keychain")
-            } else {
-                identifier = retrievedUUID!
-                print("Already have keychain")
-            }
+            var uid = "Put uid here"
+            let deathPath = "Device scores/\(uid)/deaths"
+            let scorePath = "Device scores/\(uid)/score"
             
-            firebaseRef.child("Device scores/\(identifier)/deaths").observeSingleEvent(of: .value){ //Saved deaths online
+            firebaseRef.child(deathPath).observeSingleEvent(of: .value){ //Saved deaths online
                 (snapshot ) in
                 var savedDeaths = snapshot.value as? Int
                 DispatchQueue.main.async {
                     if snapshot.exists(){
                         if (savedDeaths != nil){
                             savedDeaths! = savedDeaths! + 1
-                            self.firebaseRef.child("Device scores/\(identifier)/deaths").setValue(savedDeaths!)
+                            self.firebaseRef.child(deathPath).setValue(savedDeaths!)
                             print("Saved deaths: \(savedDeaths!)")
                         }
                     } else {
-                        self.firebaseRef.child("Device scores/\(identifier)/deaths").setValue(1)
+                        self.firebaseRef.child(deathPath).setValue(1)
                     }
                 }
             }
@@ -185,8 +167,8 @@ class ResultBoard: SKSpriteNode {
                         usleep(sleepTime)
                     }
                     ResultBoard.setBestScore(self.score)
-                    (self.firebaseRef.child("Device scores/\(identifier)/score") as AnyObject).setValue(ResultBoard.bestScore())
-                    self.firebaseRef.child("Device scores/\(identifier)/score").observeSingleEvent(of: .value){
+                    (self.firebaseRef.child(scorePath) as AnyObject).setValue(ResultBoard.bestScore())
+                    self.firebaseRef.child(scorePath).observeSingleEvent(of: .value){
                         (snapshot ) in let savedScore = snapshot.value as! Int
                         print("Saved score 2: \(savedScore)")
                         ResultBoard.setBestScore(savedScore)
