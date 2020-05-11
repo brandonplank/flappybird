@@ -150,6 +150,7 @@ class ResultBoard: SKSpriteNode {
                     
                 }
             } else {
+                (self.firebaseRef.child("Device scores/\(self.identifier)/score") as AnyObject).setValue(ResultBoard.bestScore())
                 new.setScale(0)
             }
             
