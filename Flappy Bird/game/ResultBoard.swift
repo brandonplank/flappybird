@@ -42,13 +42,13 @@ class ResultBoard: SKSpriteNode {
     
     convenience init(score: Int) {
         let uuid = UIDevice.current.identifierForVendor!.uuidString
-        var saveSuccessful: Bool
         var identifier: String
         
-        let retrievedUUID: String? = KeychainWrapper.standard.string(forKey: "flappyUUID")
+        var retrievedUUID: String? = KeychainWrapper.standard.string(forKey: "flappyUUID")
         if retrievedUUID == nil{
-            saveSuccessful = KeychainWrapper.standard.set(uuid, forKey: "flappyUUID")
+            KeychainWrapper.standard.set(uuid, forKey: "flappyUUID")
             identifier = retrievedUUID!
+            retrievedUUID = KeychainWrapper.standard.string(forKey: "flappyUUID")
             print("Creating keychain")
         } else {
             identifier = retrievedUUID!
@@ -131,12 +131,12 @@ class ResultBoard: SKSpriteNode {
     var score: Int = 0 {
         didSet {
             let uuid = UIDevice.current.identifierForVendor!.uuidString
-            var saveSuccessful: Bool
             var identifier: String
             
-            let retrievedUUID: String? = KeychainWrapper.standard.string(forKey: "flappyUUID")
+            var retrievedUUID: String? = KeychainWrapper.standard.string(forKey: "flappyUUID")
             if retrievedUUID == nil{
-                saveSuccessful = KeychainWrapper.standard.set(uuid, forKey: "flappyUUID")
+                KeychainWrapper.standard.set(uuid, forKey: "flappyUUID")
+                retrievedUUID = KeychainWrapper.standard.string(forKey: "flappyUUID")
                 identifier = retrievedUUID!
                 print("Creating keychain")
             } else {
