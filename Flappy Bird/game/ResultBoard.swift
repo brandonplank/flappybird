@@ -42,10 +42,10 @@ class ResultBoard: SKSpriteNode {
     }
     
     convenience init(score: Int) {
-        var uid = "Put uid here"
-        var name = "Put name here"
-        let scorePath = "Device scores/\(uid)/score"
-        let namePath = "Device scores/\(uid)/name"
+        var uid = "qIDAAICBTtVbo8oR5AwECTYloLP2"
+        var name = "thatcher"
+        let scorePath = "users/\(uid)/score"
+        let namePath = "users/\(uid)/name"
     
         let image = SKTexture(imageNamed: "scoreboard").then { $0.filteringMode = .nearest }
         self.init(texture: image, color: UIColor.clear, size: image.size())
@@ -137,9 +137,9 @@ class ResultBoard: SKSpriteNode {
     
     var score: Int = 0 {
         didSet {
-            var uid = "Put uid here"
-            let deathPath = "Device scores/\(uid)/deaths"
-            let scorePath = "Device scores/\(uid)/score"
+            var uid = "qIDAAICBTtVbo8oR5AwECTYloLP2"
+            let deathPath = "users/\(uid)/deaths"
+            let scorePath = "users/\(uid)/score"
             
             firebaseRef.child(deathPath).observeSingleEvent(of: .value){ //Saved deaths online
                 (snapshot ) in

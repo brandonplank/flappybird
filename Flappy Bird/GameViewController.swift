@@ -13,6 +13,7 @@ import GameplayKit
 import Then
 import Firebase
 import Network
+import GoogleSignIn
 
 let gameVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
 
@@ -55,13 +56,23 @@ class GameViewController: UIViewController {
     var global_msg: String?
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        GIDSignIn.sharedInstance()?.presentingViewController = self
+        GIDSignIn.sharedInstance()?.restorePreviousSignIn()
+        
+        let signInButton = GIDSignInButton(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
+        signInButton.center = view.center
+        view.addSubview(signInButton)
+        
+        
+        
         guard let scene = scene, let skView = self.view as? SKView else { return }
         skView.presentScene(scene)
         becomeFirstResponder()
         //Firebase stuff
-        
+
         let firebaseRef = Database.database().reference()
-        
+
         let monitor = NWPathMonitor()
         monitor.pathUpdateHandler = { path in
             if path.status == .satisfied {
