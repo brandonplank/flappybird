@@ -10,6 +10,7 @@
 import AVFoundation
 import SpriteKit
 import Firebase
+import SwiftKeychainWrapper
 
 extension SKTexture {
     var width: CGFloat { size().width }
