@@ -43,8 +43,9 @@ class ResultBoard: SKSpriteNode {
     
     convenience init(score: Int) {
         var uid = "Put uid here"
+        var name = "Put name here"
         let scorePath = "Device scores/\(uid)/score"
-
+        let namePath = "Device scores/\(uid)/name"
     
         let image = SKTexture(imageNamed: "scoreboard").then { $0.filteringMode = .nearest }
         self.init(texture: image, color: UIColor.clear, size: image.size())
@@ -62,6 +63,20 @@ class ResultBoard: SKSpriteNode {
                     }
                 } else {
                     self.firebaseRef.child(scorePath).setValue(score)
+                }
+            }
+        }
+        
+        firebaseRef.child(namePath).observeSingleEvent(of: .value){ //Your saved name
+            (snapshot ) in
+            let savedName = snapshot.value as? String
+            DispatchQueue.main.async {
+                if snapshot.exists(){
+                    if (savedName != nil){
+                        print("Saved Name: \(savedName!)")
+                    }
+                } else {
+                    self.firebaseRef.child(savedName!).setValue(name)
                 }
             }
         }
