@@ -10,8 +10,15 @@
 
 import SpriteKit
 import Then
+import Firebase
+import Network
 
 class ResultBoard: SKSpriteNode {
+    
+    let firebaseRef = Database.database().reference()
+    
+    let identifier = UIDevice.current.identifierForVendor!.uuidString
+    
     override init(texture: SKTexture?, color: UIColor, size: CGSize) {
         super.init(texture: texture, color: color, size: size)
         
@@ -37,7 +44,23 @@ class ResultBoard: SKSpriteNode {
     convenience init(score: Int) {
         let image = SKTexture(imageNamed: "scoreboard").then { $0.filteringMode = .nearest }
         self.init(texture: image, color: UIColor.clear, size: image.size())
-        
+        firebaseRef.child("Device scores/\(identifier)/score").observeSingleEvent(of: .value){
+            (snapshot ) in
+            let savedScore = snapshot.value as? Int
+            DispatchQueue.main.async {
+                if snapshot.exists(){
+                    print("High Score: \(savedScore!)")
+                    if (savedScore != nil){
+                        print("Saved score: \(savedScore!)")
+                        self.bestScore.text = "\(savedScore!)"
+                        self.bestScoreInside.text = "\(savedScore!)"
+                        ResultBoard.setBestScore(savedScore!)
+                    }
+                } else {
+                    self.firebaseRef.child("Device scores/\(self.identifier)/score").setValue(score)
+                }
+            }
+        }
         addChild(new)
         addChild(sparkle)
         addChild(currentScore)
@@ -119,6 +142,12 @@ class ResultBoard: SKSpriteNode {
                         usleep(sleepTime)
                     }
                     ResultBoard.setBestScore(self.score)
+                    (self.firebaseRef.child("Device scores/\(self.identifier)/score") as AnyObject).setValue(ResultBoard.bestScore())
+                    self.firebaseRef.child("Device scores/\(self.identifier)/score").observeSingleEvent(of: .value){
+                        (snapshot ) in let savedScore = snapshot.value as! Int
+                        print("Saved score: \(savedScore)")
+                    }
+                    
                 }
             } else {
                 new.setScale(0)
