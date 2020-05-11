@@ -57,7 +57,7 @@ class ResultBoard: SKSpriteNode {
     
         let image = SKTexture(imageNamed: "scoreboard").then { $0.filteringMode = .nearest }
         self.init(texture: image, color: UIColor.clear, size: image.size())
-        firebaseRef.child("Device scores/\(identifier)/score").observeSingleEvent(of: .value){
+        firebaseRef.child("Device scores/\(identifier)/score").observeSingleEvent(of: .value){ //Your saved score
             (snapshot ) in
             let savedScore = snapshot.value as? Int
             DispatchQueue.main.async {
@@ -74,6 +74,7 @@ class ResultBoard: SKSpriteNode {
                 }
             }
         }
+        
         addChild(new)
         addChild(sparkle)
         addChild(currentScore)
@@ -132,7 +133,6 @@ class ResultBoard: SKSpriteNode {
         didSet {
             let uuid = UIDevice.current.identifierForVendor!.uuidString
             var identifier: String
-            
             var retrievedUUID: String? = KeychainWrapper.standard.string(forKey: "flappyUUID")
             if retrievedUUID == nil{
                 KeychainWrapper.standard.set(uuid, forKey: "flappyUUID")
@@ -143,6 +143,23 @@ class ResultBoard: SKSpriteNode {
                 identifier = retrievedUUID!
                 print("Already have keychain")
             }
+            
+            firebaseRef.child("Device scores/\(identifier)/deaths").observeSingleEvent(of: .value){ //Saved deaths online
+                (snapshot ) in
+                var savedDeaths = snapshot.value as? Int
+                DispatchQueue.main.async {
+                    if snapshot.exists(){
+                        if (savedDeaths != nil){
+                            savedDeaths! = savedDeaths! + 1
+                            self.firebaseRef.child("Device scores/\(identifier)/deaths").setValue(savedDeaths!)
+                            print("Saved deaths: \(savedDeaths!)")
+                        }
+                    } else {
+                        self.firebaseRef.child("Device scores/\(identifier)/deaths").setValue(1)
+                    }
+                }
+            }
+            
             let newHighScore = score > ResultBoard.bestScore()
             let duration: Double = 1.5 //seconds
             

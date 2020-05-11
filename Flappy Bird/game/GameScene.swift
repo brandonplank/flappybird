@@ -79,7 +79,7 @@ class GameScene: SKScene {
     let notification = UINotificationFeedbackGenerator()
     
     func deathFunction(){
-        firebaseRef.child("Game/Death Count").observeSingleEvent(of: .value){
+        firebaseRef.child("Game/Death Count").observeSingleEvent(of: .value){ //Global Deaths
             (snapshot ) in var number = snapshot.value as! Int
             number = number + 1
             print("Number = \(number)")
