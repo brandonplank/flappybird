@@ -78,15 +78,6 @@ class GameScene: SKScene {
     
     let notification = UINotificationFeedbackGenerator()
     
-    func deathFunction(){
-        firebaseRef.child("Game/Death Count").observeSingleEvent(of: .value){ //Global Deaths
-            (snapshot ) in var number = snapshot.value as! Int
-            number = number + 1
-            print("Number = \(number)")
-            self.firebaseRef.child("Game/Death Count").setValue(number)
-        }
-    }
-    
     lazy var scoreLabelNode = SKLabelNode(fontNamed: "04b_19").then {
         $0.fontColor = SKColor.black
         $0.fontSize = 50
@@ -679,7 +670,6 @@ class GameScene: SKScene {
                                SKAction.run{self.scaleTwice(node: self.gameover, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.25, secondScaleDuration: 0.1)},
         ]))
         moving.speed = 0
-        deathFunction()
     }
     
     func addResultsAndButtons() {
