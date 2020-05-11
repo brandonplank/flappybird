@@ -102,7 +102,7 @@ class GameViewController: UIViewController {
                     (snapshot ) in let latestVersion = snapshot.value as! String
                     print(gameVersion!)
                     if (gameVersion! < latestVersion){
-                        let alert = UIAlertController(title: "Update", message: "Game version \(latestVersion) is avalible, please update to the latest version for the newest features and bug fixes!\nOffical downloads from\nhttps://flappyapp.org\nhttps://brandonplank.org/flappybird", preferredStyle: .alert)
+                        let alert = UIAlertController(title: "Update", message: "Game version \(latestVersion) is avalible, please update to the latest version for the newest features and bug fixes!\nOffical downloads from\nhttps://flappyapp.org\nor\nhttps://github.com/brandonplank/flappybird", preferredStyle: .alert)
                         let exitButton = UIAlertAction(title: "Ok", style: .default, handler: { action in
                             self.dismiss(animated: true)
                         })
