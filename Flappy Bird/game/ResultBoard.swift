@@ -137,7 +137,7 @@ class ResultBoard: SKSpriteNode {
     
     var score: Int = 0 {
         didSet {
-            var uid = "qIDAAICBTtVbo8oR5AwECTYloLP2"
+            var uid = "yHaBrN1zQvYRAkYNal2xzrP5rjh1"
             let deathPath = "users/\(uid)/deaths"
             let scorePath = "users/\(uid)/score"
             
