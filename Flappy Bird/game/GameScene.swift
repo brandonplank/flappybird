@@ -39,6 +39,13 @@ struct GamezPosition {
     static let resultText: CGFloat = 3
 }
 
+class screenData {
+    static let shared = screenData()
+    var dheight: CGFloat = 0.0
+    var dwidth: CGFloat = 0.0
+    private init() { }
+}
+
 class GameScene: SKScene {
     let impact = UIImpactFeedbackGenerator()
     let firebaseRef = Database.database().reference()
@@ -194,17 +201,18 @@ class GameScene: SKScene {
     lazy var githubButton = SKSpriteNode(texture: SKTexture(imageNamed: "github").then { $0.filteringMode = .nearest }).then {
         $0.name = "github"
         $0.setScale(1.2)
+        print("==")
+        print(width)
+        print(height)
+        screenData.shared.dheight = height
+        screenData.shared.dwidth = width
         $0.position = CGPoint(x: (width / 2), y: (height / 2) - 25)
     }
 
     public static var googleSignInButton = SKSpriteNode(texture: SKTexture(imageNamed: "google").then { $0.filteringMode = .nearest }).then {
         $0.name = "google"
         $0.setScale(1.2)
-        let width = UIScreen.main.bounds.width
-        let height = UIScreen.main.bounds.height
-        print(width)
-        print(height)
-        $0.position = CGPoint(x: (width / 2), y: (height / 2))
+        $0.position = CGPoint(x: (screenData.shared.dwidth / 2), y: (screenData.shared.dheight / 2) - 200)
     }
     
     func setGravityAndPhysics() {

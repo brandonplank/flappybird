@@ -15,6 +15,9 @@ import SpriteKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     
+    public var deviceWidth: CGFloat = 0.0
+    public var deviceHeight: CGFloat = 0.0
+    
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
         if error != nil {
             return
