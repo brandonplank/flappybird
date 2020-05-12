@@ -16,6 +16,8 @@ import SwiftKeychainWrapper
 
 class ResultBoard: SKSpriteNode {
     
+    public static var userUid: String?
+    public static var userName: String?
     
     let firebaseRef = Database.database().reference()
     
@@ -42,41 +44,34 @@ class ResultBoard: SKSpriteNode {
     }
     
     convenience init(score: Int) {
-        var uid = "yHaBrN1zQvYRAkYNal2xzrP5rjh1"
-        var name_var = "Brandon Plank"
-        let scorePath = "users/\(uid)/score"
-        let namePath = "users/\(uid)/name"
+        let scorePath = "users/\(String(describing: ResultBoard.userUid))/score"
+        let namePath = "users/\(String(describing: ResultBoard.userUid))/name"
     
         let image = SKTexture(imageNamed: "scoreboard").then { $0.filteringMode = .nearest }
         self.init(texture: image, color: UIColor.clear, size: image.size())
-        firebaseRef.child(scorePath).observeSingleEvent(of: .value){ //Your saved score
+        
+        //score
+        firebaseRef.child(scorePath).observeSingleEvent(of: .value){
             (snapshot ) in
             let savedScore = snapshot.value as? Int
             DispatchQueue.main.async {
-                if snapshot.exists(){
-                    print("High Score: \(ResultBoard.bestScore())")
-                    if (savedScore != nil){
-                        print("Saved score: \(savedScore!)")
+                if (snapshot.exists()) && (savedScore != nil){
                         self.bestScore.text = "\(savedScore!)"
                         self.bestScoreInside.text = "\(savedScore!)"
                         ResultBoard.setBestScore(savedScore!)
-                    }
                 } else {
                     self.firebaseRef.child(scorePath).setValue(score)
                 }
             }
         }
         
-        firebaseRef.child(namePath).observeSingleEvent(of: .value){ //Your saved name
+        //name
+        firebaseRef.child(namePath).observeSingleEvent(of: .value){
             (snapshot ) in
             let savedName = snapshot.value as? String
             DispatchQueue.main.async {
-                if snapshot.exists(){
-                    if (savedName != nil){
-                        print("Saved Name: \(savedName!)")
-                    }
-                } else {
-                    (self.firebaseRef.child(namePath) as AnyObject).setValue(name_var)
+                if !(snapshot.exists()) || (savedName == nil){
+                    (self.firebaseRef.child(namePath) as AnyObject).setValue(self.name)
                 }
             }
         }
@@ -137,20 +132,16 @@ class ResultBoard: SKSpriteNode {
     
     var score: Int = 0 {
         didSet {
-            var uid = "yHaBrN1zQvYRAkYNal2xzrP5rjh1"
-            let deathPath = "users/\(uid)/deaths"
-            let scorePath = "users/\(uid)/score"
+            let deathPath = "users/\(String(describing: ResultBoard.userUid))/deaths"
+            let scorePath = "users/\(String(describing: ResultBoard.userUid))/score"
             
-            firebaseRef.child(deathPath).observeSingleEvent(of: .value){ //Saved deaths online
+            //save deaths online
+            firebaseRef.child(deathPath).observeSingleEvent(of: .value){
                 (snapshot ) in
-                var savedDeaths = snapshot.value as? Int
+                let savedDeaths = snapshot.value as? Int
                 DispatchQueue.main.async {
-                    if snapshot.exists(){
-                        if (savedDeaths != nil){
-                            savedDeaths! = savedDeaths! + 1
-                            self.firebaseRef.child(deathPath).setValue(savedDeaths!)
-                            print("Saved deaths: \(savedDeaths!)")
-                        }
+                    if (snapshot.exists()) && (savedDeaths != nil){
+                            self.firebaseRef.child(deathPath).setValue(savedDeaths! + 1)
                     } else {
                         self.firebaseRef.child(deathPath).setValue(1)
                     }

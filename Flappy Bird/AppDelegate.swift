@@ -24,6 +24,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         Auth.auth().signIn(with: credential) { (authResult, error) in
             print("Signed in")
         }
+        let user = Auth.auth().currentUser
+        ResultBoard.userUid = user?.uid
+        ResultBoard.userName = user?.displayName
     }
     
     func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
@@ -46,8 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         GIDSignIn.sharedInstance().delegate = self
         
-//        let user = Auth.auth().currentUser
-//               print(user?.uid as Any)
+
 //
 //
 //        let signInButton = GIDSignInButton(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
