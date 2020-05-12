@@ -358,7 +358,10 @@ class GameScene: SKScene {
         } else {
             settingsNode.adaptiveBackgroundToggle.position = CGPoint(x: SettingsPositions.toggleOffX, y: SettingsPositions.adaptiveBackgroundToggleY)
         }
-        
+        screenData.shared.dheight = height
+        screenData.shared.dwidth = width
+        print(screenData.shared.dheight)
+        print(screenData.shared.dwidth)
         setGravityAndPhysics()
         setMoving()
         setRandomSkyTexture()
@@ -373,10 +376,6 @@ class GameScene: SKScene {
         addChild(githubButton)
         addChild(playButton)
         addChild(settingsButton)
-        screenData.shared.dheight = height
-        screenData.shared.dwidth = width
-        print(screenData.shared.dheight)
-        print(screenData.shared.dwidth)
         addChild(GameScene.googleSignInButton)
         
         score = 0
