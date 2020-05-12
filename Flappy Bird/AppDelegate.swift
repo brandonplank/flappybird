@@ -22,22 +22,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
                                                 accessToken: authentication.accessToken)
         Auth.auth().signIn(with: credential) { (authResult, error) in
-            print("Signed in for user on firebase")
+            print("Signed in")
         }
-        let user = Auth.auth().currentUser
-        print(user?.uid as Any)
     }
     
     func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
-        let firebaseAuth = Auth.auth()
         do {
-            try firebaseAuth.signOut()
+            try Auth.auth().signOut()
         } catch {
             print ("Error signing out")
         }
-        
     }
-    
     
     @available(iOS 9.0, *)
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool {
@@ -50,6 +45,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         FirebaseApp.configure()
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         GIDSignIn.sharedInstance().delegate = self
+        
+//        let user = Auth.auth().currentUser
+//               print(user?.uid as Any)
+//
+//
+//        let signInButton = GIDSignInButton(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
+//        signInButton.center = view.center
+//        view.addSubview(signInButton)
         return true
     }
 }
