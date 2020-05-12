@@ -44,6 +44,9 @@ class ResultBoard: SKSpriteNode {
     }
     
     convenience init(score: Int) {
+        if ResultBoard.userUid == nil{
+            ResultBoard.userUid = "nothing"
+        }
         let scorePath = "users/\(String(describing: ResultBoard.userUid!))/score"
         let namePath = "users/\(String(describing: ResultBoard.userUid!))/name"
     
