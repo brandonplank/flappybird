@@ -202,7 +202,7 @@ class GameScene: SKScene {
     lazy var googleSignInButton = SKSpriteNode(texture: SKTexture(imageNamed: "google").then { $0.filteringMode = .nearest }).then {
         $0.name = "google"
         $0.setScale(1.2)
-        $0.position = CGPoint(x: (width / 2), y: (height / 2) - 120)
+        $0.position = CGPoint(x: (width / 2), y: (height / 2) - 200)
     }
     
     func setGravityAndPhysics() {
