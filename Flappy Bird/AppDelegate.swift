@@ -10,6 +10,7 @@ import UIKit
 import AVFoundation
 import Firebase
 import GoogleSignIn
+import SpriteKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
@@ -23,6 +24,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
                                                        accessToken: authentication.accessToken)
         Auth.auth().signIn(with: credential) { (authResult, error) in
             print("Signed in")
+            GameScene.googleSignInButton.run((SKAction.sequence([
+                SKAction.scale(to: 1.0, duration: 0.1),
+                SKAction.scale(to: 0.0, duration: 0.1)
+            ])))
         }
         let user = Auth.auth().currentUser
         ResultBoard.userUid = user?.uid
@@ -48,10 +53,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         FirebaseApp.configure()
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         GIDSignIn.sharedInstance().delegate = self
-        
-        //        let signInButton = GIDSignInButton(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
-        //        signInButton.center = view.center
-        //        view.addSubview(signInButton)
         return true
     }
 }

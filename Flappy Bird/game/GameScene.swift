@@ -74,7 +74,6 @@ class GameScene: SKScene {
     var gameOverDisplayed = false
     var hitGround = false
     var hitButton = false
-    var number: Int?
     
     let notification = UINotificationFeedbackGenerator()
     
@@ -197,11 +196,11 @@ class GameScene: SKScene {
         $0.setScale(1.2)
         $0.position = CGPoint(x: (width / 2), y: (height / 2) - 25)
     }
-    
-    lazy var googleSignInButton = SKSpriteNode(texture: SKTexture(imageNamed: "google").then { $0.filteringMode = .nearest }).then {
+
+    public static var googleSignInButton = SKSpriteNode(texture: SKTexture(imageNamed: "google").then { $0.filteringMode = .nearest }).then {
         $0.name = "google"
         $0.setScale(1.2)
-        $0.position = CGPoint(x: (width / 2), y: (height / 2) - 200)
+        $0.position = CGPoint(x: 0, y: 0)
     }
     
     func setGravityAndPhysics() {
@@ -365,7 +364,7 @@ class GameScene: SKScene {
         addChild(playButton)
         addChild(settingsButton)
         addChild(githubButton)
-        addChild(googleSignInButton)
+        addChild(GameScene.googleSignInButton)
         
         score = 0
         moving.speed = 1
@@ -410,7 +409,7 @@ class GameScene: SKScene {
                     self.playButton.removeFromParent()
                     self.settingsButton.removeFromParent()
                     self.githubButton.removeFromParent()
-                    self.googleSignInButton.removeFromParent()
+                    GameScene.googleSignInButton.removeFromParent()
                     self.hitButton = false
                     self.firstTouch = true
             }
@@ -432,7 +431,7 @@ class GameScene: SKScene {
                     } else {
                         self.scaleTwice(node: self.bird, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 0.0, secondScaleDuration: 0.1)
                         self.scaleTwice(node: self.githubButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 0.0, secondScaleDuration: 0.1)
-                        self.scaleTwice(node: self.googleSignInButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 0.0, secondScaleDuration: 0.1)
+                        self.scaleTwice(node: GameScene.googleSignInButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 0.0, secondScaleDuration: 0.1)
                     }
                     
                     self.settingsNode.setScale(0)
@@ -555,7 +554,7 @@ class GameScene: SKScene {
                     } else {
                         self.scaleTwice(node: self.bird, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.5, secondScaleDuration: 0.1)
                         self.scaleTwice(node: self.githubButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
-                        self.scaleTwice(node: self.googleSignInButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
+                        self.scaleTwice(node: GameScene.googleSignInButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
                     }
             }
             )
@@ -577,9 +576,9 @@ class GameScene: SKScene {
             self.hitButton = true
             run(SKAction.sequence([
                 SKAction.run { self.playSound(sound: self.swooshAction) },
-                SKAction.run { self.googleSignInButton.setScale(1.15) },
+                SKAction.run { GameScene.googleSignInButton.setScale(1.15) },
                 SKAction.wait(forDuration: 0.1),
-                SKAction.run { self.googleSignInButton.setScale(1.2) },
+                SKAction.run { GameScene.googleSignInButton.setScale(1.2) },
                 SKAction.wait(forDuration: 0.9)]),
                 completion: {
                     GIDSignIn.sharedInstance().signIn()
