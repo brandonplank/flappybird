@@ -42,8 +42,8 @@ class ResultBoard: SKSpriteNode {
     }
     
     convenience init(score: Int) {
-        var uid = "qIDAAICBTtVbo8oR5AwECTYloLP2"
-        var name = "thatcher"
+        var uid = "yHaBrN1zQvYRAkYNal2xzrP5rjh1"
+        var name_var = "Brandon Plank"
         let scorePath = "users/\(uid)/score"
         let namePath = "users/\(uid)/name"
     
@@ -76,7 +76,7 @@ class ResultBoard: SKSpriteNode {
                         print("Saved Name: \(savedName!)")
                     }
                 } else {
-                    self.firebaseRef.child(savedName!).setValue(name)
+                    (self.firebaseRef.child(namePath) as AnyObject).setValue(name_var)
                 }
             }
         }
