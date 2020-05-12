@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         }
         guard let authentication = user.authentication else { return }
         let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
-                                                accessToken: authentication.accessToken)
+                                                       accessToken: authentication.accessToken)
         Auth.auth().signIn(with: credential) { (authResult, error) in
             print("Signed in")
         }
@@ -49,12 +49,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         GIDSignIn.sharedInstance().delegate = self
         
-
-//
-//
-//        let signInButton = GIDSignInButton(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
-//        signInButton.center = view.center
-//        view.addSubview(signInButton)
+        
+        //
+        //
+        //        let signInButton = GIDSignInButton(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
+        //        signInButton.center = view.center
+        //        view.addSubview(signInButton)
         return true
     }
 }

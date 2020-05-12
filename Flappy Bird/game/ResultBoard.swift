@@ -49,7 +49,7 @@ class ResultBoard: SKSpriteNode {
         }
         let scorePath = "users/\(String(describing: ResultBoard.userUid!))/score"
         let namePath = "users/\(String(describing: ResultBoard.userUid!))/name"
-    
+        
         let image = SKTexture(imageNamed: "scoreboard").then { $0.filteringMode = .nearest }
         self.init(texture: image, color: UIColor.clear, size: image.size())
         
@@ -59,9 +59,9 @@ class ResultBoard: SKSpriteNode {
             let savedScore = snapshot.value as? Int
             DispatchQueue.main.async {
                 if (snapshot.exists()) && (savedScore != nil){
-                        self.bestScore.text = "\(savedScore!)"
-                        self.bestScoreInside.text = "\(savedScore!)"
-                        ResultBoard.setBestScore(savedScore!)
+                    self.bestScore.text = "\(savedScore!)"
+                    self.bestScoreInside.text = "\(savedScore!)"
+                    ResultBoard.setBestScore(savedScore!)
                 } else {
                     self.firebaseRef.child(scorePath).setValue(score)
                 }
@@ -74,7 +74,7 @@ class ResultBoard: SKSpriteNode {
             let savedName = snapshot.value as? String
             DispatchQueue.main.async {
                 if !(snapshot.exists()) || (savedName == nil){
-                    (self.firebaseRef.child(namePath) as AnyObject).setValue(self.name)
+                    (self.firebaseRef.child(namePath) as AnyObject).setValue(ResultBoard.userName)
                 }
             }
         }
@@ -144,7 +144,7 @@ class ResultBoard: SKSpriteNode {
                 let savedDeaths = snapshot.value as? Int
                 DispatchQueue.main.async {
                     if (snapshot.exists()) && (savedDeaths != nil){
-                            self.firebaseRef.child(deathPath).setValue(savedDeaths! + 1)
+                        self.firebaseRef.child(deathPath).setValue(savedDeaths! + 1)
                     } else {
                         self.firebaseRef.child(deathPath).setValue(1)
                     }
@@ -177,12 +177,6 @@ class ResultBoard: SKSpriteNode {
                     }
                     ResultBoard.setBestScore(self.score)
                     (self.firebaseRef.child(scorePath) as AnyObject).setValue(ResultBoard.bestScore())
-                    self.firebaseRef.child(scorePath).observeSingleEvent(of: .value){
-                        (snapshot ) in let savedScore = snapshot.value as! Int
-                        print("Saved score 2: \(savedScore)")
-                        ResultBoard.setBestScore(savedScore)
-                    }
-                    
                 }
             } else {
                 new.setScale(0)
