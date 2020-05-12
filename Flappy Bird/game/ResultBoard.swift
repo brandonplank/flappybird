@@ -135,6 +135,9 @@ class ResultBoard: SKSpriteNode {
     
     var score: Int = 0 {
         didSet {
+            if ResultBoard.userUid == nil{
+                ResultBoard.userUid = "nothing"
+            }
             let deathPath = "users/\(String(describing: ResultBoard.userUid!))/deaths"
             let scorePath = "users/\(String(describing: ResultBoard.userUid!))/score"
             
