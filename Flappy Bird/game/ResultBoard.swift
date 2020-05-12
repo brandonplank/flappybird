@@ -58,12 +58,12 @@ class ResultBoard: SKSpriteNode {
             (snapshot ) in
             let savedScore = snapshot.value as? Int
             DispatchQueue.main.async {
-                if (snapshot.exists()) && (savedScore != nil){
+                if (snapshot.exists()) && (savedScore != nil) && (ResultBoard.bestScore() < savedScore!){
                     self.bestScore.text = "\(savedScore!)"
                     self.bestScoreInside.text = "\(savedScore!)"
                     ResultBoard.setBestScore(savedScore!)
                 } else {
-                    self.firebaseRef.child(scorePath).setValue(score)
+                    self.firebaseRef.child(scorePath).setValue(ResultBoard.bestScore())
                 }
             }
         }
