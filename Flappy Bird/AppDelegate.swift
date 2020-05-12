@@ -29,7 +29,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
             print("Signed in")
             GameScene.googleSignInButton.run((SKAction.sequence([
                 SKAction.scale(to: 1.0, duration: 0.1),
-                SKAction.scale(to: 0.0, duration: 0.1)
+                SKAction.scale(to: 0.0, duration: 0.1),
+                SKAction.run{ GameScene.googleSignInButton.removeFromParent()}
             ])))
         }
         let user = Auth.auth().currentUser

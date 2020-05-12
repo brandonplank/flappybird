@@ -209,7 +209,8 @@ class GameScene: SKScene {
     public static var googleSignInButton = SKSpriteNode(texture: SKTexture(imageNamed: "google").then { $0.filteringMode = .nearest }).then {
         $0.name = "google"
         $0.setScale(1.2)
-        $0.position = CGPoint(x: (screenData.shared.dwidth / 2), y: (screenData.shared.dheight / 2) - 200)
+        $0.zPosition = 2
+        $0.position = CGPoint(x: (screenData.shared.dwidth / 2), y: (screenData.shared.dheight / 2) - 225)
     }
     
     func setGravityAndPhysics() {
@@ -360,8 +361,6 @@ class GameScene: SKScene {
         }
         screenData.shared.dheight = height
         screenData.shared.dwidth = width
-        print(screenData.shared.dheight)
-        print(screenData.shared.dwidth)
         setGravityAndPhysics()
         setMoving()
         setRandomSkyTexture()

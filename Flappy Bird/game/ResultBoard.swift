@@ -158,7 +158,7 @@ class ResultBoard: SKSpriteNode {
             
             bestScore.text = "0"
             bestScoreInside.text = "0"
-            new.setScale(0) //always remove until called.
+            new.setScale(0)
             if newHighScore {
                 DispatchQueue.global().async {
                     for i in 0 ..< (self.score + 1) {
@@ -180,8 +180,6 @@ class ResultBoard: SKSpriteNode {
                     ResultBoard.setBestScore(self.score)
                     (self.firebaseRef.child(scorePath) as AnyObject).setValue(ResultBoard.bestScore())
                 }
-            } else {
-                new.setScale(0)
             }
             
             currentScore.text = "0"
