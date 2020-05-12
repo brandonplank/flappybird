@@ -47,6 +47,8 @@ class screenData {
 }
 
 class GameScene: SKScene {
+    static let width = GameScene().width
+    static let height = GameScene().height
     let impact = UIImpactFeedbackGenerator()
     let firebaseRef = Database.database().reference()
     
@@ -201,11 +203,6 @@ class GameScene: SKScene {
     lazy var githubButton = SKSpriteNode(texture: SKTexture(imageNamed: "github").then { $0.filteringMode = .nearest }).then {
         $0.name = "github"
         $0.setScale(1.2)
-        print("==")
-        print(width)
-        print(height)
-        screenData.shared.dheight = height
-        screenData.shared.dwidth = width
         $0.position = CGPoint(x: (width / 2), y: (height / 2) - 25)
     }
 
@@ -373,9 +370,13 @@ class GameScene: SKScene {
         moving.addChild(pipes)
         addChild(bird)
         addChild(ground)
+        addChild(githubButton)
         addChild(playButton)
         addChild(settingsButton)
-        addChild(githubButton)
+        screenData.shared.dheight = height
+        screenData.shared.dwidth = width
+        print(screenData.shared.dheight)
+        print(screenData.shared.dwidth)
         addChild(GameScene.googleSignInButton)
         
         score = 0
