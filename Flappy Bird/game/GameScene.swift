@@ -11,6 +11,7 @@ import AVFoundation
 import SpriteKit
 import Firebase
 import SwiftKeychainWrapper
+import GoogleSignIn
 
 extension SKTexture {
     var width: CGFloat { size().width }
@@ -198,6 +199,12 @@ class GameScene: SKScene {
         $0.position = CGPoint(x: (width / 2), y: (height / 2) - 25)
     }
     
+    lazy var googleSignInButton = SKSpriteNode(texture: SKTexture(imageNamed: "google").then { $0.filteringMode = .nearest }).then {
+        $0.name = "google"
+        $0.setScale(1.2)
+        $0.position = CGPoint(x: (width / 2), y: (height / 2) - 120)
+    }
+    
     func setGravityAndPhysics() {
         physicsWorld.gravity = CGVector(dx: 0.0, dy: -12.0)
         physicsWorld.contactDelegate = self
@@ -359,6 +366,7 @@ class GameScene: SKScene {
         addChild(playButton)
         addChild(settingsButton)
         addChild(githubButton)
+        addChild(googleSignInButton)
         
         score = 0
         moving.speed = 1
@@ -403,6 +411,7 @@ class GameScene: SKScene {
                     self.playButton.removeFromParent()
                     self.settingsButton.removeFromParent()
                     self.githubButton.removeFromParent()
+                    self.googleSignInButton.removeFromParent()
                     self.hitButton = false
                     self.firstTouch = true
             }
@@ -424,6 +433,7 @@ class GameScene: SKScene {
                     } else {
                         self.scaleTwice(node: self.bird, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 0.0, secondScaleDuration: 0.1)
                         self.scaleTwice(node: self.githubButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 0.0, secondScaleDuration: 0.1)
+                        self.scaleTwice(node: self.googleSignInButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 0.0, secondScaleDuration: 0.1)
                     }
                     
                     self.settingsNode.setScale(0)
@@ -546,6 +556,7 @@ class GameScene: SKScene {
                     } else {
                         self.scaleTwice(node: self.bird, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.5, secondScaleDuration: 0.1)
                         self.scaleTwice(node: self.githubButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
+                        self.scaleTwice(node: self.googleSignInButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
                     }
             }
             )
@@ -560,6 +571,19 @@ class GameScene: SKScene {
                 completion: {
                     guard let url = URL(string: "https://www.github.com/brandonplank/flappybird") else { return }
                     UIApplication.shared.open(url)
+                    self.hitButton = false
+            }
+            )
+        } else if touchedNodeName == "google" && !hitButton {
+            self.hitButton = true
+            run(SKAction.sequence([
+                SKAction.run { self.playSound(sound: self.swooshAction) },
+                SKAction.run { self.googleSignInButton.setScale(1.15) },
+                SKAction.wait(forDuration: 0.1),
+                SKAction.run { self.googleSignInButton.setScale(1.2) },
+                SKAction.wait(forDuration: 0.9)]),
+                completion: {
+                    GIDSignIn.sharedInstance().signIn()
                     self.hitButton = false
             }
             )

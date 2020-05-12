@@ -54,12 +54,35 @@ class GameViewController: UIViewController {
         }
     }
     
+    var btnSignIn : UIButton!
+    
+    @objc func btnSignInPressed() {
+        GIDSignIn.sharedInstance().signIn()
+    }
+
+
+    
     var global_msg: String?
     override func viewDidLoad() {
         super.viewDidLoad()
         
         GIDSignIn.sharedInstance()?.presentingViewController = self
         GIDSignIn.sharedInstance()?.restorePreviousSignIn()
+//
+//
+//        let btnSize : CGFloat = 100
+//        btnSignIn = UIButton(frame: CGRect(x:  UIScreen.main.bounds.width, y: UIScreen.main.bounds.height, width: btnSize, height: btnSize))
+//        btnSignIn.center = view.center
+//        btnSignIn.setImage(UIImage(named: "google.png"), for: UIControl.State.normal)
+//        btnSignIn.addTarget(self, action: #selector(btnSignInPressed), for: UIControl.Event.touchUpInside)
+//
+//        //Circular button
+////        btnSignIn.layer.cornerRadius = btnSize/2
+////        btnSignIn.layer.masksToBounds = true
+////        btnSignIn.layer.borderColor = UIColor.black.cgColor
+////        btnSignIn.layer.borderWidth = 2
+//        view.addSubview(btnSignIn)
+        
         
         //Firebase stuff
         let firebaseRef = Database.database().reference()
