@@ -12,7 +12,6 @@ import SpriteKit
 import Then
 import Firebase
 import Network
-import SwiftKeychainWrapper
 
 class ResultBoard: SKSpriteNode {
     

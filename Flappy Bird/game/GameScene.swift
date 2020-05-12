@@ -10,7 +10,6 @@
 import AVFoundation
 import SpriteKit
 import Firebase
-import SwiftKeychainWrapper
 import GoogleSignIn
 
 extension SKTexture {
