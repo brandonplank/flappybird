@@ -1,0 +1,35 @@
+MIT License
+
+Copyright (c) 2020 Brandon Plank
+Copyright (c) 2020 ThatcherDev
+Copyright (c) 2014 .Gears
+
+We do not own most of the Flappy Bird assets, or the Flappy Bird name, some of the assets
+were extracted straight from the game. They are the work and copyright of original 
+creator Dong Nguyen and .GEARS games (http://www.dotgears.com/).
+
+I took this Tweet (https://twitter.com/dongatory/status/431060041009856512 /
+http://i.imgur.com/AcyWyqf.png) by Dong Nguyen, the creator of the game, as an open 
+invitation to reuse the game concept and assets in an open source project. 
+There is no intention to steal the game, or claim the Flappy Bird name as my own.
+
+If the copyright holder would like for the assets to be removed, please open an 
+issue to start the conversation.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

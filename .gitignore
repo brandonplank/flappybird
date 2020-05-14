@@ -1,0 +1,8 @@
+/Pods/
+.DS_Store
+*.xcuserstate
+project.xcworkspace/
+xcuserdata/
+build/
+/compileAll/output
+/compileAll/input/Flappy Bird.app
