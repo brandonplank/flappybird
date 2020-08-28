@@ -6,7 +6,6 @@
 //  Modified by Thatcher Clough on 4/1/20.
 //  Copyright (c) 2020 Brandon Plank. All rights reserved.
 //
-
 import AVFoundation
 import SpriteKit
 
@@ -37,7 +36,20 @@ struct GamezPosition {
     static let resultText: CGFloat = 3
 }
 
+public class screenData {
+    static let shared = screenData()
+    var height: CGFloat = 0.0
+    var width: CGFloat = 0.0
+    private init() { }
+}
+
+var canShowScore = true
+
 class GameScene: SKScene {
+    
+    static let shared = GameScene()
+    static let width = GameScene().width
+    static let height = GameScene().height
     let impact = UIImpactFeedbackGenerator()
     
     let flapAction = SKAction.playSoundFileNamed("sounds/sfx_wing.caf", waitForCompletion: false)
@@ -52,7 +64,7 @@ class GameScene: SKScene {
     var birdTextures = [SKTexture(), SKTexture(), SKTexture()]
     var skyNodes = [SKSpriteNode]()
     
-    let verticalPipeGap: CGFloat = 130.0
+    var verticalPipeGap: CGFloat = 130.0
     var moving = SKNode()
     var pipes = SKNode()
     
@@ -70,7 +82,9 @@ class GameScene: SKScene {
     var afterGameOver = false
     var gameOverDisplayed = false
     var hitGround = false
-    var hitButton = false
+    static var hitButton = true
+    
+    var time: Double = 0.0
     
     let notification = UINotificationFeedbackGenerator()
     
@@ -78,7 +92,7 @@ class GameScene: SKScene {
         $0.fontColor = SKColor.black
         $0.fontSize = 50
         $0.position = CGPoint(x: width / 2, y: 3 * height / 4)
-        $0.zPosition = GamezPosition.score
+        $0.zPosition = GamezPosition.score + 1
     }
     lazy var scoreLabelNodeInside = SKLabelNode(fontNamed: "inside").then {
         $0.fontColor = SKColor.white
@@ -176,38 +190,52 @@ class GameScene: SKScene {
         }
     }
     
-    lazy var playButton = SKSpriteNode(texture: SKTexture(imageNamed: "play").then { $0.filteringMode = .nearest }).then {
-        $0.name = "play"
-        $0.setScale(1.2)
-        $0.position = CGPoint(x: (width / 2) - 80, y: (height / 2) - 125)
-    }
-    
-    lazy var settingsButton = SKSpriteNode(texture: SKTexture(imageNamed: "settings").then { $0.filteringMode = .nearest }).then {
+    public static var settingsButton = SKSpriteNode(texture: SKTexture(imageNamed: "settings").then { $0.filteringMode = .nearest }).then {
         $0.name = "settings"
         $0.setScale(1.2)
-        $0.position = CGPoint(x: (width / 2) + 80, y: (height / 2) - 125)
+        $0.position = CGPoint(x: (screenData.shared.width / 2) + 85, y: (screenData.shared.height / 2) - 25)
     }
     
-    lazy var githubButton = SKSpriteNode(texture: SKTexture(imageNamed: "github").then { $0.filteringMode = .nearest }).then {
+    public static var githubButton = SKSpriteNode(texture: SKTexture(imageNamed: "github").then { $0.filteringMode = .nearest }).then {
         $0.name = "github"
         $0.setScale(1.2)
-        $0.position = CGPoint(x: (width / 2), y: (height / 2) - 25)
+        $0.position = CGPoint(x: (screenData.shared.width / 2) - 85, y: (screenData.shared.height / 2) - 25)
+    }
+    
+    public static var googleSignInButton = SKSpriteNode(texture: SKTexture(imageNamed: "google").then { $0.filteringMode = .nearest }).then {
+        $0.name = "google"
+        $0.setScale(1.2)
+        $0.zPosition = 2
+        $0.position = CGPoint(x: (screenData.shared.width / 2), y: (screenData.shared.height / 2) - 25)
+    }
+    
+    lazy var playButton = SKSpriteNode(texture: SKTexture(imageNamed: "flappyplay").then { $0.filteringMode = .nearest }).then {
+        $0.name = "play"
+        $0.setScale(1.2)
+        $0.position = CGPoint(x: (width / 2) - 80, y: (height / 2) - 115)
+    }
+    
+    lazy var leaderboardButton = SKSpriteNode(texture: SKTexture(imageNamed: "board").then { $0.filteringMode = .nearest }).then {
+        $0.name = "board"
+        $0.setScale(1.2)
+        $0.zPosition = 2
+        $0.position = CGPoint(x: (width / 2) + 80, y: (height / 2) - 115)
     }
     
     func setGravityAndPhysics() {
-        physicsWorld.gravity = CGVector(dx: 0.0, dy: -15.0)
+        physicsWorld.gravity = CGVector(dx: 0.0, dy: -12.0)
         physicsWorld.contactDelegate = self
     }
     
-    func setMoving() {
+    func setGroundMoving() {
         let groundWidth = groundTexture.width * 2.0
         let moveGroundSprite = SKAction.moveBy(x: -groundWidth, y: 0, duration: TimeInterval(0.005 * groundWidth))
         let resetGroundSprite = SKAction.moveBy(x: groundWidth, y: 0, duration: 0.0)
         let moveGroundSpritesForever = SKAction.repeatForever(SKAction.sequence([moveGroundSprite, resetGroundSprite]))
-        for i in 0..<2 + Int(width / groundWidth) {
+        for i in 0..<3 + Int(width / groundWidth) {
             moving.addChild(SKSpriteNode(texture: groundTexture).then {
                 $0.setScale(2.0)
-                $0.position = CGPoint(x: CGFloat(i) * $0.width, y: $0.height / 2.0)
+                $0.position = CGPoint(x: CGFloat(i) * ($0.width - 1), y: $0.height / 2.0)
                 $0.run(moveGroundSpritesForever)
             })
         }
@@ -253,10 +281,15 @@ class GameScene: SKScene {
         run(SKAction.repeatForever(spawnThenDelay))
     }
     
+    var hasRan = false
+    
+    var pipeUp: SKSpriteNode = SKSpriteNode()
+    var pipeDown: SKSpriteNode = SKSpriteNode()
+    
     private func spawnPipes() {
         let height = UInt32(self.height / 4)
         let y = CGFloat(arc4random_uniform(height) + height)
-        let pipeDown = SKSpriteNode(texture: pipeTextureDown).then {
+        pipeDown = SKSpriteNode(texture: pipeTextureDown).then {
             $0.setScale(2.0)
             $0.position = CGPoint(x: 0.0, y: y + $0.height + verticalPipeGap)
             $0.physicsBody = SKPhysicsBody(rectangleOf: $0.size).then {
@@ -265,7 +298,7 @@ class GameScene: SKScene {
                 $0.contactTestBitMask = PhysicsCatagory.bird
             }
         }
-        let pipeUp = SKSpriteNode(texture: pipeTextureUp).then {
+        pipeUp = SKSpriteNode(texture: pipeTextureUp).then {
             $0.setScale(2.0)
             $0.position = CGPoint(x: 0.0, y: y)
             $0.physicsBody = SKPhysicsBody(rectangleOf: $0.size).then {
@@ -340,9 +373,10 @@ class GameScene: SKScene {
         } else {
             settingsNode.adaptiveBackgroundToggle.position = CGPoint(x: SettingsPositions.toggleOffX, y: SettingsPositions.adaptiveBackgroundToggleY)
         }
-        
+        screenData.shared.height = height
+        screenData.shared.width = width
         setGravityAndPhysics()
-        setMoving()
+        setGroundMoving()
         setRandomSkyTexture()
         setRandomBirdTextures()
         spawnPipesForever()
@@ -352,9 +386,11 @@ class GameScene: SKScene {
         moving.addChild(pipes)
         addChild(bird)
         addChild(ground)
+        addChild(GameScene.githubButton)
+        addChild(GameScene.settingsButton)
+        addChild(GameScene.googleSignInButton)
         addChild(playButton)
-        addChild(settingsButton)
-        addChild(githubButton)
+        addChild(leaderboardButton)
         
         score = 0
         moving.speed = 1
@@ -370,8 +406,8 @@ class GameScene: SKScene {
         guard let touch = touches.first else { return }
         let touchedNodeName = atPoint(touch.location(in: self)).name
         
-        if touchedNodeName == "play" && !hitButton {
-            hitButton = true
+        if touchedNodeName == "play" && !GameScene.hitButton {
+            GameScene.hitButton = true
             run(SKAction.sequence([
                 SKAction.run { self.playSound(sound: self.swooshAction) },
                 SKAction.run { self.playButton.setScale(1.15) },
@@ -381,7 +417,6 @@ class GameScene: SKScene {
                 SKAction.run{self.flashScreen(color: UIColor.black, fadeInDuration: 0.25, peakAlpha: 1.0, fadeOutDuration: 0.25)},
                 SKAction.wait(forDuration: 0.25)
             ]),
-                
                 completion: {
                     if self.afterGameOver {
                         self.resetScene()
@@ -396,39 +431,42 @@ class GameScene: SKScene {
                         self.flappybird.removeFromParent()
                     }
                     self.bird.run(SKAction.repeatForever(self.floatUpAndDown), withKey: "float")
+                    GameScene.settingsButton.removeFromParent()
+                    GameScene.githubButton.removeFromParent()
+                    GameScene.googleSignInButton.removeFromParent()
                     self.playButton.removeFromParent()
-                    self.settingsButton.removeFromParent()
-                    self.githubButton.removeFromParent()
-                    self.hitButton = false
+                    self.leaderboardButton.removeFromParent()
+                    GameScene.hitButton = false
                     self.firstTouch = true
             }
             )
-        } else if touchedNodeName == "settings" && !hitButton {
-            hitButton = true
+        } else if touchedNodeName == "settings" && !GameScene.hitButton {
+            GameScene.hitButton = true
             run(SKAction.sequence([
                 SKAction.run { self.playSound(sound: self.swooshAction) },
-                SKAction.run { self.settingsButton.setScale(1.15) },
+                SKAction.run { GameScene.settingsButton.setScale(1.15) },
                 SKAction.wait(forDuration: 0.1),
                 SKAction.run{if(self.haptics) {self.impact.impactOccurred()}},
-                SKAction.run { self.settingsButton.setScale(1.2) },
+                SKAction.run { GameScene.settingsButton.setScale(1.2) },
                 SKAction.wait(forDuration: 0.1)]),
                 completion: {
+                    self.scaleTwice(node: GameScene.settingsButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 0.0, secondScaleDuration: 0.1)
                     self.scaleTwice(node: self.playButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 0.0, secondScaleDuration: 0.1)
-                    self.scaleTwice(node: self.settingsButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 0.0, secondScaleDuration: 0.1)
+                    self.scaleTwice(node: self.leaderboardButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 0.0, secondScaleDuration: 0.1)
                     if self.afterGameOver {
                         self.scaleTwice(node: self.resultNode, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 0.0, secondScaleDuration: 0.1)
                     } else {
                         self.scaleTwice(node: self.bird, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 0.0, secondScaleDuration: 0.1)
-                        self.scaleTwice(node: self.githubButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 0.0, secondScaleDuration: 0.1)
+                        self.scaleTwice(node: GameScene.githubButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 0.0, secondScaleDuration: 0.1)
+                        self.scaleTwice(node: GameScene.googleSignInButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 0.0, secondScaleDuration: 0.1)
                     }
                     
                     self.settingsNode.setScale(0)
                     self.addChild(self.settingsNode)
                     self.scaleTwice(node: self.settingsNode, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
                     
-                    self.run(SKAction.sequence([SKAction.wait(forDuration: 0.2), SKAction.run{self.hitButton = false}]))
-            }
-            )
+                    self.run(SKAction.sequence([SKAction.wait(forDuration: 0.2), SKAction.run{GameScene.hitButton = false}]))
+            })
         } else if touchedNodeName == "toggleSounds" {
             if(haptics){
                 impact.impactOccurred()
@@ -534,31 +572,73 @@ class GameScene: SKScene {
                 completion: {
                     self.scaleTwice(node: self.settingsNode, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 0.0, secondScaleDuration: 0.1)
                     self.settingsNode.removeFromParent()
+                    self.scaleTwice(node: GameScene.settingsButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.25, secondScaleDuration: 0.1)
+                    self.scaleTwice(node: self.leaderboardButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
                     self.scaleTwice(node: self.playButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
-                    self.scaleTwice(node: self.settingsButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.25, secondScaleDuration: 0.1)
                     
                     if self.afterGameOver {
                         self.scaleTwice(node: self.resultNode, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
                     } else {
                         self.scaleTwice(node: self.bird, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.5, secondScaleDuration: 0.1)
-                        self.scaleTwice(node: self.githubButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
+                        self.scaleTwice(node: GameScene.githubButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
+                        self.scaleTwice(node: GameScene.googleSignInButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
                     }
             }
             )
-        } else if touchedNodeName == "github" && !hitButton {
-            self.hitButton = true
+        } else if touchedNodeName == "github" && !GameScene.hitButton {
+            GameScene.hitButton = true
             run(SKAction.sequence([
                 SKAction.run { self.playSound(sound: self.swooshAction) },
-                SKAction.run { self.githubButton.setScale(1.15) },
+                SKAction.run { GameScene.githubButton.setScale(1.15) },
                 SKAction.wait(forDuration: 0.1),
-                SKAction.run { self.githubButton.setScale(1.2) },
+                SKAction.run{if(self.haptics) {self.impact.impactOccurred()}},
+                SKAction.run { GameScene.githubButton.setScale(1.2) },
                 SKAction.wait(forDuration: 0.9)]),
                 completion: {
                     guard let url = URL(string: "https://www.github.com/brandonplank/flappybird") else { return }
                     UIApplication.shared.open(url)
-                    self.hitButton = false
+                    GameScene.hitButton = false
             }
             )
+        } else if touchedNodeName == "google" && !GameScene.hitButton {
+            GameScene.hitButton = true
+            run(SKAction.sequence([
+                SKAction.run { self.playSound(sound: self.swooshAction) },
+                SKAction.run { GameScene.googleSignInButton.setScale(1.15) },
+                SKAction.wait(forDuration: 0.1),
+                SKAction.run{if(self.haptics) {self.impact.impactOccurred()}},
+                SKAction.run { GameScene.googleSignInButton.setScale(1.2) },
+                SKAction.wait(forDuration: 0.9)]),
+                completion: {
+                    let alert = UIAlertController(title: "Notice", message: "The open source version of Flappy Bird does not have Google SignIn", preferredStyle: .alert)
+                    let ok = UIAlertAction(title: "Ok", style: .default, handler: { action in
+                    })
+                    alert.addAction(ok)
+                    DispatchQueue.main.async(execute: {
+                        self.view?.window?.rootViewController?.present(alert, animated: true, completion: nil)
+                    })
+                    GameScene.hitButton = false
+            }
+            )
+        } else if touchedNodeName == "board" && !GameScene.hitButton {
+            GameScene.hitButton = true
+            run(SKAction.sequence([
+                SKAction.run { self.playSound(sound: self.swooshAction) },
+                SKAction.run { self.leaderboardButton.setScale(1.15) },
+                SKAction.wait(forDuration: 0.1),
+                SKAction.run{if(self.haptics) {self.impact.impactOccurred()}},
+                SKAction.run { self.leaderboardButton.setScale(1.2) },
+                SKAction.wait(forDuration: 0.9)]),
+                completion: {
+                    let alert = UIAlertController(title: "Notice", message: "The open source version of Flappy Bird does not have leaderboards", preferredStyle: .alert)
+                    let ok = UIAlertAction(title: "Ok", style: .default, handler: { action in
+                    })
+                    alert.addAction(ok)
+                    DispatchQueue.main.async(execute: {
+                        self.view?.window?.rootViewController?.present(alert, animated: true, completion: nil)
+                    })
+                    GameScene.hitButton = false
+            })
         } else if firstTouch {
             bird.removeAction(forKey: "float")
             taptap.run(SKAction.sequence([
@@ -589,8 +669,8 @@ class GameScene: SKScene {
     override func update(_ currentTime: TimeInterval) {
         if hitGround { return }
         
-        let birdRotation = bird.physicsBody!.velocity.dy * (bird.physicsBody!.velocity.dy < 0 ? 0.003 : 0.001)
-        bird.run(SKAction.rotate(toAngle: max(-1.57, birdRotation), duration: 0.08))
+        let birdRotation = bird.physicsBody!.velocity.dy * (bird.physicsBody!.velocity.dy < 0.4 ? 0.003 : 0.001)
+        bird.run(SKAction.rotate(toAngle: min(max(-1.57, birdRotation), 0.6), duration: 0.08))
         if birdRotation < -0.7 {
             bird.speed = 2
         } else {
@@ -598,13 +678,66 @@ class GameScene: SKScene {
         }
     }
     
-    @objc private func touchAction() { //MARK: Tap
-        if !isUserInteractionEnabled { return }
+    @objc private func touchAction() {
         if moving.speed > 0 {
             if(!(bird.position.y >= (self.frame.height + 20))){
                 bird.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-                bird.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 25))
+                bird.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 22))
             }
+        }
+    }
+    
+    func gameOver() {
+        gameOverDisplayed = true
+        playFlapSound = false
+        if(haptics){
+            notification.notificationOccurred(.error)
+        }
+        flashScreen(color: UIColor.white, fadeInDuration: 0.1, peakAlpha: 0.9, fadeOutDuration: 0.25)
+        
+        bird.physicsBody?.isDynamic = false
+        bird.physicsBody?.collisionBitMask = PhysicsCatagory.land
+        bird.physicsBody?.isDynamic = true
+        
+        let anim = SKAction.animate(with: [birdTextures[0], birdTextures[1], birdTextures[2], birdTextures[1]], timePerFrame: 0.1)
+        bird.run(SKAction.repeatForever(anim))
+        
+        playSound(sound: hitAction)
+        run(SKAction.wait(forDuration: TimeInterval(UInt32(0.2))))
+        playSound(sound: dieAction)
+        
+        gameover.setScale(0)
+        addChild(gameover)
+        run(SKAction.sequence([
+            SKAction.wait(forDuration: 0.1),
+            SKAction.run{self.scoreLabelNode.removeFromParent()},
+            SKAction.run{self.scoreLabelNodeInside.removeFromParent()},
+            SKAction.run{self.scaleTwice(node: self.gameover, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.25, secondScaleDuration: 0.1)},
+        ]))
+        moving.speed = 0
+    }
+    
+    func addResultsAndButtons() {
+        if canShowScore{
+            resultNode.setScale(0)
+            resultNode.score = score
+            addChild(resultNode)
+            scaleTwice(node: resultNode, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.25, secondScaleDuration: 0.1)
+            
+            GameScene.settingsButton.position = CGPoint(x: (screenData.shared.width / 2), y: (screenData.shared.height / 2) - 25)
+            GameScene.settingsButton.setScale(0)
+            addChild(GameScene.settingsButton)
+            scaleTwice(node: GameScene.settingsButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
+            
+            playButton.setScale(0)
+            addChild(playButton)
+            scaleTwice(node: playButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
+            
+            leaderboardButton.setScale(0)
+            addChild(leaderboardButton)
+            scaleTwice(node: leaderboardButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
+            
+            afterGameOver = true
         }
     }
     
@@ -636,53 +769,6 @@ class GameScene: SKScene {
             $0.velocity = CGVector(dx: 0, dy: 0)
             $0.collisionBitMask = PhysicsCatagory.land | PhysicsCatagory.pipe
         }
-    }
-    
-    func gameOver() {
-        isUserInteractionEnabled = false
-        gameOverDisplayed = true
-        playFlapSound = false
-        if(haptics){
-            notification.notificationOccurred(.error)
-        }
-        flashScreen(color: UIColor.white, fadeInDuration: 0.1, peakAlpha: 0.9, fadeOutDuration: 0.25)
-        
-        bird.physicsBody?.isDynamic = false
-        bird.physicsBody?.collisionBitMask = PhysicsCatagory.land
-        bird.physicsBody?.isDynamic = true
-        
-        let anim = SKAction.animate(with: [birdTextures[0], birdTextures[1], birdTextures[2], birdTextures[1]], timePerFrame: 0.1)
-        bird.run(SKAction.repeatForever(anim))
-        
-        playSound(sound: hitAction)
-        run(SKAction.wait(forDuration: TimeInterval(UInt32(0.2))))
-        playSound(sound: dieAction)
-        
-        gameover.setScale(0)
-        addChild(gameover)
-        run(SKAction.sequence([SKAction.wait(forDuration: 0.1),
-                               SKAction.run{self.scoreLabelNode.removeFromParent()},
-                               SKAction.run{self.scoreLabelNodeInside.removeFromParent()},
-                               SKAction.run{self.scaleTwice(node: self.gameover, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.25, secondScaleDuration: 0.1)},
-        ]))
-        moving.speed = 0
-    }
-    
-    func addResultsAndButtons() {
-        resultNode.setScale(0)
-        resultNode.score = score
-        addChild(resultNode)
-        scaleTwice(node: resultNode, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.25, secondScaleDuration: 0.1)
-        
-        playButton.setScale(0)
-        addChild(playButton)
-        scaleTwice(node: playButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
-        
-        settingsButton.setScale(0)
-        addChild(settingsButton)
-        scaleTwice(node: settingsButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
-        
-        afterGameOver = true
     }
     
     func playSound(sound: SKAction) {
@@ -720,14 +806,6 @@ extension GameScene: SKPhysicsContactDelegate {
         if (bird.speed == 1 || bird.speed == 2) && !gameOverDisplayed && ((contact.bodyA.categoryBitMask & PhysicsCatagory.score) == PhysicsCatagory.score || (contact.bodyB.categoryBitMask & PhysicsCatagory.score) == PhysicsCatagory.score) {
             score += 1
             
-            if score == 1000 {
-                guard let url = URL(string: "https://www.youtube.com/watch?v=dQw4w9WgXcQ") else { return }
-                UIApplication.shared.open(url)
-            }
-            if score == 999999999{
-                //mario dodge
-            }
-            
             if(haptics){
                 impact.impactOccurred()
             }
@@ -752,7 +830,6 @@ extension GameScene: SKPhysicsContactDelegate {
             let addResultNode = SKAction.run {
                 self.playSound(sound: self.swooshAction)
                 self.addResultsAndButtons()
-                self.isUserInteractionEnabled = true
             }
             run(SKAction.sequence([SKAction.wait(forDuration: 0.8), SKAction.run { self.bird.speed = 0 }, SKAction.wait(forDuration: 0.2), addResultNode]))
         }

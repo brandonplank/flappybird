@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		889E3EC024AD152400176E98 /* ControlCentre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889E3EBD24AD152400176E98 /* ControlCentre.swift */; };
+		889E3EC124AD152400176E98 /* ScreenMirror.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889E3EBE24AD152400176E98 /* ScreenMirror.swift */; };
+		889E3EC224AD152400176E98 /* TapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889E3EBF24AD152400176E98 /* TapViewController.swift */; };
+		889E3EC424AD158D00176E98 /* SKButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889E3EC324AD158D00176E98 /* SKButtonNode.swift */; };
 		8ED227C76EB92DE92A0D01FE /* libPods-Flappy Bird.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B97CC781040A747856E992D3 /* libPods-Flappy Bird.a */; };
 		DD237702245B73B500B570A3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD237701245B73B500B570A3 /* AppDelegate.swift */; };
 		DD23770A245B73B500B570A3 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD237709245B73B500B570A3 /* GameViewController.swift */; };
@@ -14,6 +18,7 @@
 		DD23770F245B73B700B570A3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DD23770E245B73B700B570A3 /* Assets.xcassets */; };
 		DD237712245B73B700B570A3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DD237710245B73B700B570A3 /* LaunchScreen.storyboard */; };
 		DD23771A245B744F00B570A3 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = DD237719245B744F00B570A3 /* Podfile */; };
+		DD676405246DF93D00632CA8 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD676404246DF93D00632CA8 /* Reachability.swift */; };
 		DD898AFD245CCFC400478094 /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = DD898AFC245CCFC400478094 /* sounds */; };
 		DD898B13245CD23A00478094 /* SettingsPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD898B0F245CD23A00478094 /* SettingsPanel.swift */; };
 		DD898B14245CD23A00478094 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = DD898B10245CD23A00478094 /* GameScene.sks */; };
@@ -21,12 +26,28 @@
 		DD898B16245CD23A00478094 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD898B12245CD23A00478094 /* GameScene.swift */; };
 		DD898B18245CD26600478094 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = DD898B17245CD26600478094 /* fonts */; };
 		DD898B1A245CD2C200478094 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = DD898B19245CD2C100478094 /* Actions.sks */; };
-		DD898B1C245CD41E00478094 /* ControlCentre.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD898B1B245CD41E00478094 /* ControlCentre.swift */; };
 		DDA096F3245CAF5E00B3F71C /* libThen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDA096F2245CAF5E00B3F71C /* libThen.a */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		88AB408D24A58388000818D4 /* Embed Libraries */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Libraries";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		38E50141811F7ADD628887B2 /* Pods-Flappy Bird.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flappy Bird.release.xcconfig"; path = "Target Support Files/Pods-Flappy Bird/Pods-Flappy Bird.release.xcconfig"; sourceTree = "<group>"; };
+		889E3EBD24AD152400176E98 /* ControlCentre.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlCentre.swift; sourceTree = "<group>"; };
+		889E3EBE24AD152400176E98 /* ScreenMirror.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenMirror.swift; sourceTree = "<group>"; };
+		889E3EBF24AD152400176E98 /* TapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TapViewController.swift; sourceTree = "<group>"; };
+		889E3EC324AD158D00176E98 /* SKButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKButtonNode.swift; sourceTree = "<group>"; };
 		95DB7C1FDF531A35ED1B493F /* Pods-Flappy Bird.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flappy Bird.debug.xcconfig"; path = "Target Support Files/Pods-Flappy Bird/Pods-Flappy Bird.debug.xcconfig"; sourceTree = "<group>"; };
 		B97CC781040A747856E992D3 /* libPods-Flappy Bird.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Flappy Bird.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD2376FE245B73B500B570A3 /* Flappy Bird.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Flappy Bird.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -37,6 +58,7 @@
 		DD237711245B73B700B570A3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DD237713245B73B700B570A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Flappy Bird/Info.plist"; sourceTree = SOURCE_ROOT; };
 		DD237719245B744F00B570A3 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		DD676404246DF93D00632CA8 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		DD898AFC245CCFC400478094 /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sounds; sourceTree = "<group>"; };
 		DD898B0F245CD23A00478094 /* SettingsPanel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsPanel.swift; sourceTree = "<group>"; };
 		DD898B10245CD23A00478094 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -44,7 +66,6 @@
 		DD898B12245CD23A00478094 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		DD898B17245CD26600478094 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
 		DD898B19245CD2C100478094 /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
-		DD898B1B245CD41E00478094 /* ControlCentre.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlCentre.swift; sourceTree = "<group>"; };
 		DDA096F2245CAF5E00B3F71C /* libThen.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libThen.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -68,6 +89,17 @@
 				B97CC781040A747856E992D3 /* libPods-Flappy Bird.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		889E3EBC24AD152400176E98 /* External Display */ = {
+			isa = PBXGroup;
+			children = (
+				889E3EC324AD158D00176E98 /* SKButtonNode.swift */,
+				889E3EBD24AD152400176E98 /* ControlCentre.swift */,
+				889E3EBE24AD152400176E98 /* ScreenMirror.swift */,
+				889E3EBF24AD152400176E98 /* TapViewController.swift */,
+			);
+			path = "External Display";
 			sourceTree = "<group>";
 		};
 		C6F7E28557FB7978E7D5C55A /* Pods */ = {
@@ -117,12 +149,13 @@
 		DD898B0E245CD23A00478094 /* game */ = {
 			isa = PBXGroup;
 			children = (
-				DD898B1B245CD41E00478094 /* ControlCentre.swift */,
+				889E3EBC24AD152400176E98 /* External Display */,
 				DD898B19245CD2C100478094 /* Actions.sks */,
 				DD898B0F245CD23A00478094 /* SettingsPanel.swift */,
 				DD898B10245CD23A00478094 /* GameScene.sks */,
 				DD898B11245CD23A00478094 /* ResultBoard.swift */,
 				DD898B12245CD23A00478094 /* GameScene.swift */,
+				DD676404246DF93D00632CA8 /* Reachability.swift */,
 			);
 			path = game;
 			sourceTree = "<group>";
@@ -138,6 +171,8 @@
 				DD2376FA245B73B500B570A3 /* Sources */,
 				DD2376FB245B73B500B570A3 /* Frameworks */,
 				DD2376FC245B73B500B570A3 /* Resources */,
+				88AB408D24A58388000818D4 /* Embed Libraries */,
+				88070BC724B7B0A700DF8B8C /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -201,6 +236,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		88070BC724B7B0A700DF8B8C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n";
+		};
 		DAAD6724AF74FC61FCDE8CD4 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -230,12 +282,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				889E3EC024AD152400176E98 /* ControlCentre.swift in Sources */,
+				DD676405246DF93D00632CA8 /* Reachability.swift in Sources */,
+				889E3EC224AD152400176E98 /* TapViewController.swift in Sources */,
 				DD898B16245CD23A00478094 /* GameScene.swift in Sources */,
 				DD23770A245B73B500B570A3 /* GameViewController.swift in Sources */,
 				DD237702245B73B500B570A3 /* AppDelegate.swift in Sources */,
 				DD898B15245CD23A00478094 /* ResultBoard.swift in Sources */,
-				DD898B1C245CD41E00478094 /* ControlCentre.swift in Sources */,
+				889E3EC424AD158D00176E98 /* SKButtonNode.swift in Sources */,
 				DD898B13245CD23A00478094 /* SettingsPanel.swift in Sources */,
+				889E3EC124AD152400176E98 /* ScreenMirror.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -387,21 +443,29 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = T8ALTGMVXN;
+				DEVELOPMENT_TEAM = GR3NL679U6;
+				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = "Flappy Bird/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.2;
-				PRODUCT_BUNDLE_IDENTIFIER = org.brandonplank.flappybird;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				MARKETING_VERSION = 3.8;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.brandonplank.flappybird-open";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "arm64 arm64e armv7s armv7";
 			};
 			name = Debug;
 		};
@@ -413,20 +477,28 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = T8ALTGMVXN;
+				DEVELOPMENT_TEAM = GR3NL679U6;
+				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = "Flappy Bird/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.2;
-				PRODUCT_BUNDLE_IDENTIFIER = org.brandonplank.flappybird;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				MARKETING_VERSION = 3.8;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.brandonplank.flappybird-open";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "arm64 arm64e armv7s armv7";
 			};
 			name = Release;
 		};

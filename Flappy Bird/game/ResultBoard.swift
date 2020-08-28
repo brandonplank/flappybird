@@ -7,27 +7,18 @@
 //  Modified by ThathcerDev on 3/22/20.
 //  Copyright (c) 2016 Brandon Plank. All rights reserved.
 //
-
 import SpriteKit
 import Then
+import Network
 
-class ResultBoard: SKSpriteNode {
+public class ResultBoard: SKSpriteNode {
+    
+    public static var userUid: String?
+    public static var userName: String?
+    
+    
     override init(texture: SKTexture?, color: UIColor, size: CGSize) {
         super.init(texture: texture, color: color, size: size)
-        
-        let moveRand = SKAction.customAction(withDuration: 0.0) { (node, _) in
-            let newX = CGFloat(Float.random(in: -88...(-40)))
-            let newY = CGFloat(Float.random(in: -26...15))
-            node.run(SKAction.move(to: CGPoint(x: newX, y: newY), duration: 0.0))
-        }
-        
-        sparkle.run(SKAction.repeatForever(SKAction.sequence([
-            moveRand,
-            SKAction.scale(to: 0.7, duration: 0.3),
-            SKAction.wait(forDuration: 0.5),
-            SKAction.scale(to: 0.0, duration: 0.3)
-        ])))
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -38,7 +29,13 @@ class ResultBoard: SKSpriteNode {
         let image = SKTexture(imageNamed: "scoreboard").then { $0.filteringMode = .nearest }
         self.init(texture: image, color: UIColor.clear, size: image.size())
         
+        bestScore.text = "\(ResultBoard.bestScore())"
+        bestScoreInside.text = "\(ResultBoard.bestScore())"
+        currentScore.text = "0"
+        currentScoreInside.text = "0"
+        
         addChild(new)
+        new.setScale(0)
         addChild(sparkle)
         addChild(currentScore)
         addChild(bestScore)
@@ -59,7 +56,7 @@ class ResultBoard: SKSpriteNode {
         $0.zPosition = GamezPosition.resultText
         $0.fontSize = 16
         $0.fontColor = SKColor.white
-        $0.position = CGPoint(x: frame.midX + 75, y: frame.midY + 7)
+        $0.position = CGPoint(x: frame.midX + 75 - 0.49, y: frame.midY + 7)
     }
     
     private lazy var bestScore = SKLabelNode(fontNamed: "04b_19").then {
@@ -73,7 +70,7 @@ class ResultBoard: SKSpriteNode {
         $0.zPosition = GamezPosition.resultText
         $0.fontSize = 16
         $0.fontColor = SKColor.white
-        $0.position = CGPoint(x: frame.midX + 75, y: frame.midY - 35)
+        $0.position = CGPoint(x: frame.midX + 75 - 0.49, y: frame.midY - 35)
     }
     
     private lazy var medal = SKSpriteNode().then {
@@ -92,61 +89,66 @@ class ResultBoard: SKSpriteNode {
         $0.zPosition = GamezPosition.resultText+1
     }
     
+    private let sparkleAction = SKAction.repeatForever(SKAction.sequence([
+        SKAction.customAction(withDuration: 0.0) { (node, _) in
+            let newX = CGFloat(Float.random(in: -88...(-40)))
+            let newY = CGFloat(Float.random(in: -26...15))
+            node.run(SKAction.move(to: CGPoint(x: newX, y: newY), duration: 0.0))
+        },
+        SKAction.scale(to: 0.7, duration: 0.3),
+        SKAction.wait(forDuration: 0.5),
+        SKAction.scale(to: 0.0, duration: 0.3)
+    ]))
+    
     var score: Int = 0 {
         didSet {
-            let newHighScore = score > ResultBoard.bestScore()
-            let duration: Double = 1.5 //seconds
-            
-            bestScore.text = "0"
-            bestScoreInside.text = "0"
-            new.setScale(0) //always remove until called.
-            if newHighScore {
+            if canShowScore {
+                
                 DispatchQueue.global().async {
-                    for i in 0 ..< (self.score + 1) {
-                        let sleepTime = UInt32(duration/Double(self.score) * 1000000.0)
-                        DispatchQueue.main.async {
-                            if (i >= ResultBoard.bestScore()){
-                                self.bestScore.text = "\(i)"
-                                self.bestScoreInside.text = "\(i)"
-                                if i == self.score {
-                                    self.new.run(SKAction.sequence([
-                                        SKAction.scale(to: 0.7, duration: 0.05),
-                                        SKAction.scale(to: 1.0, duration: 0.1)
-                                    ]))
-                                }
+                    let previousHighScore = ResultBoard.bestScore()
+                    if(self.score > ResultBoard.bestScore()){
+                        ResultBoard.setBestScore(self.score)
+                    }
+                    
+                    self.currentScore.text = "0"
+                    self.currentScoreInside.text = "0"
+                    self.new.setScale(0)
+                    
+                    for i in 0 ... (self.score) {
+                        if (self.score > 0) && (i != 0) {
+                            usleep(UInt32(1.5/Double(self.score) * 1000000.0))
+                        }
+                        self.currentScore.text = "\(i)"
+                        self.currentScoreInside.text = "\(i)"
+                        if (i) > previousHighScore {
+                            self.bestScore.text = "\(i)"
+                            self.bestScoreInside.text = "\(i)"
+                            if (i == self.score) {
+                                self.new.run(SKAction.sequence([
+                                    SKAction.scale(to: 0.7, duration: 0.05),
+                                    SKAction.scale(to: 1.0, duration: 0.05)
+                                ]))
                             }
                         }
-                        usleep(sleepTime)
-                    }
-                    ResultBoard.setBestScore(self.score)
-                }
-            } else {
-                new.setScale(0)
-            }
-            
-            currentScore.text = "0"
-            currentScoreInside.text = "0"
-            DispatchQueue.global().async {
-                for i in 0 ..< (self.score) {
-                    let sleepTime = UInt32(duration/Double(self.score) * 1000000.0)
-                    usleep(sleepTime)
-                    DispatchQueue.main.async {
-                        self.currentScore.text = "\(i + 1)"
-                        self.currentScoreInside.text = "\(i + 1)"
                     }
                 }
             }
-            bestScore.text = "\(ResultBoard.bestScore())"
-            bestScoreInside.text = "\(ResultBoard.bestScore())"
             
-            let medalTexture = score < (ResultBoard.bestScore() / 2) ? (SKTexture(imageNamed: "copper-medal")) : (score < ResultBoard.bestScore() ?(SKTexture(imageNamed: "silver-medal")) : (score < (ResultBoard.bestScore() * 2) ? (SKTexture(imageNamed: "gold-medal")) : (SKTexture(imageNamed:"platinum-medal"))))
-            let action = SKAction.setTexture(medalTexture, resize: true)
-            medal.run(action)
+            if canShowScore {
+                let medalTexture = score == 0 ? SKTexture() : (score < (ResultBoard.bestScore() / 2) ? (SKTexture(imageNamed: "copper-medal")) : (score < ResultBoard.bestScore() ?(SKTexture(imageNamed: "silver-medal")) : (score < (ResultBoard.bestScore() * 2) ? (SKTexture(imageNamed: "gold-medal")) : (SKTexture(imageNamed:"platinum-medal")))))
+                medal.run(SKAction.setTexture(medalTexture, resize: true))
+                
+                sparkle.setScale(0)
+                sparkle.removeAllActions()
+                if(score > 0){
+                    sparkle.run(sparkleAction)
+                }
+            }
         }
     }
 }
 
-private extension ResultBoard {
+public extension ResultBoard {
     class func bestScore() -> Int {
         return UserDefaults.standard.integer(forKey: "bestScore")
     }

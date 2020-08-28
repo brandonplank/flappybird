@@ -1,16 +1,20 @@
 PODS:
-  - Then (2.6.0)
+  - SwiftShield (3.5.1)
+  - Then (2.7.0)
 
 DEPENDENCIES:
+  - SwiftShield
   - Then
 
 SPEC REPOS:
   trunk:
+    - SwiftShield
     - Then
 
 SPEC CHECKSUMS:
-  Then: 90cd104fd951cec1980a03f57704ad8f784d4d79
+  SwiftShield: b1f8b1adaa82e5b015ce8d1d4eead89526cbff49
+  Then: acfe0be7e98221c6204e12f8161459606d5d822d
 
-PODFILE CHECKSUM: fdd2ce26a1475f73757a59204b331c65ae217096
+PODFILE CHECKSUM: b8d9b49202e6a2ec82707db506d4ff91283dd215
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.3

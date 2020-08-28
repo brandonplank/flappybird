@@ -5,7 +5,6 @@
 //  Created by Thatcher Clough on 3/30/20.
 //  Copyright © 2020 Brandon Plank. All rights reserved.
 //
-
 import Foundation
 import SpriteKit
 import Then

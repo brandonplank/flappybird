@@ -2,6 +2,9 @@ echo "Ender version number:"
 read version
 
 find . -name '.DS_Store' -delete
+
+# ./MachObfuscator -v --skip-all-frameworks --swift-reflection ./input/Flappy\ Bird.app
+
 mkdir output
 cd input
 
@@ -25,13 +28,16 @@ Version: $version
 Architecture: iphoneos-arm
 Description: A Flappy Bird clone that runs on the latest iOS!
 Maintainer: Brandon Plank
-Author: Brandon Plank, Thather Clough
+Author: Brandon Plank, Thatcher Clough
 Section: Games
 SileoDepiction: https://repo.brandonplank.org/depictions/org.brandonplank.flappybird/flappybird.json
 " >> ./deb/DEBIAN/control
+
 cp -r ./Flappy\ Bird.app ./deb/Applications
 cp -r ../postinst ./deb/DEBIAN
+cp -r ../postrm ./deb/DEBIAN
 chmod 0775 ./deb/DEBIAN/postinst
+chmod 0775 ./deb/DEBIAN/postrm
 dpkg-deb --build ./deb ./org.brandonplank.flappybird.deb
 mv ./org.brandonplank.flappybird.deb ../output
 rm -rf deb

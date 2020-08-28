@@ -1,12 +1,11 @@
 //
 //  ControlCentre.swift
-//  Flappy Bird
+//  FlappyBird
 //
-//  Created by Thatcher Clough on 5/1/20.
-//  Copyright © 2020 Brandon Plank & Thatcher Clough. All rights reserved.
+//  Created by Brandon Plank on 12/2/19.
+//  Copyright (c) 2016 Brandon Plank. All rights reserved.
 //
- 
-import Foundation
+
 import UIKit
 
 enum EventType {
