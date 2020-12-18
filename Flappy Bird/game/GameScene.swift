@@ -149,33 +149,10 @@ class GameScene: SKScene {
     ])
     
     func setRandomBirdTextures() {
-        let rand = Float.random(in: 0 ..< 1)
+        let randomOldBird = ["yellow-bird", "red-bird", "blue-bird"].randomElement()!
+        let randomNewBird = ["yellow-bird", "red-bird", "blue-bird", "green-bird", "peach-bird", "purple-bird", "kup-bird"].randomElement()!
         for n in 0...2 {
-            if newBirds {
-                if rand < 0.161 {
-                    birdTextures[n] = SKTexture(imageNamed: "yellow-bird-\(n + 1)").then { $0.filteringMode = .nearest }
-                } else if rand < 0.322 {
-                    birdTextures[n] = SKTexture(imageNamed: "red-bird-\(n + 1)").then { $0.filteringMode = .nearest }
-                } else if rand < 0.483 {
-                    birdTextures[n] = SKTexture(imageNamed: "blue-bird-\(n + 1)").then { $0.filteringMode = .nearest }
-                } else if rand < 0.644 {
-                    birdTextures[n] = SKTexture(imageNamed: "green-bird-\(n + 1)").then { $0.filteringMode = .nearest }
-                }else if rand < 0.805 {
-                    birdTextures[n] = SKTexture(imageNamed: "peach-bird-\(n + 1)").then { $0.filteringMode = .nearest }
-                }else if rand < 0.97 {
-                    birdTextures[n] = SKTexture(imageNamed: "purple-bird-\(n + 1)").then { $0.filteringMode = .nearest }
-                } else {
-                    birdTextures[n] = SKTexture(imageNamed: "kup-bird-\(n + 1)").then { $0.filteringMode = .nearest }
-                }
-            } else {
-                if rand < 0.33 {
-                    birdTextures[n] = SKTexture(imageNamed: "yellow-bird-\(n + 1)").then { $0.filteringMode = .nearest }
-                } else if rand < 0.66 {
-                    birdTextures[n] = SKTexture(imageNamed: "red-bird-\(n + 1)").then { $0.filteringMode = .nearest }
-                } else {
-                    birdTextures[n] = SKTexture(imageNamed: "blue-bird-\(n + 1)").then { $0.filteringMode = .nearest }
-                }
-            }
+          birdTextures[n] = SKTexture(imageNamed: "\(newBirds ? randomNewBird : randomOldBird)-\(n + 1)").then { $0.filteringMode = .nearest }
         }
         let anim = SKAction.animate(with: [birdTextures[0], birdTextures[1], birdTextures[2], birdTextures[1]], timePerFrame: 0.1)
         bird.run(SKAction.repeatForever(anim))
