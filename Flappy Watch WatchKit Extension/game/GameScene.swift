@@ -67,7 +67,7 @@ class GameScene: SKScene {
     var birdTextures = [SKTexture(), SKTexture(), SKTexture()]
     var skyNodes = [SKSpriteNode]()
     
-    var verticalPipeGap: CGFloat = 130.0
+    var verticalPipeGap: CGFloat = 160.0
     var moving = SKNode()
     var pipes = SKNode()
     
