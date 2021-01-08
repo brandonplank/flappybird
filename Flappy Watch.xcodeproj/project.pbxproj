@@ -1,0 +1,773 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		88146FC225A7D3D20048B229 /* ControlCentre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88146FBE25A7D3D20048B229 /* ControlCentre.swift */; };
+		88146FC325A7D3D20048B229 /* SKButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88146FBF25A7D3D20048B229 /* SKButtonNode.swift */; };
+		8869510525A7AB0700A44A93 /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = 8869510425A7AB0700A44A93 /* sounds */; };
+		8894A7BF25A5078E00019D53 /* Flappy Watch WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 8894A7BE25A5078E00019D53 /* Flappy Watch WatchKit App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		8894A7C525A5078E00019D53 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8894A7C325A5078E00019D53 /* Interface.storyboard */; };
+		8894A7C725A5079100019D53 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8894A7C625A5079100019D53 /* Assets.xcassets */; };
+		8894A7CE25A5079100019D53 /* Flappy Watch WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 8894A7CD25A5079100019D53 /* Flappy Watch WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		8894A7D525A5079100019D53 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8894A7D425A5079100019D53 /* ExtensionDelegate.swift */; };
+		8894A7D925A5079200019D53 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8894A7D825A5079200019D53 /* Assets.xcassets */; };
+		8894A7ED25A508E400019D53 /* Then.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8894A7EC25A508E400019D53 /* Then.swift */; };
+		8894A7F525A5093700019D53 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8894A7F425A5093700019D53 /* GameViewController.swift */; };
+		8894A80B25A518AD00019D53 /* SettingsPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8894A80025A518AD00019D53 /* SettingsPanel.swift */; };
+		8894A80D25A518AD00019D53 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 8894A80225A518AD00019D53 /* GameScene.sks */; };
+		8894A80E25A518AD00019D53 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 8894A80225A518AD00019D53 /* GameScene.sks */; };
+		8894A80F25A518AD00019D53 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 8894A80225A518AD00019D53 /* GameScene.sks */; };
+		8894A81025A518AD00019D53 /* ResultBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8894A80325A518AD00019D53 /* ResultBoard.swift */; };
+		8894A81525A518AD00019D53 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8894A80925A518AD00019D53 /* GameScene.swift */; };
+		8894A81625A518AD00019D53 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 8894A80A25A518AD00019D53 /* Actions.sks */; };
+		8894A81725A518AD00019D53 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 8894A80A25A518AD00019D53 /* Actions.sks */; };
+		8894A81825A518AD00019D53 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 8894A80A25A518AD00019D53 /* Actions.sks */; };
+		88C292C525A7AFF700B80E7B /* land.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C292A525A7AFF700B80E7B /* land.png */; };
+		88C292C625A7AFF700B80E7B /* purple-bird-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C292A625A7AFF700B80E7B /* purple-bird-1.png */; };
+		88C292C725A7AFF700B80E7B /* taptap.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C292A725A7AFF700B80E7B /* taptap.png */; };
+		88C292C825A7AFF700B80E7B /* flappy.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C292A825A7AFF700B80E7B /* flappy.png */; };
+		88C292C925A7AFF700B80E7B /* settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C292A925A7AFF700B80E7B /* settings.png */; };
+		88C292CA25A7AFF700B80E7B /* purple-bird-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C292AA25A7AFF700B80E7B /* purple-bird-2.png */; };
+		88C292CB25A7AFF700B80E7B /* PipeDown.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C292AB25A7AFF700B80E7B /* PipeDown.png */; };
+		88C292CC25A7AFF700B80E7B /* PipeUp.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C292AC25A7AFF700B80E7B /* PipeUp.png */; };
+		88C292CD25A7AFF700B80E7B /* purple-bird-3.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C292AD25A7AFF700B80E7B /* purple-bird-3.png */; };
+		88C292CE25A7AFF700B80E7B /* sparkle.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C292AE25A7AFF700B80E7B /* sparkle.png */; };
+		88C292CF25A7AFF700B80E7B /* github.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C292AF25A7AFF700B80E7B /* github.png */; };
+		88C292D025A7AFF700B80E7B /* getready.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C292B025A7AFF700B80E7B /* getready.png */; };
+		88C292D125A7AFF700B80E7B /* sky.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C292B125A7AFF700B80E7B /* sky.png */; };
+		88C292D225A7AFF700B80E7B /* medal.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C292B225A7AFF700B80E7B /* medal.png */; };
+		88C292D325A7AFF700B80E7B /* gameover.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C292B325A7AFF700B80E7B /* gameover.png */; };
+		88C292D425A7AFF700B80E7B /* board.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C292B425A7AFF700B80E7B /* board.png */; };
+		88C292D525A7AFF700B80E7B /* scoreboard.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C292B525A7AFF700B80E7B /* scoreboard.png */; };
+		88C292D625A7AFF700B80E7B /* new.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C292B625A7AFF700B80E7B /* new.png */; };
+		88C292D725A7AFF700B80E7B /* kup-bird-3.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C292B725A7AFF700B80E7B /* kup-bird-3.png */; };
+		88C292D825A7AFF700B80E7B /* green-bird-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C292B825A7AFF700B80E7B /* green-bird-2.png */; };
+		88C292D925A7AFF700B80E7B /* green-bird-3.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C292B925A7AFF700B80E7B /* green-bird-3.png */; };
+		88C292DA25A7AFF700B80E7B /* kup-bird-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C292BA25A7AFF700B80E7B /* kup-bird-2.png */; };
+		88C292DB25A7AFF700B80E7B /* green-bird-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C292BB25A7AFF700B80E7B /* green-bird-1.png */; };
+		88C292DC25A7AFF700B80E7B /* kup-bird-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C292BC25A7AFF700B80E7B /* kup-bird-1.png */; };
+		88C292DD25A7AFF700B80E7B /* google.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C292BD25A7AFF700B80E7B /* google.png */; };
+		88C292DE25A7AFF700B80E7B /* bird-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C292BE25A7AFF700B80E7B /* bird-1.png */; };
+		88C292DF25A7AFF700B80E7B /* peach-bird-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C292BF25A7AFF700B80E7B /* peach-bird-2.png */; };
+		88C292E025A7AFF700B80E7B /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C292C025A7AFF700B80E7B /* play.png */; };
+		88C292E125A7AFF700B80E7B /* peach-bird-3.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C292C125A7AFF700B80E7B /* peach-bird-3.png */; };
+		88C292E225A7AFF700B80E7B /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C292C225A7AFF700B80E7B /* back.png */; };
+		88C292E325A7AFF700B80E7B /* peach-bird-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C292C325A7AFF700B80E7B /* peach-bird-1.png */; };
+		88C292E425A7AFF700B80E7B /* toggle.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C292C425A7AFF700B80E7B /* toggle.png */; };
+		88C292EE25A7B12500B80E7B /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = 8869510425A7AB0700A44A93 /* sounds */; };
+		88C292F725A7B94900B80E7B /* inside.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 88C292F525A7B94900B80E7B /* inside.ttf */; };
+		88C292F825A7B94900B80E7B /* inside.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 88C292F525A7B94900B80E7B /* inside.ttf */; };
+		88C292F925A7B94900B80E7B /* inside.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 88C292F525A7B94900B80E7B /* inside.ttf */; };
+		88C292FA25A7B94900B80E7B /* outside.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 88C292F625A7B94900B80E7B /* outside.ttf */; };
+		88C292FB25A7B94A00B80E7B /* outside.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 88C292F625A7B94900B80E7B /* outside.ttf */; };
+		88C292FC25A7B94A00B80E7B /* outside.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 88C292F625A7B94900B80E7B /* outside.ttf */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8894A7C025A5078E00019D53 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8894A7B425A5078D00019D53 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8894A7BD25A5078E00019D53;
+			remoteInfo = "Flappy Watch WatchKit App";
+		};
+		8894A7CF25A5079100019D53 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8894A7B425A5078D00019D53 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8894A7CC25A5079100019D53;
+			remoteInfo = "Flappy Watch WatchKit Extension";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8894A7E025A5079200019D53 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				8894A7CE25A5079100019D53 /* Flappy Watch WatchKit Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8894A7E425A5079200019D53 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				8894A7BF25A5078E00019D53 /* Flappy Watch WatchKit App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		88146FBE25A7D3D20048B229 /* ControlCentre.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlCentre.swift; sourceTree = "<group>"; };
+		88146FBF25A7D3D20048B229 /* SKButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKButtonNode.swift; sourceTree = "<group>"; };
+		8869510425A7AB0700A44A93 /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sounds; sourceTree = "<group>"; };
+		8894A7BA25A5078D00019D53 /* Flappy Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Flappy Watch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8894A7BE25A5078E00019D53 /* Flappy Watch WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Flappy Watch WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8894A7C425A5078E00019D53 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
+		8894A7C625A5079100019D53 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8894A7C825A5079100019D53 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8894A7CD25A5079100019D53 /* Flappy Watch WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Flappy Watch WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8894A7D425A5079100019D53 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
+		8894A7D825A5079200019D53 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8894A7DA25A5079200019D53 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8894A7EC25A508E400019D53 /* Then.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Then.swift; sourceTree = "<group>"; };
+		8894A7F425A5093700019D53 /* GameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		8894A80025A518AD00019D53 /* SettingsPanel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsPanel.swift; sourceTree = "<group>"; };
+		8894A80225A518AD00019D53 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
+		8894A80325A518AD00019D53 /* ResultBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultBoard.swift; sourceTree = "<group>"; };
+		8894A80925A518AD00019D53 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		8894A80A25A518AD00019D53 /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
+		8894A86025A520A400019D53 /* bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bridge.h; sourceTree = "<group>"; };
+		88C292A525A7AFF700B80E7B /* land.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = land.png; sourceTree = "<group>"; };
+		88C292A625A7AFF700B80E7B /* purple-bird-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "purple-bird-1.png"; sourceTree = "<group>"; };
+		88C292A725A7AFF700B80E7B /* taptap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = taptap.png; sourceTree = "<group>"; };
+		88C292A825A7AFF700B80E7B /* flappy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flappy.png; sourceTree = "<group>"; };
+		88C292A925A7AFF700B80E7B /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings.png; sourceTree = "<group>"; };
+		88C292AA25A7AFF700B80E7B /* purple-bird-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "purple-bird-2.png"; sourceTree = "<group>"; };
+		88C292AB25A7AFF700B80E7B /* PipeDown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PipeDown.png; sourceTree = "<group>"; };
+		88C292AC25A7AFF700B80E7B /* PipeUp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PipeUp.png; sourceTree = "<group>"; };
+		88C292AD25A7AFF700B80E7B /* purple-bird-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "purple-bird-3.png"; sourceTree = "<group>"; };
+		88C292AE25A7AFF700B80E7B /* sparkle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sparkle.png; sourceTree = "<group>"; };
+		88C292AF25A7AFF700B80E7B /* github.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = github.png; sourceTree = "<group>"; };
+		88C292B025A7AFF700B80E7B /* getready.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = getready.png; sourceTree = "<group>"; };
+		88C292B125A7AFF700B80E7B /* sky.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sky.png; sourceTree = "<group>"; };
+		88C292B225A7AFF700B80E7B /* medal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = medal.png; sourceTree = "<group>"; };
+		88C292B325A7AFF700B80E7B /* gameover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gameover.png; sourceTree = "<group>"; };
+		88C292B425A7AFF700B80E7B /* board.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = board.png; sourceTree = "<group>"; };
+		88C292B525A7AFF700B80E7B /* scoreboard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scoreboard.png; sourceTree = "<group>"; };
+		88C292B625A7AFF700B80E7B /* new.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = new.png; sourceTree = "<group>"; };
+		88C292B725A7AFF700B80E7B /* kup-bird-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kup-bird-3.png"; sourceTree = "<group>"; };
+		88C292B825A7AFF700B80E7B /* green-bird-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "green-bird-2.png"; sourceTree = "<group>"; };
+		88C292B925A7AFF700B80E7B /* green-bird-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "green-bird-3.png"; sourceTree = "<group>"; };
+		88C292BA25A7AFF700B80E7B /* kup-bird-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kup-bird-2.png"; sourceTree = "<group>"; };
+		88C292BB25A7AFF700B80E7B /* green-bird-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "green-bird-1.png"; sourceTree = "<group>"; };
+		88C292BC25A7AFF700B80E7B /* kup-bird-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kup-bird-1.png"; sourceTree = "<group>"; };
+		88C292BD25A7AFF700B80E7B /* google.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = google.png; sourceTree = "<group>"; };
+		88C292BE25A7AFF700B80E7B /* bird-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bird-1.png"; sourceTree = "<group>"; };
+		88C292BF25A7AFF700B80E7B /* peach-bird-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "peach-bird-2.png"; sourceTree = "<group>"; };
+		88C292C025A7AFF700B80E7B /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
+		88C292C125A7AFF700B80E7B /* peach-bird-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "peach-bird-3.png"; sourceTree = "<group>"; };
+		88C292C225A7AFF700B80E7B /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
+		88C292C325A7AFF700B80E7B /* peach-bird-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "peach-bird-1.png"; sourceTree = "<group>"; };
+		88C292C425A7AFF700B80E7B /* toggle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toggle.png; sourceTree = "<group>"; };
+		88C292F525A7B94900B80E7B /* inside.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = inside.ttf; sourceTree = "<group>"; };
+		88C292F625A7B94900B80E7B /* outside.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = outside.ttf; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8894A7CA25A5079100019D53 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		88146FBB25A7D3D20048B229 /* External Display */ = {
+			isa = PBXGroup;
+			children = (
+				88146FBE25A7D3D20048B229 /* ControlCentre.swift */,
+				88146FBF25A7D3D20048B229 /* SKButtonNode.swift */,
+			);
+			path = "External Display";
+			sourceTree = "<group>";
+		};
+		8894A7B325A5078D00019D53 = {
+			isa = PBXGroup;
+			children = (
+				8894A7C225A5078E00019D53 /* Flappy Watch WatchKit App */,
+				8894A7D125A5079100019D53 /* Flappy Watch WatchKit Extension */,
+				8894A7BB25A5078D00019D53 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8894A7BB25A5078D00019D53 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8894A7BA25A5078D00019D53 /* Flappy Watch.app */,
+				8894A7BE25A5078E00019D53 /* Flappy Watch WatchKit App.app */,
+				8894A7CD25A5079100019D53 /* Flappy Watch WatchKit Extension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8894A7C225A5078E00019D53 /* Flappy Watch WatchKit App */ = {
+			isa = PBXGroup;
+			children = (
+				8894A7C325A5078E00019D53 /* Interface.storyboard */,
+				8894A7C625A5079100019D53 /* Assets.xcassets */,
+				8894A7C825A5079100019D53 /* Info.plist */,
+			);
+			path = "Flappy Watch WatchKit App";
+			sourceTree = "<group>";
+		};
+		8894A7D125A5079100019D53 /* Flappy Watch WatchKit Extension */ = {
+			isa = PBXGroup;
+			children = (
+				88C292F525A7B94900B80E7B /* inside.ttf */,
+				88C292F625A7B94900B80E7B /* outside.ttf */,
+				8869510425A7AB0700A44A93 /* sounds */,
+				88C292A425A7AFF700B80E7B /* assets */,
+				8894A7FF25A518AD00019D53 /* game */,
+				8894A7EB25A508DB00019D53 /* then */,
+				8894A7F425A5093700019D53 /* GameViewController.swift */,
+				8894A7D425A5079100019D53 /* ExtensionDelegate.swift */,
+				8894A7D825A5079200019D53 /* Assets.xcassets */,
+				8894A7DA25A5079200019D53 /* Info.plist */,
+				8894A86025A520A400019D53 /* bridge.h */,
+			);
+			path = "Flappy Watch WatchKit Extension";
+			sourceTree = "<group>";
+		};
+		8894A7EB25A508DB00019D53 /* then */ = {
+			isa = PBXGroup;
+			children = (
+				8894A7EC25A508E400019D53 /* Then.swift */,
+			);
+			path = then;
+			sourceTree = "<group>";
+		};
+		8894A7FF25A518AD00019D53 /* game */ = {
+			isa = PBXGroup;
+			children = (
+				88146FBB25A7D3D20048B229 /* External Display */,
+				8894A80025A518AD00019D53 /* SettingsPanel.swift */,
+				8894A80225A518AD00019D53 /* GameScene.sks */,
+				8894A80325A518AD00019D53 /* ResultBoard.swift */,
+				8894A80925A518AD00019D53 /* GameScene.swift */,
+				8894A80A25A518AD00019D53 /* Actions.sks */,
+			);
+			path = game;
+			sourceTree = "<group>";
+		};
+		88C292A425A7AFF700B80E7B /* assets */ = {
+			isa = PBXGroup;
+			children = (
+				88C292A525A7AFF700B80E7B /* land.png */,
+				88C292A625A7AFF700B80E7B /* purple-bird-1.png */,
+				88C292A725A7AFF700B80E7B /* taptap.png */,
+				88C292A825A7AFF700B80E7B /* flappy.png */,
+				88C292A925A7AFF700B80E7B /* settings.png */,
+				88C292AA25A7AFF700B80E7B /* purple-bird-2.png */,
+				88C292AB25A7AFF700B80E7B /* PipeDown.png */,
+				88C292AC25A7AFF700B80E7B /* PipeUp.png */,
+				88C292AD25A7AFF700B80E7B /* purple-bird-3.png */,
+				88C292AE25A7AFF700B80E7B /* sparkle.png */,
+				88C292AF25A7AFF700B80E7B /* github.png */,
+				88C292B025A7AFF700B80E7B /* getready.png */,
+				88C292B125A7AFF700B80E7B /* sky.png */,
+				88C292B225A7AFF700B80E7B /* medal.png */,
+				88C292B325A7AFF700B80E7B /* gameover.png */,
+				88C292B425A7AFF700B80E7B /* board.png */,
+				88C292B525A7AFF700B80E7B /* scoreboard.png */,
+				88C292B625A7AFF700B80E7B /* new.png */,
+				88C292B725A7AFF700B80E7B /* kup-bird-3.png */,
+				88C292B825A7AFF700B80E7B /* green-bird-2.png */,
+				88C292B925A7AFF700B80E7B /* green-bird-3.png */,
+				88C292BA25A7AFF700B80E7B /* kup-bird-2.png */,
+				88C292BB25A7AFF700B80E7B /* green-bird-1.png */,
+				88C292BC25A7AFF700B80E7B /* kup-bird-1.png */,
+				88C292BD25A7AFF700B80E7B /* google.png */,
+				88C292BE25A7AFF700B80E7B /* bird-1.png */,
+				88C292BF25A7AFF700B80E7B /* peach-bird-2.png */,
+				88C292C025A7AFF700B80E7B /* play.png */,
+				88C292C125A7AFF700B80E7B /* peach-bird-3.png */,
+				88C292C225A7AFF700B80E7B /* back.png */,
+				88C292C325A7AFF700B80E7B /* peach-bird-1.png */,
+				88C292C425A7AFF700B80E7B /* toggle.png */,
+			);
+			path = assets;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8894A7B925A5078D00019D53 /* Flappy Watch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8894A7E525A5079200019D53 /* Build configuration list for PBXNativeTarget "Flappy Watch" */;
+			buildPhases = (
+				8894A7B825A5078D00019D53 /* Resources */,
+				8894A7E425A5079200019D53 /* Embed Watch Content */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8894A7C125A5078E00019D53 /* PBXTargetDependency */,
+			);
+			name = "Flappy Watch";
+			productName = "Flappy Watch";
+			productReference = 8894A7BA25A5078D00019D53 /* Flappy Watch.app */;
+			productType = "com.apple.product-type.application.watchapp2-container";
+		};
+		8894A7BD25A5078E00019D53 /* Flappy Watch WatchKit App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8894A7E125A5079200019D53 /* Build configuration list for PBXNativeTarget "Flappy Watch WatchKit App" */;
+			buildPhases = (
+				8894A7BC25A5078E00019D53 /* Resources */,
+				8894A7E025A5079200019D53 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8894A7D025A5079100019D53 /* PBXTargetDependency */,
+			);
+			name = "Flappy Watch WatchKit App";
+			productName = "Flappy Watch WatchKit App";
+			productReference = 8894A7BE25A5078E00019D53 /* Flappy Watch WatchKit App.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		8894A7CC25A5079100019D53 /* Flappy Watch WatchKit Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8894A7DD25A5079200019D53 /* Build configuration list for PBXNativeTarget "Flappy Watch WatchKit Extension" */;
+			buildPhases = (
+				8894A7C925A5079100019D53 /* Sources */,
+				8894A7CA25A5079100019D53 /* Frameworks */,
+				8894A7CB25A5079100019D53 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Flappy Watch WatchKit Extension";
+			productName = "Flappy Watch WatchKit Extension";
+			productReference = 8894A7CD25A5079100019D53 /* Flappy Watch WatchKit Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8894A7B425A5078D00019D53 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1230;
+				LastUpgradeCheck = 1230;
+				TargetAttributes = {
+					8894A7B925A5078D00019D53 = {
+						CreatedOnToolsVersion = 12.3;
+					};
+					8894A7BD25A5078E00019D53 = {
+						CreatedOnToolsVersion = 12.3;
+					};
+					8894A7CC25A5079100019D53 = {
+						CreatedOnToolsVersion = 12.3;
+					};
+				};
+			};
+			buildConfigurationList = 8894A7B725A5078D00019D53 /* Build configuration list for PBXProject "Flappy Watch" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 8894A7B325A5078D00019D53;
+			productRefGroup = 8894A7BB25A5078D00019D53 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8894A7B925A5078D00019D53 /* Flappy Watch */,
+				8894A7BD25A5078E00019D53 /* Flappy Watch WatchKit App */,
+				8894A7CC25A5079100019D53 /* Flappy Watch WatchKit Extension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8894A7B825A5078D00019D53 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				88C292FA25A7B94900B80E7B /* outside.ttf in Resources */,
+				8894A80D25A518AD00019D53 /* GameScene.sks in Resources */,
+				8894A81625A518AD00019D53 /* Actions.sks in Resources */,
+				88C292F725A7B94900B80E7B /* inside.ttf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8894A7BC25A5078E00019D53 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				88C292D625A7AFF700B80E7B /* new.png in Resources */,
+				88C292CF25A7AFF700B80E7B /* github.png in Resources */,
+				88C292E125A7AFF700B80E7B /* peach-bird-3.png in Resources */,
+				88C292D325A7AFF700B80E7B /* gameover.png in Resources */,
+				88C292D825A7AFF700B80E7B /* green-bird-2.png in Resources */,
+				88C292D225A7AFF700B80E7B /* medal.png in Resources */,
+				88C292DC25A7AFF700B80E7B /* kup-bird-1.png in Resources */,
+				8869510525A7AB0700A44A93 /* sounds in Resources */,
+				88C292CB25A7AFF700B80E7B /* PipeDown.png in Resources */,
+				88C292D025A7AFF700B80E7B /* getready.png in Resources */,
+				88C292CD25A7AFF700B80E7B /* purple-bird-3.png in Resources */,
+				88C292E225A7AFF700B80E7B /* back.png in Resources */,
+				8894A7C725A5079100019D53 /* Assets.xcassets in Resources */,
+				88C292C525A7AFF700B80E7B /* land.png in Resources */,
+				88C292D525A7AFF700B80E7B /* scoreboard.png in Resources */,
+				88C292C625A7AFF700B80E7B /* purple-bird-1.png in Resources */,
+				8894A80E25A518AD00019D53 /* GameScene.sks in Resources */,
+				88C292CE25A7AFF700B80E7B /* sparkle.png in Resources */,
+				88C292C825A7AFF700B80E7B /* flappy.png in Resources */,
+				88C292DF25A7AFF700B80E7B /* peach-bird-2.png in Resources */,
+				88C292F825A7B94900B80E7B /* inside.ttf in Resources */,
+				88C292E325A7AFF700B80E7B /* peach-bird-1.png in Resources */,
+				88C292DA25A7AFF700B80E7B /* kup-bird-2.png in Resources */,
+				88C292FB25A7B94A00B80E7B /* outside.ttf in Resources */,
+				88C292D925A7AFF700B80E7B /* green-bird-3.png in Resources */,
+				88C292D725A7AFF700B80E7B /* kup-bird-3.png in Resources */,
+				88C292C925A7AFF700B80E7B /* settings.png in Resources */,
+				88C292D425A7AFF700B80E7B /* board.png in Resources */,
+				88C292CA25A7AFF700B80E7B /* purple-bird-2.png in Resources */,
+				8894A7C525A5078E00019D53 /* Interface.storyboard in Resources */,
+				8894A81725A518AD00019D53 /* Actions.sks in Resources */,
+				88C292DB25A7AFF700B80E7B /* green-bird-1.png in Resources */,
+				88C292D125A7AFF700B80E7B /* sky.png in Resources */,
+				88C292CC25A7AFF700B80E7B /* PipeUp.png in Resources */,
+				88C292E025A7AFF700B80E7B /* play.png in Resources */,
+				88C292DD25A7AFF700B80E7B /* google.png in Resources */,
+				88C292DE25A7AFF700B80E7B /* bird-1.png in Resources */,
+				88C292C725A7AFF700B80E7B /* taptap.png in Resources */,
+				88C292E425A7AFF700B80E7B /* toggle.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8894A7CB25A5079100019D53 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8894A80F25A518AD00019D53 /* GameScene.sks in Resources */,
+				8894A81825A518AD00019D53 /* Actions.sks in Resources */,
+				88C292FC25A7B94A00B80E7B /* outside.ttf in Resources */,
+				8894A7D925A5079200019D53 /* Assets.xcassets in Resources */,
+				88C292EE25A7B12500B80E7B /* sounds in Resources */,
+				88C292F925A7B94900B80E7B /* inside.ttf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8894A7C925A5079100019D53 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				88146FC225A7D3D20048B229 /* ControlCentre.swift in Sources */,
+				8894A7F525A5093700019D53 /* GameViewController.swift in Sources */,
+				8894A7ED25A508E400019D53 /* Then.swift in Sources */,
+				8894A81025A518AD00019D53 /* ResultBoard.swift in Sources */,
+				8894A7D525A5079100019D53 /* ExtensionDelegate.swift in Sources */,
+				88146FC325A7D3D20048B229 /* SKButtonNode.swift in Sources */,
+				8894A81525A518AD00019D53 /* GameScene.swift in Sources */,
+				8894A80B25A518AD00019D53 /* SettingsPanel.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8894A7C125A5078E00019D53 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8894A7BD25A5078E00019D53 /* Flappy Watch WatchKit App */;
+			targetProxy = 8894A7C025A5078E00019D53 /* PBXContainerItemProxy */;
+		};
+		8894A7D025A5079100019D53 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8894A7CC25A5079100019D53 /* Flappy Watch WatchKit Extension */;
+			targetProxy = 8894A7CF25A5079100019D53 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		8894A7C325A5078E00019D53 /* Interface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8894A7C425A5078E00019D53 /* Base */,
+			);
+			name = Interface.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		8894A7DB25A5079200019D53 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		8894A7DC25A5079200019D53 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8894A7DE25A5079200019D53 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = GR3NL679U6;
+				INFOPLIST_FILE = "Flappy Watch WatchKit Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "org.brandonplank.Flappy-Watch.watchkitapp.watchkitextension";
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 7.2;
+			};
+			name = Debug;
+		};
+		8894A7DF25A5079200019D53 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = GR3NL679U6;
+				INFOPLIST_FILE = "Flappy Watch WatchKit Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "org.brandonplank.Flappy-Watch.watchkitapp.watchkitextension";
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 7.2;
+			};
+			name = Release;
+		};
+		8894A7E225A5079200019D53 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = GR3NL679U6;
+				IBSC_MODULE = Flappy_Watch_WatchKit_Extension;
+				INFOPLIST_FILE = "Flappy Watch WatchKit App/Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.brandonplank.Flappy-Watch.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 7.2;
+			};
+			name = Debug;
+		};
+		8894A7E325A5079200019D53 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = GR3NL679U6;
+				IBSC_MODULE = Flappy_Watch_WatchKit_Extension;
+				INFOPLIST_FILE = "Flappy Watch WatchKit App/Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.brandonplank.Flappy-Watch.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 7.2;
+			};
+			name = Release;
+		};
+		8894A7E625A5079200019D53 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GR3NL679U6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.brandonplank.Flappy-Watch";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		8894A7E725A5079200019D53 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GR3NL679U6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.brandonplank.Flappy-Watch";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8894A7B725A5078D00019D53 /* Build configuration list for PBXProject "Flappy Watch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8894A7DB25A5079200019D53 /* Debug */,
+				8894A7DC25A5079200019D53 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8894A7DD25A5079200019D53 /* Build configuration list for PBXNativeTarget "Flappy Watch WatchKit Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8894A7DE25A5079200019D53 /* Debug */,
+				8894A7DF25A5079200019D53 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8894A7E125A5079200019D53 /* Build configuration list for PBXNativeTarget "Flappy Watch WatchKit App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8894A7E225A5079200019D53 /* Debug */,
+				8894A7E325A5079200019D53 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8894A7E525A5079200019D53 /* Build configuration list for PBXNativeTarget "Flappy Watch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8894A7E625A5079200019D53 /* Debug */,
+				8894A7E725A5079200019D53 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8894A7B425A5078D00019D53 /* Project object */;
+}

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="17701" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+    <device id="watch40"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="17500"/>
+    </dependencies>
+    <scenes>
+        <!--Game View Controller-->
+        <scene sceneID="aou-V4-d1y">
+            <objects>
+                <controller contentMode="scaleAspectFill" fullScreen="YES" id="AgC-eL-Hgc" customClass="GameViewController" customModule="Flappy_Watch_WatchKit_Extension">
+                    <items>
+                        <spriteKitScene alignment="left" preferredFramesPerSecond="60" scene="GameScene.sks" id="iWZ-cu-3lY">
+                            <gestureRecognizers>
+                                <tapGestureRecognizer id="hz8-Hy-gWZ">
+                                    <connections>
+                                        <action selector="handleSingleTapWithTapGesture:" destination="AgC-eL-Hgc" id="IJb-GC-uUD"/>
+                                    </connections>
+                                </tapGestureRecognizer>
+                            </gestureRecognizers>
+                        </spriteKitScene>
+                    </items>
+                    <connections>
+                        <outlet property="skInterface" destination="iWZ-cu-3lY" id="Tez-fd-O2F"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="-68" y="30"/>
+        </scene>
+    </scenes>
+</document>
