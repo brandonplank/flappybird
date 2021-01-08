@@ -7,6 +7,7 @@ This is an extremely close clone to the original FlappyBird by Dong Nguyen.
 
 ## Compatibility
 FlappyBird is compatible with all iOS devices, and iOS versions!
+Compatible with watchOS 6.0 and above.
 
 ## Installation
 The '.ipa' and '.deb' files for FlappyBird can be found on the [release page](https://github.com/brandonplank/flappybird/releases).
