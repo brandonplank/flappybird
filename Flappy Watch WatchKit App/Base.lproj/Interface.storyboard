@@ -11,22 +11,26 @@
             <objects>
                 <controller contentMode="scaleAspectFill" fullScreen="YES" id="AgC-eL-Hgc" customClass="GameViewController" customModule="Flappy_Watch_WatchKit_Extension">
                     <items>
-                        <spriteKitScene alignment="left" preferredFramesPerSecond="60" scene="GameScene.sks" id="iWZ-cu-3lY">
-                            <gestureRecognizers>
-                                <tapGestureRecognizer id="hz8-Hy-gWZ">
-                                    <connections>
-                                        <action selector="handleSingleTapWithTapGesture:" destination="AgC-eL-Hgc" id="IJb-GC-uUD"/>
-                                    </connections>
-                                </tapGestureRecognizer>
-                            </gestureRecognizers>
-                        </spriteKitScene>
+                        <group width="1" alignment="left" id="Xgl-HM-AlA">
+                            <items>
+                                <spriteKitScene alignment="left" preferredFramesPerSecond="60" scene="GameScene.sks" id="iWZ-cu-3lY">
+                                    <gestureRecognizers>
+                                        <longPressGestureRecognizer minimumPressDuration="0.001" id="zUn-Xg-79V">
+                                            <connections>
+                                                <action selector="gesture:" destination="AgC-eL-Hgc" id="Th8-Ef-ydy"/>
+                                            </connections>
+                                        </longPressGestureRecognizer>
+                                    </gestureRecognizers>
+                                </spriteKitScene>
+                            </items>
+                        </group>
                     </items>
                     <connections>
                         <outlet property="skInterface" destination="iWZ-cu-3lY" id="Tez-fd-O2F"/>
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="-68" y="30"/>
+            <point key="canvasLocation" x="-68" y="29.771573604060912"/>
         </scene>
     </scenes>
 </document>

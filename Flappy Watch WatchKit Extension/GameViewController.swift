@@ -11,11 +11,13 @@ import Foundation
 import SpriteKit
 import WatchKit
 import GameKit
+import AVFoundation
 
 class GameViewController: WKInterfaceController, WKCrownDelegate, SKSceneDelegate {
     @IBOutlet weak var skInterface: WKInterfaceSKScene!
     
-    private var crownSensivity:Double = 20.0
+    @IBOutlet weak var ge: WKLongPressGestureRecognizer!
+    private var crownSensivity:Double = 3.0
     
     var gameScene:GameScene!
     
@@ -26,6 +28,10 @@ class GameViewController: WKInterfaceController, WKCrownDelegate, SKSceneDelegat
         if let scene = GameScene(fileNamed: "GameScene") {
             
             gameScene = scene
+            
+            // start listening to crown
+            crownSequencer.delegate = self
+            crownSequencer.focus()
             
             // Set the scale mode to scale to fit the window
             scene.scaleMode = .aspectFill
@@ -44,22 +50,53 @@ class GameViewController: WKInterfaceController, WKCrownDelegate, SKSceneDelegat
     
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
+        try? AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.ambient)
+        try? AVAudioSession.sharedInstance().setActive(true)
         super.willActivate()
     }
     
     override func didDeactivate() {
         // This method is called when watch view controller is no longer visible
+        try? AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.ambient)
+        try? AVAudioSession.sharedInstance().setActive(false)
         super.didDeactivate()
     }
     
-    
-    // TODO: Add a proper touch function...
-    @IBAction func handleSingleTap(tapGesture: WKTapGestureRecognizer) {
-        //let location = tapGesture.locationInObject()
-        //print("here, log: \(location)")
-        //let screenBounds = WKInterfaceDevice.current().screenBounds
-        //let newX = ((location.x / screenBounds.width) * (skInterface.scene?.size.width)!) - ((skInterface.scene?.size.width)! / 2)
-        //let newY = (((location.y / screenBounds.height) * (skInterface.scene?.size.height)!) - ((skInterface.scene?.size.height)!) / 2)
-        gameScene.touchFigure(CGPoint(x: 0, y: 0))
+    func crownDidRotate(_ crownSequencer: WKCrownSequencer?, rotationalDelta: Double) {
+            
+        // convert crown rotation to CGFloat
+        let step   = NSNumber.init(value: rotationalDelta * crownSensivity).floatValue
+        let cgStep = CGFloat(step)
+
+        if (cgStep < -0.5 || cgStep > 0.5) {
+            WKInterfaceDevice.current().play(.click)
+            //gameScene.touchFigure(CGPoint(x: 0, y: 0))
+        }
     }
+    
+    
+    // TODO: Craft a function to calculate the correct coords for a touch.
+    @IBAction func gesture(_ sender: WKLongPressGestureRecognizer) {
+
+            switch sender.state {
+            case .began:
+                let location = CGPoint(x: sender.locationInObject().x, y: -sender.locationInObject().y)
+                //print("here, log: \(location)")
+                gameScene.touchFigure(location)
+            case .cancelled, .ended:
+                break
+            default:
+                break
+            }
+        }
+    
+    // MARK: OLD, NEWER CODE is ^
+//   @IBAction func handleSingleTap(tapGesture: WKTapGestureRecognizer) {
+//        //let location = tapGesture.locationInObject()
+//        //print("here, log: \(location)")
+//        //let screenBounds = WKInterfaceDevice.current().screenBounds
+//        //let newX = ((location.x / screenBounds.width) * (skInterface.scene?.size.width)!) - ((skInterface.scene?.size.width)! / 2)
+//        //let newY = (((location.y / screenBounds.height) * (skInterface.scene?.size.height)!) - ((skInterface.scene?.size.height)!) / 2)
+//        gameScene.touchFigure(CGPoint(x: 0, y: 0))
+//    }
 }

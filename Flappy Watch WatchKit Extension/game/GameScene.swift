@@ -388,11 +388,14 @@ class GameScene: SKScene {
     
     public func touchFigure(_ location: CGPoint!) {
         self.isPaused = false
-        //let touchedNodeName = atPoint(location).name
-        //print("\(String(describing: touchedNodeName))");
-        //print(location!)
+        let touchedNodeName = atPoint(location).name
+        print("\(String(describing: touchedNodeName))");
+        print(location!)
         
-        if(!already_ran || afterGameOver == true){
+        // Debug for touch pos
+        //bird.position = location
+        
+        if((!already_ran || afterGameOver == true) && (!GameScene.hitButton)){
             GameScene.hitButton = true
             run(SKAction.sequence([
                 SKAction.run { self.playSound(sound: self.swooshAction) },
@@ -427,7 +430,7 @@ class GameScene: SKScene {
                     self.already_ran = true
             })
         }
-        
+
        if firstTouch {
             bird.removeAction(forKey: "float")
             taptap.run(SKAction.sequence([
@@ -435,23 +438,23 @@ class GameScene: SKScene {
                 SKAction.removeFromParent(),
                 SKAction.scale(to: 1.5, duration: 0.0)
             ]))
-            
+
             getReady.run(SKAction.sequence([
                 SKAction.scale(to: 0.0, duration: 0.1),
                 SKAction.removeFromParent(),
                 SKAction.scale(to: 1.2, duration: 0.0)
             ]))
             pipes.setScale(1)
-            
+
             bird.physicsBody?.isDynamic = true
             firstTouch = false
             playFlapSound = true
         }
-        
+
         if playFlapSound {
             playSound(sound: flapAction)
         }
-        
+
         ControlCentre.trigger(.touch(nil))
     }
     

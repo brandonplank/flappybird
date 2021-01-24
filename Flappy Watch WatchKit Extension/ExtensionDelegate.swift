@@ -14,8 +14,6 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
 
     func applicationDidFinishLaunching() {
         // Perform any final initialization of your application.
-        try? AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.ambient)
-        try? AVAudioSession.sharedInstance().setActive(true)
     }
 
     func applicationDidBecomeActive() {
