@@ -11,19 +11,15 @@
             <objects>
                 <controller contentMode="scaleAspectFill" fullScreen="YES" id="AgC-eL-Hgc" customClass="GameViewController" customModule="Flappy_Watch_WatchKit_Extension">
                     <items>
-                        <group width="1" alignment="left" id="Xgl-HM-AlA">
-                            <items>
-                                <spriteKitScene alignment="left" preferredFramesPerSecond="60" scene="GameScene.sks" id="iWZ-cu-3lY">
-                                    <gestureRecognizers>
-                                        <longPressGestureRecognizer minimumPressDuration="0.001" id="zUn-Xg-79V">
-                                            <connections>
-                                                <action selector="gesture:" destination="AgC-eL-Hgc" id="Th8-Ef-ydy"/>
-                                            </connections>
-                                        </longPressGestureRecognizer>
-                                    </gestureRecognizers>
-                                </spriteKitScene>
-                            </items>
-                        </group>
+                        <spriteKitScene alignment="left" preferredFramesPerSecond="60" scene="GameScene.sks" id="iWZ-cu-3lY">
+                            <gestureRecognizers>
+                                <longPressGestureRecognizer minimumPressDuration="0.0" id="zUn-Xg-79V">
+                                    <connections>
+                                        <action selector="gesture:" destination="AgC-eL-Hgc" id="Th8-Ef-ydy"/>
+                                    </connections>
+                                </longPressGestureRecognizer>
+                            </gestureRecognizers>
+                        </spriteKitScene>
                     </items>
                     <connections>
                         <outlet property="skInterface" destination="iWZ-cu-3lY" id="Tez-fd-O2F"/>

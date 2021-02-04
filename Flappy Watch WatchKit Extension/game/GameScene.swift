@@ -393,6 +393,7 @@ class GameScene: SKScene {
         print(location!)
         
         // Debug for touch pos
+        
         //bird.position = location
         
         if((!already_ran || afterGameOver == true) && (!GameScene.hitButton)){
