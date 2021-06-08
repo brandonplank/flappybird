@@ -6,7 +6,7 @@ This is an extremely close clone to the original FlappyBird by Dong Nguyen.
 <img src="demo/demo.gif" width="200">
 
 ## Compatibility
-FlappyBird is compatible with all iOS devices, and iOS versions!
+FlappyBird is compatible with the iPhone 6s and above on iOS 13 and later.
 Compatible with watchOS 6.0 and above.
 
 ## Installation
