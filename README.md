@@ -1,5 +1,9 @@
 # FlappyBird
 
+## Notes
+* This is only the public source with missing features.
+* The main repo will remain closed source because of Google Sign-In
+
 This is an extremely close clone to the original FlappyBird by Dong Nguyen.
 
 ## Demo
