@@ -90,13 +90,14 @@ public class ResultBoard: SKSpriteNode {
         return node
     }()
 
-    private var new: SKSpriteNode = {
+    private lazy var new: SKSpriteNode = {
         let node = SKSpriteNode(texture: SKTexture(imageNamed: "new"))
         node.setScale(0)
-        node.zPosition = GamezPosition.resultText + 1
+        node.zPosition = GamezPosition.resultText
+        node.position = CGPoint(x: frame.midX + 35, y: frame.midY - 6)
         return node
     }()
-  
+ 
     private var sparkle: SKSpriteNode = {
         let node = SKSpriteNode(texture: SKTexture(imageNamed: "sparkle"))
         node.setScale(0)
