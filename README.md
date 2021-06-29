@@ -1,3 +1,11 @@
+## Changes from upstream
+- Remove library Then and SwiftShield
+... Obfuscation doesn't make sense on the open source version
+... Then was broken when compiled in Xcode 13, this involved lots of rewriting and there may be some bugs
+- Disabled Bitcode which will give far smaller IPA size
+- Remove Network import to allow building for iOS 10+
+- Images have been optimised and are slightly smaller
+---
 # FlappyBird
 
 ## Notes
