@@ -6,7 +6,6 @@
 //  Copyright (c) 2016 Brandon Plank. All rights reserved.
 //
 
-import Then
 import UIKit
 
 class ScreenMirror: NSObject {
@@ -24,12 +23,14 @@ class ScreenMirror: NSObject {
 
     @objc func didConnectNotification(_ noti: Notification) {
         guard let newScreen = noti.object as? UIScreen else { return }
-        externalWindow = UIWindow().then {
-            $0.frame = newScreen.bounds
-            $0.rootViewController = GameViewController()
-            $0.screen = newScreen
-            $0.isHidden = false
-        }
+        externalWindow =  {
+            let window = UIWindow()
+            window.frame = newScreen.bounds
+            window.rootViewController = GameViewController()
+            window.screen = newScreen
+            window.isHidden = false
+            return window
+        }()
         (UIApplication.shared.delegate as? AppDelegate)?.window?.rootViewController = TapViewController()
     }
 

@@ -11,13 +11,11 @@
 		889E3EC124AD152400176E98 /* ScreenMirror.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889E3EBE24AD152400176E98 /* ScreenMirror.swift */; };
 		889E3EC224AD152400176E98 /* TapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889E3EBF24AD152400176E98 /* TapViewController.swift */; };
 		889E3EC424AD158D00176E98 /* SKButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889E3EC324AD158D00176E98 /* SKButtonNode.swift */; };
-		8ED227C76EB92DE92A0D01FE /* libPods-Flappy Bird.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B97CC781040A747856E992D3 /* libPods-Flappy Bird.a */; };
 		DD237702245B73B500B570A3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD237701245B73B500B570A3 /* AppDelegate.swift */; };
 		DD23770A245B73B500B570A3 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD237709245B73B500B570A3 /* GameViewController.swift */; };
 		DD23770D245B73B500B570A3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DD23770B245B73B500B570A3 /* Main.storyboard */; };
 		DD23770F245B73B700B570A3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DD23770E245B73B700B570A3 /* Assets.xcassets */; };
 		DD237712245B73B700B570A3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DD237710245B73B700B570A3 /* LaunchScreen.storyboard */; };
-		DD23771A245B744F00B570A3 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = DD237719245B744F00B570A3 /* Podfile */; };
 		DD676405246DF93D00632CA8 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD676404246DF93D00632CA8 /* Reachability.swift */; };
 		DD898AFD245CCFC400478094 /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = DD898AFC245CCFC400478094 /* sounds */; };
 		DD898B13245CD23A00478094 /* SettingsPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD898B0F245CD23A00478094 /* SettingsPanel.swift */; };
@@ -26,7 +24,6 @@
 		DD898B16245CD23A00478094 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD898B12245CD23A00478094 /* GameScene.swift */; };
 		DD898B18245CD26600478094 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = DD898B17245CD26600478094 /* fonts */; };
 		DD898B1A245CD2C200478094 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = DD898B19245CD2C100478094 /* Actions.sks */; };
-		DDA096F3245CAF5E00B3F71C /* libThen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDA096F2245CAF5E00B3F71C /* libThen.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -43,12 +40,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		38E50141811F7ADD628887B2 /* Pods-Flappy Bird.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flappy Bird.release.xcconfig"; path = "Target Support Files/Pods-Flappy Bird/Pods-Flappy Bird.release.xcconfig"; sourceTree = "<group>"; };
 		889E3EBD24AD152400176E98 /* ControlCentre.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlCentre.swift; sourceTree = "<group>"; };
 		889E3EBE24AD152400176E98 /* ScreenMirror.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenMirror.swift; sourceTree = "<group>"; };
 		889E3EBF24AD152400176E98 /* TapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TapViewController.swift; sourceTree = "<group>"; };
 		889E3EC324AD158D00176E98 /* SKButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKButtonNode.swift; sourceTree = "<group>"; };
-		95DB7C1FDF531A35ED1B493F /* Pods-Flappy Bird.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flappy Bird.debug.xcconfig"; path = "Target Support Files/Pods-Flappy Bird/Pods-Flappy Bird.debug.xcconfig"; sourceTree = "<group>"; };
 		B97CC781040A747856E992D3 /* libPods-Flappy Bird.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Flappy Bird.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD2376FE245B73B500B570A3 /* Flappy Bird.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Flappy Bird.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD237701245B73B500B570A3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -57,7 +52,6 @@
 		DD23770E245B73B700B570A3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DD237711245B73B700B570A3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DD237713245B73B700B570A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Flappy Bird/Info.plist"; sourceTree = SOURCE_ROOT; };
-		DD237719245B744F00B570A3 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		DD676404246DF93D00632CA8 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		DD898AFC245CCFC400478094 /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sounds; sourceTree = "<group>"; };
 		DD898B0F245CD23A00478094 /* SettingsPanel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsPanel.swift; sourceTree = "<group>"; };
@@ -74,8 +68,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DDA096F3245CAF5E00B3F71C /* libThen.a in Frameworks */,
-				8ED227C76EB92DE92A0D01FE /* libPods-Flappy Bird.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,22 +94,11 @@
 			path = "External Display";
 			sourceTree = "<group>";
 		};
-		C6F7E28557FB7978E7D5C55A /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				95DB7C1FDF531A35ED1B493F /* Pods-Flappy Bird.debug.xcconfig */,
-				38E50141811F7ADD628887B2 /* Pods-Flappy Bird.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		DD2376F5245B73B500B570A3 = {
 			isa = PBXGroup;
 			children = (
-				DD237719245B744F00B570A3 /* Podfile */,
 				DD237700245B73B500B570A3 /* Flappy Bird */,
 				DD2376FF245B73B500B570A3 /* Products */,
-				C6F7E28557FB7978E7D5C55A /* Pods */,
 				280C71132CC39B187A028DB4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -167,7 +148,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DD237716245B73B700B570A3 /* Build configuration list for PBXNativeTarget "Flappy Bird" */;
 			buildPhases = (
-				DAAD6724AF74FC61FCDE8CD4 /* [CP] Check Pods Manifest.lock */,
 				DD2376FA245B73B500B570A3 /* Sources */,
 				DD2376FB245B73B500B570A3 /* Frameworks */,
 				DD2376FC245B73B500B570A3 /* Resources */,
@@ -179,6 +159,8 @@
 			dependencies = (
 			);
 			name = "Flappy Bird";
+			packageProductDependencies = (
+			);
 			productName = "Flappy Bird";
 			productReference = DD2376FE245B73B500B570A3 /* Flappy Bird.app */;
 			productType = "com.apple.product-type.application";
@@ -208,6 +190,8 @@
 				Base,
 			);
 			mainGroup = DD2376F5245B73B500B570A3;
+			packageReferences = (
+			);
 			productRefGroup = DD2376FF245B73B500B570A3 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -222,7 +206,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DD23771A245B744F00B570A3 /* Podfile in Resources */,
 				DD23770D245B73B500B570A3 /* Main.storyboard in Resources */,
 				DD898AFD245CCFC400478094 /* sounds in Resources */,
 				DD898B1A245CD2C200478094 /* Actions.sks in Resources */,
@@ -252,28 +235,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n";
-		};
-		DAAD6724AF74FC61FCDE8CD4 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Flappy Bird-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -437,14 +398,13 @@
 		};
 		DD237717245B73B700B570A3 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 95DB7C1FDF531A35ED1B493F /* Pods-Flappy Bird.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = GR3NL679U6;
-				ENABLE_BITCODE = YES;
+				DEVELOPMENT_TEAM = 7J8FJX4SRX;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "Flappy Bird/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -471,14 +431,13 @@
 		};
 		DD237718245B73B700B570A3 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 38E50141811F7ADD628887B2 /* Pods-Flappy Bird.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = GR3NL679U6;
-				ENABLE_BITCODE = YES;
+				DEVELOPMENT_TEAM = 7J8FJX4SRX;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "Flappy Bird/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (

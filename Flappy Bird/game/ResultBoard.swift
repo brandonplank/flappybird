@@ -8,8 +8,6 @@
 //  Copyright (c) 2016 Brandon Plank. All rights reserved.
 //
 import SpriteKit
-import Then
-import Network
 
 public class ResultBoard: SKSpriteNode {
     
@@ -26,8 +24,17 @@ public class ResultBoard: SKSpriteNode {
     }
     
     convenience init(score: Int) {
-        let image = SKTexture(imageNamed: "scoreboard").then { $0.filteringMode = .nearest }
+        let image = SKTexture(imageNamed: "scoreboard")
+        image.filteringMode = .nearest
         self.init(texture: image, color: UIColor.clear, size: image.size())
+        
+        
+        currentScore.position = CGPoint(x: frame.midX + 75, y: frame.midY + 7)
+        currentScoreInside.position = CGPoint(x: frame.midX + 75 - 0.49, y: frame.midY + 7)
+        bestScore.position = CGPoint(x: frame.midX + 75, y: frame.midY - 35)
+        bestScoreInside.position = CGPoint(x: frame.midX + 75 - 0.49, y: frame.midY - 35)
+        medal.position = CGPoint(x: frame.midX - 64, y: frame.midY - 6)
+        new.position = CGPoint(x: frame.midX + 35, y: frame.midY - 6)
         
         bestScore.text = "\(ResultBoard.bestScore())"
         bestScoreInside.text = "\(ResultBoard.bestScore())"
@@ -44,50 +51,57 @@ public class ResultBoard: SKSpriteNode {
         addChild(medal)
         self.score = score
     }
+
+    private var currentScore: SKLabelNode = {
+        let node = SKLabelNode(fontNamed: "04b_19")
+        node.zPosition = GamezPosition.resultText + 1
+        node.fontSize = 16
+        node.fontColor = SKColor.black
+        return node
+    }()
     
-    private lazy var currentScore = SKLabelNode(fontNamed: "04b_19").then {
-        $0.zPosition = GamezPosition.resultText + 1
-        $0.fontSize = 16
-        $0.fontColor = SKColor.black
-        $0.position = CGPoint(x: frame.midX + 75, y: frame.midY + 7)
-    }
-    
-    private lazy var currentScoreInside = SKLabelNode(fontNamed: "inside").then {
-        $0.zPosition = GamezPosition.resultText
-        $0.fontSize = 16
-        $0.fontColor = SKColor.white
-        $0.position = CGPoint(x: frame.midX + 75 - 0.49, y: frame.midY + 7)
-    }
-    
-    private lazy var bestScore = SKLabelNode(fontNamed: "04b_19").then {
-        $0.zPosition = GamezPosition.resultText + 1
-        $0.fontSize = 16
-        $0.fontColor = SKColor.black
-        $0.position = CGPoint(x: frame.midX + 75, y: frame.midY - 35)
-    }
-    
-    private lazy var bestScoreInside = SKLabelNode(fontNamed: "inside").then {
-        $0.zPosition = GamezPosition.resultText
-        $0.fontSize = 16
-        $0.fontColor = SKColor.white
-        $0.position = CGPoint(x: frame.midX + 75 - 0.49, y: frame.midY - 35)
-    }
-    
-    private lazy var medal = SKSpriteNode().then {
-        $0.zPosition = GamezPosition.resultText
-        $0.position = CGPoint(x: frame.midX - 64, y: frame.midY - 6)
-    }
-    
-    private lazy var new = SKSpriteNode(texture: SKTexture(imageNamed: "new")).then {
-        $0.zPosition = GamezPosition.resultText
-        $0.position = CGPoint(x: frame.midX + 35, y: frame.midY - 6)
-        $0.setScale(0)
-    }
-    
-    private lazy var sparkle = SKSpriteNode(texture: SKTexture(imageNamed: "sparkle")).then {
-        $0.setScale(0)
-        $0.zPosition = GamezPosition.resultText+1
-    }
+    private var currentScoreInside: SKLabelNode = {
+        let node = SKLabelNode(fontNamed: "inside")
+        node.zPosition = GamezPosition.resultText
+        node.fontSize = 16
+        node.fontColor = SKColor.white
+        return node
+    }()
+
+    private var bestScore: SKLabelNode = {
+        let node = SKLabelNode(fontNamed: "04b_19")
+        node.zPosition = GamezPosition.resultText + 1
+        node.fontSize = 16
+        node.fontColor = SKColor.black
+        return node
+    }()
+
+    private var bestScoreInside: SKLabelNode = {
+        let node = SKLabelNode(fontNamed: "inside")
+        node.zPosition = GamezPosition.resultText
+        node.fontSize = 16
+        node.fontColor = SKColor.white
+        return node
+    }()
+        
+    private var medal: SKSpriteNode = {
+        let node = SKSpriteNode()
+        node.zPosition = GamezPosition.resultText
+        return node
+    }()
+
+    private var new: SKSpriteNode = {
+        let node = SKSpriteNode(texture: SKTexture(imageNamed: "new"))
+        node.setScale(0)
+        return node
+    }()
+  
+    private var sparkle: SKSpriteNode = {
+        let node = SKSpriteNode(texture: SKTexture(imageNamed: "sparkle"))
+        node.setScale(0)
+        node.zPosition = GamezPosition.resultText + 1
+        return node
+    }()
     
     private let sparkleAction = SKAction.repeatForever(SKAction.sequence([
         SKAction.customAction(withDuration: 0.0) { (node, _) in

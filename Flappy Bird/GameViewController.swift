@@ -10,11 +10,8 @@ import UIKit
 import Foundation
 import SpriteKit
 import GameplayKit
-import Then
-import Network
 
 let gameVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
-
 
 class GameViewController: UIViewController {
     public static let shared = GameViewController()
@@ -41,10 +38,12 @@ class GameViewController: UIViewController {
     override var prefersStatusBarHidden: Bool { true }
     override var canBecomeFirstResponder: Bool { true }
     var preferredFramesPerSecond: Int { 120 }
-    
-    lazy var scene = GameScene(fileNamed: "GameScene")?.then {
-        $0.scaleMode = .aspectFill
-    }
+        
+    var scene: GameScene? = {
+        let scene = GameScene(fileNamed: "GameScene")
+        scene?.scaleMode = .aspectFill
+        return scene
+    }()
     
     override var keyCommands: [UIKeyCommand]? { [
         UIKeyCommand(input: "j", modifierFlags: .command, action: #selector(commandAction(_:)), discoverabilityTitle: "Jump"),
@@ -52,11 +51,13 @@ class GameViewController: UIViewController {
     ] }
     
     override func loadView() {
-        view = SKView().then {
-            $0.ignoresSiblingOrder = true
-            $0.showsFPS = false
-            $0.showsNodeCount = false
-        }
+        view = {
+            let _view = SKView()
+            _view.ignoresSiblingOrder = true
+            _view.showsFPS = false
+            _view.showsNodeCount = false
+            return _view
+        }()
     }
     override func viewWillLayoutSubviews() {
     }
