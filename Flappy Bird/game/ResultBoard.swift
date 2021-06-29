@@ -93,6 +93,7 @@ public class ResultBoard: SKSpriteNode {
     private var new: SKSpriteNode = {
         let node = SKSpriteNode(texture: SKTexture(imageNamed: "new"))
         node.setScale(0)
+        node.zPosition = GamezPosition.resultText + 1
         return node
     }()
   
