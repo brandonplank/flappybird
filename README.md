@@ -18,8 +18,7 @@ The '.ipa' and '.deb' files for FlappyBird can be found on the [release page](ht
 
 ## License
 - [MIT](https://choosealicense.com/licenses/mit/)
-- Copyright (c) 2020 Brandon Plank
-- Copyright (c) 2020 ThatcherDev
+- Copyright (c) 2020 - 2021 Brandon Plank, ThatcherDev (The FlappyBird Revision Team)
 
 ## Notice
 We do not own most of the Flappy Bird assets, or the Flappy Bird name, some of the assets
