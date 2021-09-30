@@ -2,7 +2,7 @@
 
 ## Notes
 * This is only the public source with missing features.
-* The main repo will remain closed source because of Google Sign-In
+* The main repo will remain closed source because of ~~Google Sign-In~~ private encryption methods and private endpoints.
 
 This is an extremely close clone to the original FlappyBird by Dong Nguyen.
 
