@@ -10,7 +10,7 @@
 
 ## Notes
 * This is only the public source with missing features.
-* The main repo will remain closed source because of Google Sign-In
+* The main repo will remain closed source because of ~~Google Sign-In~~ private encryption methods and private endpoints.
 
 This is an extremely close clone to the original FlappyBird by Dong Nguyen.
 
@@ -26,8 +26,7 @@ The '.ipa' and '.deb' files for FlappyBird can be found on the [release page](ht
 
 ## License
 - [MIT](https://choosealicense.com/licenses/mit/)
-- Copyright (c) 2020 Brandon Plank
-- Copyright (c) 2020 ThatcherDev
+- Copyright (c) 2020 - 2021 Brandon Plank, ThatcherDev (The FlappyBird Revision Team)
 
 ## Notice
 We do not own most of the Flappy Bird assets, or the Flappy Bird name, some of the assets
