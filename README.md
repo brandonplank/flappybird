@@ -17,7 +17,7 @@ Compatible with watchOS 6.0 and above.
 The '.ipa' and '.deb' files for FlappyBird can be found on the [release page](https://github.com/brandonplank/flappybird/releases).
 
 ## License
-- [MIT](https://choosealicense.com/licenses/mit/)
+- [AGPL-3.0](https://choosealicense.com/licenses/agpl-3.0/)
 - Copyright (c) 2020 - 2021 Brandon Plank, ThatcherDev (The FlappyBird Revision Team)
 
 ## Notice
