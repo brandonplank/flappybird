@@ -18,7 +18,7 @@ The '.ipa' and '.deb' files for FlappyBird can be found on the [release page](ht
 
 ## License
 - [AGPL-3.0](https://choosealicense.com/licenses/agpl-3.0/)
-- Copyright (c) 2020 - 2021 Brandon Plank, ThatcherDev (The FlappyBird Revision Team)
+- Copyright (c) 2019 - 2022 Brandon Plank, ThatcherDev (The FlappyBird Revision Team)
 
 ## Notice
 We do not own most of the Flappy Bird assets, or the Flappy Bird name, some of the assets
