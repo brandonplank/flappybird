@@ -14,7 +14,7 @@ FlappyBird is compatible with the iPhone 6s and above on iOS 13 and later.
 Compatible with watchOS 6.0 and above.
 
 ## Installation
-The '.ipa' and '.deb' files for FlappyBird can be found on the [release page](https://github.com/brandonplank/flappybird/releases).
+The '.ipa' for FlappyBird can be found on the [release page](https://github.com/crypticplank/flappybird/releases).
 
 ## License
 - [AGPL-3.0](https://choosealicense.com/licenses/agpl-3.0/)
