@@ -6,7 +6,6 @@
 //  Copyright (c) 2016 Brandon Plank. All rights reserved.
 //
 
-import Then
 import UIKit
 
 class ScreenMirror: NSObject {

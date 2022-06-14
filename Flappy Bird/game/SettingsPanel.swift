@@ -7,7 +7,6 @@
 //
 import Foundation
 import SpriteKit
-import Then
 
 struct SettingsPositions {
     static let toggleOnX: CGFloat = 68
@@ -29,6 +28,8 @@ class SettingsPanel: SKSpriteNode {
         addChild(backButton)
         addChild(backButtonTouchBox)
         
+        addChild(versionLabel)
+        
         addChild(soundToggle)
         addChild(soundButton)
         
@@ -40,6 +41,17 @@ class SettingsPanel: SKSpriteNode {
         
         addChild(adaptiveBackgroundToggle)
         addChild(adaptiveBackgroundButton)
+    }
+    
+    lazy var versionLabel = MKOutlinedLabelNode(fontNamed: "KongtextRegular", fontSize: 12).then {
+        $0.name = "versionLabel"
+        $0.position = CGPoint(x: SettingsPositions.toggleOffX + (SettingsPositions.toggleOnX - SettingsPositions.toggleOffX) / 2, y: SettingsPositions.soundToggleY + 20)
+        $0.zPosition = 3
+        $0.fontColor = UIColor.white
+        $0.borderColor = UIColor.black
+        $0.borderWidth = 1
+        $0.borderOffset = CGPoint(x: 0, y: 0)
+        $0.outlinedText = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
     }
     
     lazy var backButton = SKSpriteNode(texture: SKTexture(imageNamed: "back-button").then { $0.filteringMode = .nearest }).then {

@@ -8,14 +8,9 @@
 //  Copyright (c) 2016 Brandon Plank. All rights reserved.
 //
 import SpriteKit
-import Then
 import Network
 
 public class ResultBoard: SKSpriteNode {
-    
-    public static var userUid: String?
-    public static var userName: String?
-    
     
     override init(texture: SKTexture?, color: UIColor, size: CGSize) {
         super.init(texture: texture, color: color, size: size)
@@ -26,7 +21,7 @@ public class ResultBoard: SKSpriteNode {
     }
     
     convenience init(score: Int) {
-        let image = SKTexture(imageNamed: "scoreboard").then { $0.filteringMode = .nearest }
+        let image = Assets.shared.sprites.textureNamed("scoreboard").then { $0.filteringMode = .nearest }
         self.init(texture: image, color: UIColor.clear, size: image.size())
         
         bestScore.text = "\(ResultBoard.bestScore())"
@@ -78,13 +73,13 @@ public class ResultBoard: SKSpriteNode {
         $0.position = CGPoint(x: frame.midX - 64, y: frame.midY - 6)
     }
     
-    private lazy var new = SKSpriteNode(texture: SKTexture(imageNamed: "new")).then {
+    private lazy var new = SKSpriteNode(texture: Assets.shared.sprites.textureNamed("new")).then {
         $0.zPosition = GamezPosition.resultText
         $0.position = CGPoint(x: frame.midX + 35, y: frame.midY - 6)
         $0.setScale(0)
     }
     
-    private lazy var sparkle = SKSpriteNode(texture: SKTexture(imageNamed: "sparkle")).then {
+    private lazy var sparkle = SKSpriteNode(texture: Assets.shared.sprites.textureNamed("sparkle")).then {
         $0.setScale(0)
         $0.zPosition = GamezPosition.resultText+1
     }
@@ -102,6 +97,9 @@ public class ResultBoard: SKSpriteNode {
     
     var score: Int = 0 {
         didSet {
+            #if DEBUG
+            print(timeTook)
+            #endif
             if canShowScore {
                 
                 DispatchQueue.global().async {
@@ -135,7 +133,7 @@ public class ResultBoard: SKSpriteNode {
             }
             
             if canShowScore {
-                let medalTexture = score == 0 ? SKTexture() : (score < (ResultBoard.bestScore() / 2) ? (SKTexture(imageNamed: "copper-medal")) : (score < ResultBoard.bestScore() ?(SKTexture(imageNamed: "silver-medal")) : (score < (ResultBoard.bestScore() * 2) ? (SKTexture(imageNamed: "gold-medal")) : (SKTexture(imageNamed:"platinum-medal")))))
+                let medalTexture = score == 0 ? SKTexture() : (score < (ResultBoard.bestScore() / 2) ? (Assets.shared.sprites.textureNamed("copper-medal")) : (score < ResultBoard.bestScore() ?(SKTexture(imageNamed: "silver-medal")) : (score < (ResultBoard.bestScore() * 2) ? (Assets.shared.sprites.textureNamed("gold-medal")) : (Assets.shared.sprites.textureNamed("platinum-medal")))))
                 medal.run(SKAction.setTexture(medalTexture, resize: true))
                 
                 sparkle.setScale(0)

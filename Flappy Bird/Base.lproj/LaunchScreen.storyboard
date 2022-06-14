@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21179.7" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21169.4"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -19,36 +19,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="back" translatesAutoresizingMaskIntoConstraints="NO" id="HnX-j0-WYc">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DotGears" translatesAutoresizingMaskIntoConstraints="NO" id="pDy-9i-ccc">
+                                <rect key="frame" x="87" y="384" width="240" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="syk-Ya-vOZ"/>
+                                    <constraint firstAttribute="height" constant="128" id="uRw-ea-ImM"/>
+                                </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T0j-Kl-aDm">
-                                <rect key="frame" x="204.5" y="437.5" width="5" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mLn-45-cuz">
-                                <rect key="frame" x="57" y="840" width="300" height="43"/>
-                                <string key="text">Copyright © 2020 Brandon Plank, ThatcherDev
-
-See license for details.</string>
-                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="12"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="HnX-j0-WYc" secondAttribute="trailing" id="7aj-kJ-Ifs"/>
-                            <constraint firstAttribute="bottom" secondItem="mLn-45-cuz" secondAttribute="bottom" constant="13" id="9Ry-0j-DHY"/>
-                            <constraint firstItem="T0j-Kl-aDm" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="9rr-v6-d2N"/>
-                            <constraint firstItem="T0j-Kl-aDm" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="GYO-FP-Piq"/>
-                            <constraint firstItem="mLn-45-cuz" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="57" id="NwF-Cf-B2t"/>
-                            <constraint firstAttribute="bottom" secondItem="HnX-j0-WYc" secondAttribute="bottom" id="TO4-Nu-9AB"/>
-                            <constraint firstAttribute="trailing" secondItem="mLn-45-cuz" secondAttribute="trailing" constant="57" id="VWT-03-Zke"/>
-                            <constraint firstItem="HnX-j0-WYc" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="e6d-V5-w70"/>
-                            <constraint firstItem="HnX-j0-WYc" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="zNQ-8a-Xrw"/>
+                            <constraint firstItem="pDy-9i-ccc" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="FN6-1p-i3E"/>
+                            <constraint firstItem="pDy-9i-ccc" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="W4y-2E-b85"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -58,6 +40,6 @@ See license for details.</string>
         </scene>
     </scenes>
     <resources>
-        <image name="back" width="320" height="568"/>
+        <image name="DotGears" width="320" height="94"/>
     </resources>
 </document>
