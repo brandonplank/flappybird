@@ -10,24 +10,43 @@
 import AVFoundation
 import SpriteKit
 
+// MARK: - Extensions
+
 extension SKTexture {
-    var width: CGFloat { size().width }
-    var height: CGFloat { size().height }
+    var width: CGFloat {
+        size().width
+    }
+
+    var height: CGFloat {
+        size().height
+    }
 }
 
 extension SKNode {
-    var width: CGFloat { frame.width }
-    var height: CGFloat { frame.height }
+    var width: CGFloat {
+        frame.width
+    }
+
+    var height: CGFloat {
+        frame.height
+    }
 }
 
-struct PhysicsCatagory {
-    static let bird: UInt32 = 0x1 << 0
-    static let land: UInt32 = 0x1 << 1
-    static let pipe: UInt32 = 0x1 << 2
-    static let score: UInt32 = 0x1 << 3
+// MARK: - Physics
+
+struct PhysicsCategory {
+    static let bird: UInt32 = 1 << 0
+    static let land: UInt32 = 1 << 1
+    static let pipe: UInt32 = 1 << 2
+    static let score: UInt32 = 1 << 3
 }
 
-struct GamezPosition {
+// Keep the original name available if other project files use it.
+typealias PhysicsCatagory = PhysicsCategory
+
+// MARK: - Z Positions
+
+struct GameZPosition {
     static let sky: CGFloat = -3
     static let pipe: CGFloat = -2
     static let bird: CGFloat = -1
@@ -37,791 +56,1795 @@ struct GamezPosition {
     static let resultText: CGFloat = 3
 }
 
-public class screenData {
-    static let shared = screenData()
-    var height: CGFloat = 0.0
-    var width: CGFloat = 0.0
-    private init() { }
+// Keep the original name available if other project files use it.
+typealias GamezPosition = GameZPosition
+
+// MARK: - Global Game Data
+
+public final class ScreenData {
+    static let shared = ScreenData()
+
+    var height: CGFloat = 0
+    var width: CGFloat = 0
+
+    private init() {}
 }
 
+// Keep compatibility with existing project code.
+typealias screenData = ScreenData
+
 var canShowScore = true
-var timeTook: Double = 0.0
+var timeTook: Double = 0
 var rosesCounter = 0
 var hasRanFor1time = false
 
-class GameScene: SKScene {
-    
-    let superScore = 1000
-    
+// MARK: - Game Scene
+
+final class GameScene: SKScene {
+
+    // MARK: Constants
+
+    private enum Constants {
+        static let superScore = 1000
+
+        static let gravity = CGVector(dx: 0, dy: -12)
+
+        static let verticalPipeGap: CGFloat = 130
+        static let pipeScale: CGFloat = 2
+        static let birdScale: CGFloat = 1.5
+
+        static let idleFloatDistance: CGFloat = 35
+        static let idleFloatDuration: TimeInterval = 1
+
+        static let flapImpulse: CGFloat = 22
+        static let flapRotation: CGFloat = 0.45
+        static let flapRotationHold: TimeInterval = 0.60
+
+        static let minimumBirdYOffset: CGFloat = 20
+
+        static let groundMoveSpeed: TimeInterval = 0.005
+        static let skyMoveSpeed: TimeInterval = 0.1
+        static let pipeMoveSpeed: TimeInterval = 0.005
+
+        static let animationFrameDuration: TimeInterval = 0.1
+
+        static let uiAnimationDuration: TimeInterval = 0.1
+        static let toggleAnimationDuration: TimeInterval = 0.12
+
+        static let gameOverDelay: TimeInterval = 0.8
+        static let resultDelay: TimeInterval = 0.2
+    }
+
+    // MARK: Shared State
+
     static let shared = GameScene()
-    static let width = GameScene().width
-    static let height = GameScene().height
-    
-    let impact = UIImpactFeedbackGenerator()
-    
-    let flapAction = SKAction.playSoundFileNamed("sounds/sfx_wing.caf", waitForCompletion: false)
-    let dieAction = SKAction.playSoundFileNamed("sounds/sfx_die.caf", waitForCompletion: false)
-    let pointAction = SKAction.playSoundFileNamed("sounds/sfx_point.wav", waitForCompletion: false)
-    let hitAction = SKAction.playSoundFileNamed("sounds/sfx_hit.caf", waitForCompletion: false)
-    let swooshAction = SKAction.playSoundFileNamed("sounds/sfx_swooshing.caf", waitForCompletion: false)
-    
-    let atlas = Assets.shared.sprites
-    
-    var birdTextures = [SKTexture(), SKTexture(), SKTexture()]
-    var skyNodes = [SKSpriteNode]()
-    
-    
-    let pipeTextureUp = Assets.shared.sprites.textureNamed("PipeUp")
-    let pipeTextureDown = Assets.shared.sprites.textureNamed("PipeDown")
-    let groundTexture = Assets.shared.sprites.textureNamed("land")
-    let gameoverTexture = Assets.shared.sprites.textureNamed("gameover")
-    let flappybirdTexture = Assets.shared.sprites.textureNamed("flappybird")
-    let getreadyTexture = Assets.shared.sprites.textureNamed("get-ready")
-    let taptapTexture = Assets.shared.sprites.textureNamed("taptap")
-    let defaultBirdTexture = Assets.shared.sprites.textureNamed("yellow-bird-1")
-    static let settingsButtonTexture = Assets.shared.sprites.textureNamed("settings")
-    static let githubButtonTexture = Assets.shared.sprites.textureNamed("github")
-    let flappyplayButtonTexture = Assets.shared.sprites.textureNamed("flappyplay")
-    let dayTexture = Assets.shared.sprites.textureNamed("day-sky")
-    let nightTexture = Assets.shared.sprites.textureNamed("night-sky")
-    
-    
-    
-    var verticalPipeGap: CGFloat = 130.0
-    var moving = SKNode()
-    var pipes = SKNode()
-    
-    var score = 0 {
-        didSet { scoreLabelNode.text = String(score); scoreLabelNodeInside.text = String(score) }
+
+    static var width: CGFloat {
+        shared.width
     }
-    
-    var playSounds = true
-    var newBirds = true
-    var haptics = true
-    var adaptiveBackground = false
-    
-    var firstTouch = false
-    var playFlapSound = false
-    var afterGameOver = false
-    var gameOverDisplayed = false
-    var hitGround = false
+
+    static var height: CGFloat {
+        shared.height
+    }
+
+    // These remain static because other project files may reference them.
+    static let settingsButtonTexture =
+        Assets.shared.sprites.textureNamed("settings")
+
+    static let githubButtonTexture =
+        Assets.shared.sprites.textureNamed("github")
+
     static var hitButton = true
-    
-    var time: Double = 0.0
-    
-    
-    let notification = UINotificationFeedbackGenerator()
-    
-    lazy var scoreLabelNode = SKLabelNode(fontNamed: "04b_19").then {
-        $0.fontColor = SKColor.black
+
+    // MARK: Game State
+
+    private var score = 0 {
+        didSet {
+            scoreLabelNode.text = String(score)
+            scoreLabelNodeInside.text = String(score)
+        }
+    }
+
+    private var gameStartTime: TimeInterval = 0
+    private var lastFlapTime: TimeInterval = 0
+
+    private var isWaitingToStart = false
+    private var isGameOver = false
+    private var hasHitGround = false
+    private var isShowingGameOver = false
+
+    private var playFlapSound = false
+
+    private var playSounds = true
+    private var newBirds = true
+    private var haptics = true
+    private var adaptiveBackground = false
+
+    private var skyNodes = [SKSpriteNode]()
+    private var birdTextures = [SKTexture(), SKTexture(), SKTexture()]
+
+    // MARK: Feedback
+
+    private let impactFeedback = UIImpactFeedbackGenerator()
+    private let notificationFeedback = UINotificationFeedbackGenerator()
+
+    // MARK: Sounds
+
+    private let flapSound = SKAction.playSoundFileNamed(
+        "sounds/sfx_wing.caf",
+        waitForCompletion: false
+    )
+
+    private let dieSound = SKAction.playSoundFileNamed(
+        "sounds/sfx_die.caf",
+        waitForCompletion: false
+    )
+
+    private let pointSound = SKAction.playSoundFileNamed(
+        "sounds/sfx_point.wav",
+        waitForCompletion: false
+    )
+
+    private let hitSound = SKAction.playSoundFileNamed(
+        "sounds/sfx_hit.caf",
+        waitForCompletion: false
+    )
+
+    private let swooshSound = SKAction.playSoundFileNamed(
+        "sounds/sfx_swooshing.caf",
+        waitForCompletion: false
+    )
+
+    // MARK: Textures
+
+    private let pipeTextureUp =
+        Assets.shared.sprites.textureNamed("PipeUp")
+
+    private let pipeTextureDown =
+        Assets.shared.sprites.textureNamed("PipeDown")
+
+    private let groundTexture =
+        Assets.shared.sprites.textureNamed("land")
+
+    private let gameOverTexture =
+        Assets.shared.sprites.textureNamed("gameover")
+
+    private let flappyBirdTexture =
+        Assets.shared.sprites.textureNamed("flappybird")
+
+    private let getReadyTexture =
+        Assets.shared.sprites.textureNamed("get-ready")
+
+    private let tapTapTexture =
+        Assets.shared.sprites.textureNamed("taptap")
+
+    private let defaultBirdTexture =
+        Assets.shared.sprites.textureNamed("yellow-bird-1")
+
+    private let playButtonTexture =
+        Assets.shared.sprites.textureNamed("flappyplay")
+
+    private let dayTexture =
+        Assets.shared.sprites.textureNamed("day-sky")
+
+    private let nightTexture =
+        Assets.shared.sprites.textureNamed("night-sky")
+
+    // MARK: Scene Nodes
+
+    private let moving = SKNode()
+    private let pipes = SKNode()
+
+    private lazy var bird = makeBird()
+    private lazy var ground = makeGround()
+
+    private lazy var flappyBird = makeFlappyBird()
+    private lazy var getReady = makeGetReady()
+    private lazy var tapTap = makeTapTap()
+
+    private lazy var gameOverNode = makeGameOverNode()
+    private lazy var resultNode = makeResultNode()
+    private lazy var settingsNode = makeSettingsNode()
+
+    private lazy var playButton = makePlayButton()
+
+    private lazy var scoreLabelNode = SKLabelNode(
+        fontNamed: "04b_19"
+    ).then {
+        $0.fontColor = .black
         $0.fontSize = 50
-        $0.position = CGPoint(x: width / 2, y: 3 * height / 4)
-        $0.zPosition = GamezPosition.score + 1
+        $0.position = CGPoint(
+            x: width / 2,
+            y: 3 * height / 4
+        )
+        $0.zPosition = GameZPosition.score + 1
     }
-    lazy var scoreLabelNodeInside = SKLabelNode(fontNamed: "inside").then {
-        $0.fontColor = SKColor.white
+
+    private lazy var scoreLabelNodeInside = SKLabelNode(
+        fontNamed: "inside"
+    ).then {
+        $0.fontColor = .white
         $0.fontSize = 50
-        $0.position = CGPoint(x: width / 2 - 1.5, y: 3 * height / 4)
-        $0.zPosition = GamezPosition.score
+        $0.position = CGPoint(
+            x: width / 2 - 1.5,
+            y: 3 * height / 4
+        )
+        $0.zPosition = GameZPosition.score
     }
-    
-    lazy var gameover = SKSpriteNode(texture: gameoverTexture.then { $0.filteringMode = .nearest }).then {
-        $0.setScale(1.5)
-        $0.zPosition = GamezPosition.score
-        $0.position = CGPoint(x: width / 2, y: (height / 2) + 210)
-    }
-    
-    lazy var flappybird = SKSpriteNode(texture: flappybirdTexture.then { $0.filteringMode = .nearest }).then { $0.setScale(1.5)
-        $0.position = CGPoint(x: width / 2, y: (height / 2) + 200)
-    }
-    
-    lazy var getReady = SKSpriteNode(texture: getreadyTexture.then { $0.filteringMode = .nearest }).then { $0.setScale(1.2)
-        $0.position = CGPoint(x: width / 2, y: (height / 2) + 130)
-    }
-    
-    lazy var taptap = SKSpriteNode(texture: taptapTexture.then { $0.filteringMode = .nearest }).then {
-        $0.setScale(1.5)
-        $0.position = CGPoint(x: width / 2, y: height / 2)
-    }
-    
-    lazy var resultNode = ResultBoard(score: score).then {
-        $0.zPosition = GamezPosition.result
-        $0.position = CGPoint(x: width / 2, y: (height / 2) + 75)
-    }
-    
-    lazy var settingsNode = SettingsPanel().then {
-        $0.setScale(1.2)
-        $0.zPosition = GamezPosition.resultText + 4
-        $0.position = CGPoint(x: width / 2, y: (height / 2) + 15)
-    }
-    
-    lazy var bird = SKSpriteNode(texture: defaultBirdTexture.then { $0.filteringMode = .nearest }).then {
-        $0.setScale(1.5)
-        $0.zPosition = GamezPosition.bird
-        $0.position = CGPoint(x: (width / 2), y: (height / 2) + 75)
-        $0.physicsBody = SKPhysicsBody(circleOfRadius: $0.height / 2.0).then {
-            $0.isDynamic = false
-            $0.categoryBitMask = PhysicsCatagory.bird
-            $0.collisionBitMask = PhysicsCatagory.land | PhysicsCatagory.pipe
-            $0.contactTestBitMask = PhysicsCatagory.land | PhysicsCatagory.pipe
-        }
-    }
-    
-    let floatUpAndDown = SKAction.sequence([
-        SKAction.moveBy(x: 0, y: 35, duration: 1.0),
-        SKAction.moveBy(x: 0, y: -35, duration: 1.0)
-    ])
-    
-    func setRandomBirdTextures() {
-        let rand = Float.random(in: 0 ..< 1)
-        for n in 0...2 {
-            if newBirds {
-                if rand < 0.161 {
-                    birdTextures[n] = Assets.shared.sprites.textureNamed("yellow-bird-\(n + 1)").then { $0.filteringMode = .nearest }
-                } else if rand < 0.322 {
-                    birdTextures[n] = Assets.shared.sprites.textureNamed("red-bird-\(n + 1)").then { $0.filteringMode = .nearest }
-                } else if rand < 0.483 {
-                    birdTextures[n] = Assets.shared.sprites.textureNamed("blue-bird-\(n + 1)").then { $0.filteringMode = .nearest }
-                } else if rand < 0.644 {
-                    birdTextures[n] = Assets.shared.sprites.textureNamed("green-bird-\(n + 1)").then { $0.filteringMode = .nearest }
-                }else if rand < 0.805 {
-                    birdTextures[n] = Assets.shared.sprites.textureNamed("peach-bird-\(n + 1)").then { $0.filteringMode = .nearest }
-                }else if rand < 0.97 {
-                    birdTextures[n] = Assets.shared.sprites.textureNamed("purple-bird-\(n + 1)").then { $0.filteringMode = .nearest }
-                } else {
-                    birdTextures[n] = Assets.shared.sprites.textureNamed("kup-bird-\(n + 1)").then { $0.filteringMode = .nearest }
-                }
-            } else {
-                if rand < 0.33 {
-                    birdTextures[n] = Assets.shared.sprites.textureNamed("yellow-bird-\(n + 1)").then { $0.filteringMode = .nearest }
-                } else if rand < 0.66 {
-                    birdTextures[n] = Assets.shared.sprites.textureNamed("red-bird-\(n + 1)").then { $0.filteringMode = .nearest }
-                } else {
-                    birdTextures[n] = Assets.shared.sprites.textureNamed("blue-bird-\(n + 1)").then { $0.filteringMode = .nearest }
-                }
+
+    // MARK: Static Buttons
+
+    private static var settingsButton =
+        SKSpriteNode(
+            texture: settingsButtonTexture.then {
+                $0.filteringMode = .nearest
             }
+        ).then {
+            $0.name = "settings"
+            $0.setScale(1.2)
+            $0.position = CGPoint(
+                x: ScreenData.shared.width / 2 + 45,
+                y: ScreenData.shared.height / 2 - 25
+            )
         }
-        let anim = SKAction.animate(with: [birdTextures[0], birdTextures[1], birdTextures[2], birdTextures[1]], timePerFrame: 0.1)
-        bird.run(SKAction.repeatForever(anim))
-    }
-    
-    lazy var ground = SKNode().then {
-        $0.position = CGPoint(x: 0, y: groundTexture.height)
-        $0.zPosition = GamezPosition.land
-        $0.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: width, height: groundTexture.height * 2.0)).then {
-            $0.isDynamic = false
-            $0.categoryBitMask = PhysicsCatagory.land
-        }
-    }
-    
-    public static var settingsButton = SKSpriteNode(texture: settingsButtonTexture.then { $0.filteringMode = .nearest }).then {
-        $0.name = "settings"
-        $0.setScale(1.2)
-        $0.position = CGPoint(x: (screenData.shared.width / 2) + 45, y: (screenData.shared.height / 2) - 25)
-    }
-    
-    public static var githubButton = SKSpriteNode(texture: githubButtonTexture.then { $0.filteringMode = .nearest }).then {
-        $0.name = "github"
-        $0.setScale(1.2)
-        $0.position = CGPoint(x: (screenData.shared.width / 2) - 45, y: (screenData.shared.height / 2) - 25)
-    }
-    
-    lazy var playButton = SKSpriteNode(texture: flappyplayButtonTexture.then { $0.filteringMode = .nearest }).then {
-        $0.name = "play"
-        $0.setScale(1.2)
-        $0.position = CGPoint(x: (width / 2), y: (height / 2) - 115)
-    }
-    
-    func setGravityAndPhysics() {
-        physicsWorld.gravity = CGVector(dx: 0.0, dy: -12.0)
-        physicsWorld.contactDelegate = self
-    }
-    
-    func setGroundMoving() {
-        let groundWidth = groundTexture.width * 2.0
-        let moveGroundSprite = SKAction.moveBy(x: CGFloat(-groundWidth), y: 0, duration: TimeInterval(0.005 * groundWidth))
-        let resetGroundSprite = SKAction.moveBy(x: groundWidth, y: 0, duration: 0.0)
-        let moveGroundSpritesForever = SKAction.repeatForever(SKAction.sequence([moveGroundSprite, resetGroundSprite]))
-        for i in 0..<2 + Int(width / groundWidth) {
-            moving.addChild(SKSpriteNode(texture: groundTexture).then {
-                $0.setScale(2.0)
-                $0.position = CGPoint(x: CGFloat(i) * ($0.width - 1), y: $0.height / 2.0)
-                $0.run(moveGroundSpritesForever)
-            })
-        }
-    }
-    
-    func setRandomSkyTexture() {
-        let rand = Float.random(in: 0 ..< 1)
-        var skyTexture = rand < 0.5 ? nightTexture : dayTexture
-        
-        if #available(iOS 12.0, *) {
-            if(adaptiveBackground && self.view?.traitCollection.userInterfaceStyle == .dark){
-                skyTexture = nightTexture
-            } else if(adaptiveBackground && self.view?.traitCollection.userInterfaceStyle == .light){
-                skyTexture = dayTexture
+
+    private static var githubButton =
+        SKSpriteNode(
+            texture: githubButtonTexture.then {
+                $0.filteringMode = .nearest
             }
+        ).then {
+            $0.name = "github"
+            $0.setScale(1.2)
+            $0.position = CGPoint(
+                x: ScreenData.shared.width / 2 - 45,
+                y: ScreenData.shared.height / 2 - 25
+            )
         }
-        
-        let skyWidth = skyTexture.width * 1.5
-        let moveSkySprite = SKAction.moveBy(x: -skyWidth, y: 0, duration: TimeInterval(0.1 * skyWidth))
-        let resetSkySprite = SKAction.moveBy(x: skyWidth, y: 0, duration: 0.0)
-        let moveSkySpritesForever = SKAction.repeatForever(SKAction.sequence([moveSkySprite, resetSkySprite]))
-        for i in 0..<2 + Int(width / skyWidth) {
-            let spriteNode = SKSpriteNode(texture: skyTexture).then {
-                $0.setScale(1.5)
-                $0.zPosition = GamezPosition.sky
-                $0.position = CGPoint(x: CGFloat(i) * ($0.width - 1), y: $0.height / 3.5 + groundTexture.height * 2.0)
-                $0.run(moveSkySpritesForever)
-            }
-            if skyNodes.count < 2 + Int(width / skyWidth) {
-                skyNodes.append(spriteNode)
-            } else {
-                skyNodes[i].removeFromParent()
-                skyNodes[i] = spriteNode
-            }
-            moving.addChild(spriteNode)
-        }
-    }
-    
-    func spawnPipesForever() {
-        let spawn = SKAction.run(spawnPipes)
-        let delay = SKAction.wait(forDuration: 1.0)
-        let spawnThenDelay = SKAction.sequence([spawn, delay])
-        run(SKAction.repeatForever(spawnThenDelay))
-    }
-    
-    var hasRan = false
-    
-    private func spawnPipes() {
-        let height = UInt32(self.height / 4)
-        let y = CGFloat(arc4random_uniform(height) + height)
-        let pipeDown = SKSpriteNode(texture: pipeTextureDown).then {
-            $0.setScale(2.0)
-            $0.position = CGPoint(x: 0.0, y: y + $0.height + verticalPipeGap)
-            $0.physicsBody = SKPhysicsBody(rectangleOf: $0.size).then {
-                $0.isDynamic = false
-                $0.categoryBitMask = PhysicsCatagory.pipe
-                $0.contactTestBitMask = PhysicsCatagory.bird
-            }
-        }
-        let pipeUp = SKSpriteNode(texture: pipeTextureUp).then {
-            $0.setScale(2.0)
-            $0.position = CGPoint(x: 0.0, y: y)
-            $0.physicsBody = SKPhysicsBody(rectangleOf: $0.size).then {
-                $0.isDynamic = false
-                $0.categoryBitMask = PhysicsCatagory.pipe
-                $0.contactTestBitMask = PhysicsCatagory.bird
-            }
-        }
-        let contactNode = SKNode().then {
-            $0.position = CGPoint(x: pipeDown.width - 70 + bird.width / 2, y: (self.height / 2) + 400)
-            let size = CGSize(width: pipeUp.width, height: self.height)
-            $0.physicsBody = SKPhysicsBody(rectangleOf: size).then {
-                $0.isDynamic = false
-                $0.categoryBitMask = PhysicsCatagory.score
-                $0.contactTestBitMask = PhysicsCatagory.bird
-            }
-        }
-        
-        // the pipes move actions
-        let distanceToMove = (width + 2.0 * pipeTextureUp.width) + 25
-        let movePipes = SKAction.moveBy(x: -distanceToMove, y: 0.0, duration: TimeInterval(0.005 * distanceToMove))
-        let removePipes = SKAction.removeFromParent()
-        let movePipesAndRemove = SKAction.sequence([movePipes, removePipes])
-        
-        pipes.addChild(SKNode().then {
-            $0.position = CGPoint(x: width + pipeTextureUp.width * 2, y: -352) // Pipe diff
-            $0.zPosition = GamezPosition.pipe
-            $0.addChild(pipeDown)
-            $0.addChild(pipeUp)
-            $0.addChild(contactNode)
-            $0.run(movePipesAndRemove)
-        })
-    }
-    
+
+    // MARK: Idle Animation
+
+    private lazy var idleAnimation: SKAction = {
+        let floatUp = SKAction.moveBy(
+            x: 0,
+            y: Constants.idleFloatDistance,
+            duration: Constants.idleFloatDuration
+        )
+
+        let floatDown = SKAction.moveBy(
+            x: 0,
+            y: -Constants.idleFloatDistance,
+            duration: Constants.idleFloatDuration
+        )
+
+        return SKAction.repeatForever(
+            SKAction.sequence([
+                floatUp,
+                floatDown
+            ])
+        )
+    }()
+
+    // MARK: Scene Setup
+
     override func didMove(to view: SKView) {
-        if UserDefaults.standard.object(forKey: "playSounds") == nil {
-            UserDefaults.standard.set(true, forKey: "playSounds")
-        }
-        playSounds = UserDefaults.standard.bool(forKey: "playSounds")
-        if playSounds {
-            settingsNode.soundToggle.position = CGPoint(x: SettingsPositions.toggleOnX, y: SettingsPositions.soundToggleY)
-        } else {
-            settingsNode.soundToggle.position = CGPoint(x: SettingsPositions.toggleOffX, y: SettingsPositions.soundToggleY)
-        }
-        
-        if UserDefaults.standard.object(forKey: "newBirds") == nil {
-            UserDefaults.standard.set(true, forKey: "newBirds")
-        }
-        newBirds = UserDefaults.standard.bool(forKey: "newBirds")
-        if newBirds {
-            settingsNode.newBirdsToggle.position = CGPoint(x: SettingsPositions.toggleOnX, y: SettingsPositions.newBirdsToggleY)
-        } else {
-            settingsNode.newBirdsToggle.position = CGPoint(x: SettingsPositions.toggleOffX, y: SettingsPositions.newBirdsToggleY)
-        }
-        
-        if UserDefaults.standard.object(forKey: "haptics") == nil {
-            UserDefaults.standard.set(true, forKey: "haptics")
-        }
-        haptics = UserDefaults.standard.bool(forKey: "haptics")
-        if haptics {
-            settingsNode.hapticsToggle.position = CGPoint(x: SettingsPositions.toggleOnX, y: SettingsPositions.hapticsToggleY)
-        } else {
-            settingsNode.hapticsToggle.position = CGPoint(x: SettingsPositions.toggleOffX, y: SettingsPositions.hapticsToggleY)
-        }
-        
-        if UserDefaults.standard.object(forKey: "adaptiveBackground") == nil {
-            UserDefaults.standard.set(false, forKey: "adaptiveBackground")
-        }
-        adaptiveBackground = UserDefaults.standard.bool(forKey: "adaptiveBackground")
-        if adaptiveBackground {
-            settingsNode.adaptiveBackgroundToggle.position = CGPoint(x: SettingsPositions.toggleOnX, y: SettingsPositions.adaptiveBackgroundToggleY)
-        } else {
-            settingsNode.adaptiveBackgroundToggle.position = CGPoint(x: SettingsPositions.toggleOffX, y: SettingsPositions.adaptiveBackgroundToggleY)
-        }
-        screenData.shared.height = height
-        screenData.shared.width = width
-        setGravityAndPhysics()
-        setGroundMoving()
-        setRandomSkyTexture()
-        setRandomBirdTextures()
-        spawnPipesForever()
-        
-        addChild(flappybird)
+        configureSettings()
+        configureScene()
+        configurePhysics()
+        configureWorld()
+
+        startIdleAnimation()
+    }
+
+    private func configureScene() {
+        ScreenData.shared.height = height
+        ScreenData.shared.width = width
+
+        addChild(flappyBird)
         addChild(moving)
+
         moving.addChild(pipes)
+
         addChild(bird)
         addChild(ground)
-        addChild(GameScene.githubButton)
-        addChild(GameScene.settingsButton)
+
+        addChild(Self.githubButton)
+        addChild(Self.settingsButton)
         addChild(playButton)
-        
+
         score = 0
+
         moving.speed = 1
         bird.speed = 1
+
         pipes.setScale(0)
-        
-        bird.run(SKAction.repeatForever(floatUpAndDown), withKey:"float")
-        
-        ControlCentre.subscrpt(self)
     }
-    
-    override func touchesBegan(_ touches: Set<UITouch>?, with event: UIEvent?) {
-        let touch = touches?.first
-        let touchedNodeName = atPoint(touch?.location(in: self) ?? CGPoint(x: 0, y: 0)).name
-        
-        if touchedNodeName == "play" && !GameScene.hitButton {
-            GameScene.hitButton = true
-            run(SKAction.sequence([
-                SKAction.run { self.playSound(sound: self.swooshAction) },
-                SKAction.run { self.playButton.setScale(1.15) },
-                SKAction.wait(forDuration: 0.1),
-                SKAction.run{if(self.haptics) {self.impact.impactOccurred()}},
-                SKAction.run { self.playButton.setScale(1.2) },
-                SKAction.run{self.flashScreen(color: UIColor.black, fadeInDuration: 0.25, peakAlpha: 1.0, fadeOutDuration: 0.25)},
-                SKAction.wait(forDuration: 0.25)
-            ]),
-                completion: {
-                    if self.afterGameOver {
-                        self.resetScene()
-                        self.afterGameOver = false
-                    } else {
-                        self.bird.removeAction(forKey: "float")
-                        self.addChild(self.taptap)
-                        self.addChild(self.getReady)
-                        self.addChild(self.scoreLabelNode)
-                        self.addChild(self.scoreLabelNodeInside)
-                        self.bird.position = CGPoint(x: self.width / 2.5, y: self.height / 2)
-                        self.flappybird.removeFromParent()
-                    }
-                    self.bird.run(SKAction.repeatForever(self.floatUpAndDown), withKey: "float")
-                    GameScene.settingsButton.removeFromParent()
-                    GameScene.githubButton.removeFromParent()
-                    self.playButton.removeFromParent()
-                    GameScene.hitButton = false
-                    self.firstTouch = true
+
+    private func configurePhysics() {
+        physicsWorld.gravity = Constants.gravity
+        physicsWorld.contactDelegate = self
+    }
+
+    private func configureWorld() {
+        createGroundMovement()
+        updateSky()
+        updateBirdTextures()
+        startPipeSpawner()
+    }
+
+    // MARK: Settings
+
+    private func configureSettings() {
+        playSounds = loadBoolSetting(
+            key: "playSounds",
+            defaultValue: true
+        )
+
+        newBirds = loadBoolSetting(
+            key: "newBirds",
+            defaultValue: true
+        )
+
+        haptics = loadBoolSetting(
+            key: "haptics",
+            defaultValue: true
+        )
+
+        adaptiveBackground = loadBoolSetting(
+            key: "adaptiveBackground",
+            defaultValue: false
+        )
+
+        updateSettingsUI()
+    }
+
+    private func loadBoolSetting(
+        key: String,
+        defaultValue: Bool
+    ) -> Bool {
+        let defaults = UserDefaults.standard
+
+        if defaults.object(forKey: key) == nil {
+            defaults.set(defaultValue, forKey: key)
+        }
+
+        return defaults.bool(forKey: key)
+    }
+
+    private func saveSetting(
+        _ value: Bool,
+        key: String
+    ) {
+        UserDefaults.standard.set(value, forKey: key)
+    }
+
+    private func updateSettingsUI() {
+        settingsNode.soundToggle.position = CGPoint(
+            x: playSounds
+                ? SettingsPositions.toggleOnX
+                : SettingsPositions.toggleOffX,
+            y: SettingsPositions.soundToggleY
+        )
+
+        settingsNode.newBirdsToggle.position = CGPoint(
+            x: newBirds
+                ? SettingsPositions.toggleOnX
+                : SettingsPositions.toggleOffX,
+            y: SettingsPositions.newBirdsToggleY
+        )
+
+        settingsNode.hapticsToggle.position = CGPoint(
+            x: haptics
+                ? SettingsPositions.toggleOnX
+                : SettingsPositions.toggleOffX,
+            y: SettingsPositions.hapticsToggleY
+        )
+
+        settingsNode.adaptiveBackgroundToggle.position = CGPoint(
+            x: adaptiveBackground
+                ? SettingsPositions.toggleOnX
+                : SettingsPositions.toggleOffX,
+            y: SettingsPositions.adaptiveBackgroundToggleY
+        )
+    }
+
+    // MARK: Node Creation
+
+    private func makeBird() -> SKSpriteNode {
+        SKSpriteNode(
+            texture: defaultBirdTexture.then {
+                $0.filteringMode = .nearest
             }
+        ).then {
+            $0.setScale(Constants.birdScale)
+            $0.zPosition = GameZPosition.bird
+            $0.position = CGPoint(
+                x: width / 2,
+                y: height / 2 + 75
             )
-        } else if touchedNodeName == "settings" && !GameScene.hitButton {
-            GameScene.hitButton = true
-            run(SKAction.sequence([
-                SKAction.run { self.playSound(sound: self.swooshAction) },
-                SKAction.run { GameScene.settingsButton.setScale(1.15) },
-                SKAction.wait(forDuration: 0.1),
-                SKAction.run{if(self.haptics) {self.impact.impactOccurred()}},
-                SKAction.run { GameScene.settingsButton.setScale(1.2) },
-                SKAction.wait(forDuration: 0.1)]),
-                completion: {
-                    self.scaleTwice(node: GameScene.settingsButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 0.0, secondScaleDuration: 0.1)
-                    self.scaleTwice(node: self.playButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 0.0, secondScaleDuration: 0.1)
-                    if self.afterGameOver {
-                        self.scaleTwice(node: self.resultNode, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 0.0, secondScaleDuration: 0.1)
-                    } else {
-                        self.scaleTwice(node: self.bird, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 0.0, secondScaleDuration: 0.1)
-                        self.scaleTwice(node: GameScene.githubButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 0.0, secondScaleDuration: 0.1)
-                    }
-                    
-                    self.settingsNode.setScale(0)
-                    self.addChild(self.settingsNode)
-                    self.scaleTwice(node: self.settingsNode, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
-                    
-                    self.run(SKAction.sequence([SKAction.wait(forDuration: 0.2), SKAction.run{GameScene.hitButton = false}]))
-            })
-        } else if touchedNodeName == "toggleSounds" {
-            if(haptics){
-                impact.impactOccurred()
+
+            $0.physicsBody = SKPhysicsBody(
+                circleOfRadius: $0.height / 2
+            ).then {
+                $0.isDynamic = false
+                $0.categoryBitMask = PhysicsCategory.bird
+                $0.collisionBitMask =
+                    PhysicsCategory.land |
+                    PhysicsCategory.pipe
+                $0.contactTestBitMask =
+                    PhysicsCategory.land |
+                    PhysicsCategory.pipe
             }
-            if playSounds {
-                settingsNode.soundToggle.run(SKAction.sequence([
-                    SKAction.move(to: CGPoint(x: SettingsPositions.toggleOffX + 6, y: SettingsPositions.soundToggleY), duration: 0.08),
-                    SKAction.move(to: CGPoint(x: SettingsPositions.toggleOffX, y: SettingsPositions.soundToggleY), duration: 0.12)
-                ]))
-                
-                playSounds = false
-                UserDefaults.standard.set(false, forKey: "playSounds")
-                UserDefaults.standard.synchronize()
-            } else {
-                settingsNode.soundToggle.run(SKAction.sequence([
-                    SKAction.move(to: CGPoint(x: SettingsPositions.toggleOnX - 6, y: SettingsPositions.soundToggleY), duration: 0.08),
-                    SKAction.move(to: CGPoint(x: SettingsPositions.toggleOnX, y: SettingsPositions.soundToggleY), duration: 0.12)
-                ]))
-                
-                playSounds = true
-                UserDefaults.standard.set(true, forKey: "playSounds")
-                UserDefaults.standard.synchronize()
-                playSound(sound: swooshAction)
+        }
+    }
+
+    private func makeGround() -> SKNode {
+        SKNode().then {
+            $0.position = CGPoint(
+                x: 0,
+                y: groundTexture.height
+            )
+
+            $0.zPosition = GameZPosition.land
+
+            $0.physicsBody = SKPhysicsBody(
+                rectangleOf: CGSize(
+                    width: width,
+                    height: groundTexture.height * 2
+                )
+            ).then {
+                $0.isDynamic = false
+                $0.categoryBitMask = PhysicsCategory.land
             }
-        } else if touchedNodeName == "toggleNewBirds" {
-            if(haptics){
-                impact.impactOccurred()
+        }
+    }
+
+    private func makeFlappyBird() -> SKSpriteNode {
+        SKSpriteNode(
+            texture: flappyBirdTexture.then {
+                $0.filteringMode = .nearest
             }
-            playSound(sound: swooshAction)
+        ).then {
+            $0.setScale(1.5)
+            $0.position = CGPoint(
+                x: width / 2,
+                y: height / 2 + 200
+            )
+        }
+    }
+
+    private func makeGetReady() -> SKSpriteNode {
+        SKSpriteNode(
+            texture: getReadyTexture.then {
+                $0.filteringMode = .nearest
+            }
+        ).then {
+            $0.setScale(1.2)
+            $0.position = CGPoint(
+                x: width / 2,
+                y: height / 2 + 130
+            )
+        }
+    }
+
+    private func makeTapTap() -> SKSpriteNode {
+        SKSpriteNode(
+            texture: tapTapTexture.then {
+                $0.filteringMode = .nearest
+            }
+        ).then {
+            $0.setScale(1.5)
+            $0.position = CGPoint(
+                x: width / 2,
+                y: height / 2
+            )
+        }
+    }
+
+    private func makeGameOverNode() -> SKSpriteNode {
+        SKSpriteNode(
+            texture: gameOverTexture.then {
+                $0.filteringMode = .nearest
+            }
+        ).then {
+            $0.setScale(1.5)
+            $0.zPosition = GameZPosition.score
+            $0.position = CGPoint(
+                x: width / 2,
+                y: height / 2 + 210
+            )
+        }
+    }
+
+    private func makeResultNode() -> ResultBoard {
+        ResultBoard(score: score).then {
+            $0.zPosition = GameZPosition.result
+            $0.position = CGPoint(
+                x: width / 2,
+                y: height / 2 + 75
+            )
+        }
+    }
+
+    private func makeSettingsNode() -> SettingsPanel {
+        SettingsPanel().then {
+            $0.setScale(1.2)
+            $0.zPosition = GameZPosition.resultText + 4
+            $0.position = CGPoint(
+                x: width / 2,
+                y: height / 2 + 15
+            )
+        }
+    }
+
+    private func makePlayButton() -> SKSpriteNode {
+        SKSpriteNode(
+            texture: playButtonTexture.then {
+                $0.filteringMode = .nearest
+            }
+        ).then {
+            $0.name = "play"
+            $0.setScale(1.2)
+            $0.position = CGPoint(
+                x: width / 2,
+                y: height / 2 - 115
+            )
+        }
+    }
+
+    // MARK: Bird
+
+    private func updateBirdTextures() {
+        let randomValue = Float.random(in: 0..<1)
+
+        for index in 0...2 {
+            let color: String
+
             if newBirds {
-                settingsNode.newBirdsToggle.run(SKAction.sequence([
-                    SKAction.move(to: CGPoint(x: SettingsPositions.toggleOffX + 6, y: SettingsPositions.newBirdsToggleY), duration: 0.08),
-                    SKAction.move(to: CGPoint(x: SettingsPositions.toggleOffX, y: SettingsPositions.newBirdsToggleY), duration: 0.12)
-                ]))
-                
-                newBirds = false
-                UserDefaults.standard.set(false, forKey: "newBirds")
-                UserDefaults.standard.synchronize()
-            } else {
-                settingsNode.newBirdsToggle.run(SKAction.sequence([
-                    SKAction.move(to: CGPoint(x: SettingsPositions.toggleOnX - 6, y: SettingsPositions.newBirdsToggleY), duration: 0.08),
-                    SKAction.move(to: CGPoint(x: SettingsPositions.toggleOnX, y: SettingsPositions.newBirdsToggleY), duration: 0.12)
-                ]))
-                
-                newBirds = true
-                UserDefaults.standard.set(true, forKey: "newBirds")
-                UserDefaults.standard.synchronize()
-            }
-        } else if touchedNodeName == "toggleHaptics" {
-            playSound(sound: swooshAction)
-            if haptics {
-                settingsNode.hapticsToggle.run(SKAction.sequence([
-                    SKAction.move(to: CGPoint(x: SettingsPositions.toggleOffX + 6, y: SettingsPositions.hapticsToggleY), duration: 0.08),
-                    SKAction.move(to: CGPoint(x: SettingsPositions.toggleOffX, y: SettingsPositions.hapticsToggleY), duration: 0.12)
-                ]))
-                
-                haptics = false
-                UserDefaults.standard.set(false, forKey: "haptics")
-                UserDefaults.standard.synchronize()
-            } else {
-                settingsNode.hapticsToggle.run(SKAction.sequence([
-                    SKAction.move(to: CGPoint(x: SettingsPositions.toggleOnX - 6, y: SettingsPositions.hapticsToggleY), duration: 0.08),
-                    SKAction.move(to: CGPoint(x: SettingsPositions.toggleOnX, y: SettingsPositions.hapticsToggleY), duration: 0.12)
-                ]))
-                
-                haptics = true
-                UserDefaults.standard.set(true, forKey: "haptics")
-                UserDefaults.standard.synchronize()
-                impact.impactOccurred()
-            }
-        } else if touchedNodeName == "toggleAdaptiveBackground" {
-            playSound(sound: swooshAction)
-            if(haptics){
-                impact.impactOccurred()
-            }
-            if adaptiveBackground {
-                settingsNode.adaptiveBackgroundToggle.run(SKAction.sequence([
-                    SKAction.move(to: CGPoint(x: SettingsPositions.toggleOffX + 6, y: SettingsPositions.adaptiveBackgroundToggleY), duration: 0.08),
-                    SKAction.move(to: CGPoint(x: SettingsPositions.toggleOffX, y: SettingsPositions.adaptiveBackgroundToggleY), duration: 0.12)
-                ]))
-                
-                adaptiveBackground = false
-                UserDefaults.standard.set(false, forKey: "adaptiveBackground")
-                UserDefaults.standard.synchronize()
-            } else {
-                settingsNode.adaptiveBackgroundToggle.run(SKAction.sequence([
-                    SKAction.move(to: CGPoint(x: SettingsPositions.toggleOnX - 6, y: SettingsPositions.adaptiveBackgroundToggleY), duration: 0.08),
-                    SKAction.move(to: CGPoint(x: SettingsPositions.toggleOnX, y: SettingsPositions.adaptiveBackgroundToggleY), duration: 0.12)
-                ]))
-                
-                adaptiveBackground = true
-                UserDefaults.standard.set(true, forKey: "adaptiveBackground")
-                UserDefaults.standard.synchronize()
-            }
-        } else if touchedNodeName == "settingsBack" {
-            run(SKAction.sequence([
-                SKAction.run { self.playSound(sound: self.swooshAction) },
-                SKAction.run { self.settingsNode.backButton.setScale(0.8) },
-                SKAction.wait(forDuration: 0.1),
-                SKAction.run{if(self.haptics) {self.impact.impactOccurred()}},
-                SKAction.run { self.settingsNode.backButton.setScale(1.0) },
-                SKAction.wait(forDuration: 0.1)]),
-                completion: {
-                    self.scaleTwice(node: self.settingsNode, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 0.0, secondScaleDuration: 0.1)
-                    self.settingsNode.removeFromParent()
-                    self.scaleTwice(node: GameScene.settingsButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.25, secondScaleDuration: 0.1)
-                    self.scaleTwice(node: self.playButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
-                    
-                    if self.afterGameOver {
-                        self.scaleTwice(node: self.resultNode, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
-                    } else {
-                        self.scaleTwice(node: self.bird, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.5, secondScaleDuration: 0.1)
-                        self.scaleTwice(node: GameScene.githubButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
-                    }
-            }
-            )
-        } else if touchedNodeName == "github" && !GameScene.hitButton {
-            GameScene.hitButton = true
-            run(SKAction.sequence([
-                SKAction.run { self.playSound(sound: self.swooshAction) },
-                SKAction.run { GameScene.githubButton.setScale(1.15) },
-                SKAction.wait(forDuration: 0.1),
-                SKAction.run{if(self.haptics) {self.impact.impactOccurred()}},
-                SKAction.run { GameScene.githubButton.setScale(1.2) },
-                SKAction.wait(forDuration: 0.9)]),
-                completion: {
-                    guard let url = URL(string: "https://www.github.com/crypticplank/flappybird") else { return }
-                    if #available(iOS 10.0, *) {
-                        UIApplication.shared.open(url)
-                    } else {
-                        // Fallback on earlier versions
-                        UIApplication.shared.openURL(url)
-                    }
-                    GameScene.hitButton = false
+                switch randomValue {
+                case ..<0.161:
+                    color = "yellow"
+                case ..<0.322:
+                    color = "red"
+                case ..<0.483:
+                    color = "blue"
+                case ..<0.644:
+                    color = "green"
+                case ..<0.805:
+                    color = "peach"
+                case ..<0.97:
+                    color = "purple"
+                default:
+                    color = "kup"
                 }
-            )
-        } else if firstTouch {
-            time = CFAbsoluteTimeGetCurrent()
-            bird.removeAction(forKey: "float")
-            taptap.run(SKAction.sequence([
-                SKAction.scale(to: 0.0, duration: 0.1),
-                SKAction.removeFromParent(),
-                SKAction.scale(to: 1.5, duration: 0.0)
-            ]))
-            
-            getReady.run(SKAction.sequence([
-                SKAction.scale(to: 0.0, duration: 0.1),
-                SKAction.removeFromParent(),
-                SKAction.scale(to: 1.2, duration: 0.0)
-            ]))
-            pipes.setScale(1)
-            
-            bird.physicsBody?.isDynamic = true
-            firstTouch = false
-            playFlapSound = true
-        }
-        
-        if playFlapSound {
-            playSound(sound: flapAction)
-        }
-        
-        ControlCentre.trigger(.touch(touch))
-    }
-    
-    public func keyboardFlapp() {
-        touchesBegan(nil, with: nil)
-    }
-    
-    override func update(_ currentTime: TimeInterval) {
-        if hitGround { return }
-        
-        let birdRotation = bird.physicsBody!.velocity.dy * (bird.physicsBody!.velocity.dy < 0.4 ? 0.003 : 0.001)
-        bird.run(SKAction.rotate(toAngle: min(max(-1.57, birdRotation), 0.6), duration: 0.08))
-        if birdRotation < -0.7 {
-            bird.speed = 2
-        } else {
-            bird.speed = 1
-        }
-    }
-    
-    @objc private func touchAction() {
-        if moving.speed > 0 {
-            if(!(bird.position.y >= (self.frame.height + 20))){
-                bird.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-                bird.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 22))
+            } else {
+                switch randomValue {
+                case ..<0.33:
+                    color = "yellow"
+                case ..<0.66:
+                    color = "red"
+                default:
+                    color = "blue"
+                }
             }
+
+            birdTextures[index] =
+                Assets.shared.sprites.textureNamed(
+                    "\(color)-bird-\(index + 1)"
+                ).then {
+                    $0.filteringMode = .nearest
+                }
+        }
+
+        applyBirdAnimation()
+    }
+
+    private func applyBirdAnimation() {
+        let animation = SKAction.animate(
+            with: [
+                birdTextures[0],
+                birdTextures[1],
+                birdTextures[2],
+                birdTextures[1]
+            ],
+            timePerFrame: Constants.animationFrameDuration
+        )
+
+        bird.removeAction(forKey: "birdAnimation")
+
+        bird.run(
+            SKAction.repeatForever(animation),
+            withKey: "birdAnimation"
+        )
+    }
+
+    private func startIdleAnimation() {
+        bird.removeAction(forKey: "idle")
+
+        bird.run(
+            idleAnimation,
+            withKey: "idle"
+        )
+    }
+
+    private func stopIdleAnimation() {
+        bird.removeAction(forKey: "idle")
+    }
+
+    private func flapBird() {
+        guard moving.speed > 0 else {
+            return
+        }
+
+        guard bird.physicsBody?.isDynamic == true else {
+            return
+        }
+
+        guard bird.position.y < height + Constants.minimumBirdYOffset else {
+            return
+        }
+
+        lastFlapTime = CFAbsoluteTimeGetCurrent()
+
+        bird.zRotation = Constants.flapRotation
+
+        bird.physicsBody?.velocity = CGVector(
+            dx: 0,
+            dy: 0
+        )
+
+        bird.physicsBody?.applyImpulse(
+            CGVector(
+                dx: 0,
+                dy: Constants.flapImpulse
+            )
+        )
+
+        if playSounds {
+            run(flapSound)
         }
     }
-    
-    func gameOver() {
-        timeTook = CFAbsoluteTimeGetCurrent() - time //time = when tap tap was pressed
-        gameOverDisplayed = true
-        playFlapSound = false
-        if(haptics){
-            notification.notificationOccurred(.error)
+
+    private func updateBirdRotation() {
+        guard let physicsBody = bird.physicsBody,
+              physicsBody.isDynamic else {
+            return
         }
-        flashScreen(color: UIColor.white, fadeInDuration: 0.1, peakAlpha: 0.9, fadeOutDuration: 0.25)
-        
-        bird.physicsBody?.isDynamic = false
-        bird.physicsBody?.collisionBitMask = PhysicsCatagory.land
+
+        let timeSinceFlap =
+            CFAbsoluteTimeGetCurrent() - lastFlapTime
+
+        if timeSinceFlap < Constants.flapRotationHold {
+            bird.zRotation = Constants.flapRotation
+            return
+        }
+
+        let velocityY = physicsBody.velocity.dy
+
+        let targetRotation = min(
+            max(
+                velocityY *
+                    (velocityY < 0.4 ? 0.003 : 0.001),
+                -1.57
+            ),
+            0.6
+        )
+
+        bird.zRotation +=
+            (targetRotation - bird.zRotation) * 0.15
+
+        bird.speed = targetRotation < -0.7 ? 2 : 1
+    }
+
+    // MARK: Game Loop
+
+    override func update(_ currentTime: TimeInterval) {
+        guard !hasHitGround else {
+            return
+        }
+
+        updateBirdRotation()
+    }
+
+    // MARK: Input
+
+    override func touchesBegan(
+        _ touches: Set<UITouch>?,
+        with event: UIEvent?
+    ) {
+        guard let touch = touches?.first else {
+            return
+        }
+
+        let location = touch.location(in: self)
+        let nodeName = atPoint(location).name
+
+        switch nodeName {
+        case "play":
+            handlePlayTap()
+
+        case "settings":
+            handleSettingsTap()
+
+        case "github":
+            handleGitHubTap()
+
+        case "toggleSounds":
+            handleSoundToggle()
+
+        case "toggleNewBirds":
+            handleNewBirdsToggle()
+
+        case "toggleHaptics":
+            handleHapticsToggle()
+
+        case "toggleAdaptiveBackground":
+            handleAdaptiveBackgroundToggle()
+
+        case "settingsBack":
+            handleSettingsBack()
+
+        default:
+            handleGameTap()
+        }
+    }
+
+    public func keyboardFlapp() {
+        handleGameTap()
+    }
+
+    private func handleGameTap() {
+        if isWaitingToStart {
+            startGame()
+            return
+        }
+
+        flapBird()
+    }
+
+    private func startGame() {
+        guard isWaitingToStart else {
+            return
+        }
+
+        isWaitingToStart = false
+        gameStartTime = CFAbsoluteTimeGetCurrent()
+
+        stopIdleAnimation()
+
+        removeStartUI()
+
+        pipes.setScale(1)
+
         bird.physicsBody?.isDynamic = true
-        
-        let anim = SKAction.animate(with: [birdTextures[0], birdTextures[1], birdTextures[2], birdTextures[1]], timePerFrame: 0.1)
-        bird.run(SKAction.repeatForever(anim))
-        
-        playSound(sound: hitAction)
-        run(SKAction.wait(forDuration: TimeInterval(UInt32(0.2))))
-        playSound(sound: dieAction)
-        
-        gameover.setScale(0)
-        addChild(gameover)
-        run(SKAction.sequence([
-            SKAction.wait(forDuration: 0.1),
-            SKAction.run{self.scoreLabelNode.removeFromParent()},
-            SKAction.run{self.scoreLabelNodeInside.removeFromParent()},
-            SKAction.run{self.scaleTwice(node: self.gameover, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.25, secondScaleDuration: 0.1)},
-        ]))
-        moving.speed = 0
+
+        flapBird()
     }
-    
-    func addResultsAndButtons() {
-        if canShowScore{
-            resultNode.setScale(0)
-            resultNode.score = score
-            addChild(resultNode)
-            scaleTwice(node: resultNode, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.25, secondScaleDuration: 0.1)
-            
-            GameScene.settingsButton.position = CGPoint(x: (screenData.shared.width / 2), y: (screenData.shared.height / 2) - 25)
-            GameScene.settingsButton.setScale(0)
-            addChild(GameScene.settingsButton)
-            scaleTwice(node: GameScene.settingsButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
-            
-            playButton.setScale(0)
-            addChild(playButton)
-            scaleTwice(node: playButton, firstScale: 1.0, firstScaleDuration: 0.1, secondScale: 1.2, secondScaleDuration: 0.1)
-            
-            afterGameOver = true
+
+    private func removeStartUI() {
+        tapTap.run(
+            SKAction.sequence([
+                .scale(to: 0, duration: 0.1),
+                .removeFromParent(),
+                .scale(to: 1.5, duration: 0)
+            ])
+        )
+
+        getReady.run(
+            SKAction.sequence([
+                .scale(to: 0, duration: 0.1),
+                .removeFromParent(),
+                .scale(to: 1.2, duration: 0)
+            ])
+        )
+    }
+
+    // MARK: Play Button
+
+    private func handlePlayTap() {
+        guard !Self.hitButton else {
+            return
         }
+
+        Self.hitButton = true
+
+        playSound(swooshSound)
+
+        playButton.setScale(1.15)
+
+        run(
+            SKAction.sequence([
+                .wait(forDuration: 0.1),
+                .run { [weak self] in
+                    guard let self else { return }
+
+                    if self.haptics {
+                        self.impactFeedback.impactOccurred()
+                    }
+                },
+                .run { [weak self] in
+                    self?.playButton.setScale(1.2)
+                },
+                .run { [weak self] in
+                    self?.flashScreen(
+                        color: .black,
+                        fadeInDuration: 0.25,
+                        peakAlpha: 1,
+                        fadeOutDuration: 0.25
+                    )
+                },
+                .wait(forDuration: 0.25)
+            ]),
+            completion: { [weak self] in
+                self?.prepareNewGame()
+            }
+        )
     }
-    
-    func resetScene() {
-        pipes.removeAllChildren()
-        resultNode.removeFromParent()
-        gameover.removeFromParent()
-        
-        setRandomSkyTexture()
-        setRandomBirdTextures()
-        
-        addChild(taptap)
+
+    private func prepareNewGame() {
+        if isGameOver {
+            resetScene()
+            updateBirdTextures()
+        } else {
+            prepareInitialGame()
+            updateBirdTextures()
+        }
+
+        Self.settingsButton.removeFromParent()
+        Self.githubButton.removeFromParent()
+        playButton.removeFromParent()
+
+        isWaitingToStart = true
+        isGameOver = false
+        Self.hitButton = false
+    }
+
+    private func prepareInitialGame() {
+        bird.removeAction(forKey: "idle")
+
+        addChild(tapTap)
         addChild(getReady)
         addChild(scoreLabelNode)
         addChild(scoreLabelNodeInside)
-        scoreLabelNode.run(SKAction.scale(to: 1.0, duration: 0.0))
-        scoreLabelNodeInside.run(SKAction.scale(to: 1.0, duration: 0.0))
-        
-        gameOverDisplayed = false
-        hitGround = false
-        pipes.setScale(0)
+
+        bird.position = CGPoint(
+            x: width / 2.5,
+            y: height / 2
+        )
+
+        flappyBird.removeFromParent()
+
+        startIdleAnimation()
+    }
+
+    // MARK: Settings UI
+
+    private func handleSettingsTap() {
+        guard !Self.hitButton else {
+            return
+        }
+
+        Self.hitButton = true
+
+        playSound(swooshSound)
+
+        Self.settingsButton.setScale(1.15)
+
+        run(
+            SKAction.sequence([
+                .wait(forDuration: 0.1),
+                .run { [weak self] in
+                    guard let self else { return }
+
+                    if self.haptics {
+                        self.impactFeedback.impactOccurred()
+                    }
+                },
+                .run {
+                    Self.settingsButton.setScale(1.2)
+                },
+                .wait(forDuration: 0.1)
+            ]),
+            completion: { [weak self] in
+                self?.showSettings()
+            }
+        )
+    }
+
+    private func showSettings() {
+        scaleTwice(
+            node: Self.settingsButton,
+            firstScale: 1,
+            firstScaleDuration: 0.1,
+            secondScale: 0,
+            secondScaleDuration: 0.1
+        )
+
+        scaleTwice(
+            node: playButton,
+            firstScale: 1,
+            firstScaleDuration: 0.1,
+            secondScale: 0,
+            secondScaleDuration: 0.1
+        )
+
+        if isGameOver {
+            scaleTwice(
+                node: resultNode,
+                firstScale: 1,
+                firstScaleDuration: 0.1,
+                secondScale: 0,
+                secondScaleDuration: 0.1
+            )
+        } else {
+            scaleTwice(
+                node: bird,
+                firstScale: 1,
+                firstScaleDuration: 0.1,
+                secondScale: 0,
+                secondScaleDuration: 0.1
+            )
+
+            scaleTwice(
+                node: Self.githubButton,
+                firstScale: 1,
+                firstScaleDuration: 0.1,
+                secondScale: 0,
+                secondScaleDuration: 0.1
+            )
+        }
+
+        settingsNode.setScale(0)
+        addChild(settingsNode)
+
+        scaleTwice(
+            node: settingsNode,
+            firstScale: 1,
+            firstScaleDuration: 0.1,
+            secondScale: 1.2,
+            secondScaleDuration: 0.1
+        )
+
+        unlockButtons()
+    }
+
+    private func handleSettingsBack() {
+        playSound(swooshSound)
+
+        settingsNode.backButton.setScale(0.8)
+
+        run(
+            SKAction.sequence([
+                .wait(forDuration: 0.1),
+                .run { [weak self] in
+                    guard let self else { return }
+
+                    if self.haptics {
+                        self.impactFeedback.impactOccurred()
+                    }
+                },
+                .run {
+                    self.settingsNode.backButton.setScale(1)
+                },
+                .wait(forDuration: 0.1)
+            ]),
+            completion: { [weak self] in
+                self?.hideSettings()
+            }
+        )
+    }
+
+    private func hideSettings() {
+        scaleTwice(
+            node: settingsNode,
+            firstScale: 1,
+            firstScaleDuration: 0.1,
+            secondScale: 0,
+            secondScaleDuration: 0.1
+        )
+
+        settingsNode.removeFromParent()
+
+        scaleTwice(
+            node: Self.settingsButton,
+            firstScale: 1,
+            firstScaleDuration: 0.1,
+            secondScale: 1.25,
+            secondScaleDuration: 0.1
+        )
+
+        scaleTwice(
+            node: playButton,
+            firstScale: 1,
+            firstScaleDuration: 0.1,
+            secondScale: 1.2,
+            secondScaleDuration: 0.1
+        )
+
+        if isGameOver {
+            scaleTwice(
+                node: resultNode,
+                firstScale: 1,
+                firstScaleDuration: 0.1,
+                secondScale: 1.2,
+                secondScaleDuration: 0.1
+            )
+        } else {
+            scaleTwice(
+                node: bird,
+                firstScale: 1,
+                firstScaleDuration: 0.1,
+                secondScale: 1.5,
+                secondScaleDuration: 0.1
+            )
+
+            scaleTwice(
+                node: Self.githubButton,
+                firstScale: 1,
+                firstScaleDuration: 0.1,
+                secondScale: 1.2,
+                secondScaleDuration: 0.1
+            )
+        }
+    }
+
+    private func unlockButtons() {
+        run(
+            .sequence([
+                .wait(forDuration: 0.2),
+                .run {
+                    Self.hitButton = false
+                }
+            ])
+        )
+    }
+
+    // MARK: Settings Toggles
+
+    private func toggle(
+        value: inout Bool,
+        key: String,
+        control: SKNode,
+        y: CGFloat
+    ) {
+        value.toggle()
+
+        saveSetting(value, key: key)
+
+        let targetX = value
+            ? SettingsPositions.toggleOnX
+            : SettingsPositions.toggleOffX
+
+        let overshootX = value
+            ? targetX - 6
+            : targetX + 6
+
+        control.run(
+            .sequence([
+                .move(
+                    to: CGPoint(
+                        x: overshootX,
+                        y: y
+                    ),
+                    duration: 0.08
+                ),
+                .move(
+                    to: CGPoint(
+                        x: targetX,
+                        y: y
+                    ),
+                    duration: Constants.toggleAnimationDuration
+                )
+            ])
+        )
+    }
+
+    private func handleSoundToggle() {
+        if haptics {
+            impactFeedback.impactOccurred()
+        }
+
+        if !playSounds {
+            playSound(swooshSound)
+        }
+
+        toggle(
+            value: &playSounds,
+            key: "playSounds",
+            control: settingsNode.soundToggle,
+            y: SettingsPositions.soundToggleY
+        )
+    }
+
+    private func handleNewBirdsToggle() {
+        if haptics {
+            impactFeedback.impactOccurred()
+        }
+
+        playSound(swooshSound)
+
+        toggle(
+            value: &newBirds,
+            key: "newBirds",
+            control: settingsNode.newBirdsToggle,
+            y: SettingsPositions.newBirdsToggleY
+        )
+    }
+
+    private func handleHapticsToggle() {
+        playSound(swooshSound)
+
+        toggle(
+            value: &haptics,
+            key: "haptics",
+            control: settingsNode.hapticsToggle,
+            y: SettingsPositions.hapticsToggleY
+        )
+
+        if haptics {
+            impactFeedback.impactOccurred()
+        }
+    }
+
+    private func handleAdaptiveBackgroundToggle() {
+        playSound(swooshSound)
+
+        if haptics {
+            impactFeedback.impactOccurred()
+        }
+
+        toggle(
+            value: &adaptiveBackground,
+            key: "adaptiveBackground",
+            control: settingsNode.adaptiveBackgroundToggle,
+            y: SettingsPositions.adaptiveBackgroundToggleY
+        )
+
+        updateSky()
+    }
+
+    // MARK: GitHub
+
+    private func handleGitHubTap() {
+        guard !Self.hitButton else {
+            return
+        }
+
+        Self.hitButton = true
+
+        playSound(swooshSound)
+
+        Self.githubButton.setScale(1.15)
+
+        run(
+            .sequence([
+                .wait(forDuration: 0.1),
+                .run { [weak self] in
+                    guard let self else { return }
+
+                    if self.haptics {
+                        self.impactFeedback.impactOccurred()
+                    }
+                },
+                .run {
+                    Self.githubButton.setScale(1.2)
+                },
+                .wait(forDuration: 0.9)
+            ]),
+            completion: {
+                guard let url = URL(
+                    string: "https://www.github.com/crypticplank/flappybird"
+                ) else {
+                    Self.hitButton = false
+                    return
+                }
+
+                UIApplication.shared.open(url)
+
+                Self.hitButton = false
+            }
+        )
+    }
+
+    // MARK: Ground
+
+    private func createGroundMovement() {
+        let groundWidth = groundTexture.width * 2
+
+        let moveGround = SKAction.moveBy(
+            x: -groundWidth,
+            y: 0,
+            duration: Constants.groundMoveSpeed * groundWidth
+        )
+
+        let resetGround = SKAction.moveBy(
+            x: groundWidth,
+            y: 0,
+            duration: 0
+        )
+
+        let movement = SKAction.repeatForever(
+            .sequence([
+                moveGround,
+                resetGround
+            ])
+        )
+
+        let count = 2 + Int(width / groundWidth)
+
+        for index in 0..<count {
+            let node = SKSpriteNode(
+                texture: groundTexture
+            ).then {
+                $0.setScale(2)
+                $0.position = CGPoint(
+                    x: CGFloat(index) * ($0.width - 1),
+                    y: $0.height / 2
+                )
+                $0.run(movement)
+            }
+
+            moving.addChild(node)
+        }
+    }
+
+    // MARK: Sky
+
+    private func updateSky() {
+        let randomTexture =
+            Float.random(in: 0..<1) < 0.5
+            ? nightTexture
+            : dayTexture
+
+        var skyTexture = randomTexture
+
+        if #available(iOS 12.0, *) {
+            if adaptiveBackground {
+                skyTexture =
+                    view?.traitCollection.userInterfaceStyle == .dark
+                    ? nightTexture
+                    : dayTexture
+            }
+        }
+
+        let skyWidth = skyTexture.width * 1.5
+
+        let moveSky = SKAction.moveBy(
+            x: -skyWidth,
+            y: 0,
+            duration: Constants.skyMoveSpeed * skyWidth
+        )
+
+        let resetSky = SKAction.moveBy(
+            x: skyWidth,
+            y: 0,
+            duration: 0
+        )
+
+        let movement = SKAction.repeatForever(
+            .sequence([
+                moveSky,
+                resetSky
+            ])
+        )
+
+        let requiredCount = 2 + Int(width / skyWidth)
+
+        for index in 0..<requiredCount {
+            let node = SKSpriteNode(
+                texture: skyTexture
+            ).then {
+                $0.setScale(1.5)
+                $0.zPosition = GameZPosition.sky
+                $0.position = CGPoint(
+                    x: CGFloat(index) * ($0.width - 1),
+                    y: $0.height / 3.5 +
+                        groundTexture.height * 2
+                )
+                $0.run(movement)
+            }
+
+            if skyNodes.count < requiredCount {
+                skyNodes.append(node)
+            } else {
+                skyNodes[index].removeFromParent()
+                skyNodes[index] = node
+            }
+
+            moving.addChild(node)
+        }
+    }
+
+    // MARK: Pipes
+
+    private func startPipeSpawner() {
+        let spawn = SKAction.run { [weak self] in
+            self?.spawnPipe()
+        }
+
+        let delay = SKAction.wait(forDuration: 1)
+
+        run(
+            .repeatForever(
+                .sequence([
+                    spawn,
+                    delay
+                ])
+            ),
+            withKey: "pipeSpawner"
+        )
+    }
+
+    private func spawnPipe() {
+        let quarterHeight = UInt32(height / 4)
+        let y = CGFloat(
+            arc4random_uniform(quarterHeight) + quarterHeight
+        )
+
+        let pipeDown = makePipe(
+            texture: pipeTextureDown,
+            position: CGPoint(
+                x: 0,
+                y: y + pipeTextureDown.height * 2 +
+                    Constants.verticalPipeGap
+            )
+        )
+
+        let pipeUp = makePipe(
+            texture: pipeTextureUp,
+            position: CGPoint(
+                x: 0,
+                y: y
+            )
+        )
+
+        let scoreNode = makeScoreNode()
+
+        let distance =
+            width +
+            2 * pipeTextureUp.width +
+            25
+
+        let movement = SKAction.moveBy(
+            x: -distance,
+            y: 0,
+            duration: Constants.pipeMoveSpeed * distance
+        )
+
+        let pipeGroup = SKNode().then {
+            $0.position = CGPoint(
+                x: width + pipeTextureUp.width * 2,
+                y: -352
+            )
+
+            $0.zPosition = GameZPosition.pipe
+
+            $0.addChild(pipeDown)
+            $0.addChild(pipeUp)
+            $0.addChild(scoreNode)
+
+            $0.run(
+                .sequence([
+                    movement,
+                    .removeFromParent()
+                ])
+            )
+        }
+
+        pipes.addChild(pipeGroup)
+    }
+
+    private func makePipe(
+        texture: SKTexture,
+        position: CGPoint
+    ) -> SKSpriteNode {
+        SKSpriteNode(texture: texture).then {
+            $0.setScale(Constants.pipeScale)
+            $0.position = position
+
+            $0.physicsBody = SKPhysicsBody(
+                rectangleOf: $0.size
+            ).then {
+                $0.isDynamic = false
+                $0.categoryBitMask = PhysicsCategory.pipe
+                $0.contactTestBitMask = PhysicsCategory.bird
+            }
+        }
+    }
+
+    private func makeScoreNode() -> SKNode {
+        SKNode().then {
+            // Place the scoring sensor just beyond the right edge
+            // of the pipe. The bird must fully clear the pipe
+            // before it can trigger the score.
+            $0.position = CGPoint(
+                x: pipeTextureDown.width + bird.width / 2 + 2,
+                y: height / 2 + 400
+            )
+
+            $0.physicsBody = SKPhysicsBody(
+                rectangleOf: CGSize(
+                    width: 4,
+                    height: height
+                )
+            ).then {
+                $0.isDynamic = false
+                $0.categoryBitMask = PhysicsCategory.score
+                $0.contactTestBitMask = PhysicsCategory.bird
+                $0.collisionBitMask = 0
+            }
+        }
+    }
+
+    // MARK: Game Over
+
+    private func gameOver() {
+        guard !isShowingGameOver else {
+            return
+        }
+
+        timeTook =
+            CFAbsoluteTimeGetCurrent() - gameStartTime
+
+        isShowingGameOver = true
+        isGameOver = true
+        playFlapSound = false
+
+        if haptics {
+            notificationFeedback.notificationOccurred(.error)
+        }
+
+        flashScreen(
+            color: .white,
+            fadeInDuration: 0.1,
+            peakAlpha: 0.9,
+            fadeOutDuration: 0.25
+        )
+
+        bird.physicsBody?.isDynamic = false
+        bird.physicsBody?.collisionBitMask =
+            PhysicsCategory.land
+        bird.physicsBody?.isDynamic = true
+
+        applyBirdAnimation()
+
+        playSound(hitSound)
+
+        run(
+            .sequence([
+                .wait(forDuration: 0.2),
+                .run { [weak self] in
+                    self?.playSound(self?.dieSound)
+                }
+            ])
+        )
+
+        gameOverNode.setScale(0)
+        addChild(gameOverNode)
+
+        run(
+            .sequence([
+                .wait(forDuration: 0.1),
+                .run { [weak self] in
+                    self?.scoreLabelNode.removeFromParent()
+                    self?.scoreLabelNodeInside.removeFromParent()
+                },
+                .run { [weak self] in
+                    guard let self else { return }
+
+                    self.scaleTwice(
+                        node: self.gameOverNode,
+                        firstScale: 1,
+                        firstScaleDuration: 0.1,
+                        secondScale: 1.25,
+                        secondScaleDuration: 0.1
+                    )
+                }
+            ])
+        )
+
+        moving.speed = 0
+
+        bird.physicsBody?.velocity = .zero
+        bird.physicsBody?.applyImpulse(
+            CGVector(dx: 0, dy: 20)
+        )
+    }
+
+    // MARK: Results
+
+    private func addResultsAndButtons() {
+        guard canShowScore else {
+            return
+        }
+
+        resultNode.setScale(0)
+        resultNode.score = score
+        addChild(resultNode)
+
+        scaleTwice(
+            node: resultNode,
+            firstScale: 1,
+            firstScaleDuration: 0.1,
+            secondScale: 1.25,
+            secondScaleDuration: 0.1
+        )
+
+        Self.settingsButton.position = CGPoint(
+            x: ScreenData.shared.width / 2,
+            y: ScreenData.shared.height / 2 - 25
+        )
+
+        Self.settingsButton.setScale(0)
+        addChild(Self.settingsButton)
+
+        scaleTwice(
+            node: Self.settingsButton,
+            firstScale: 1,
+            firstScaleDuration: 0.1,
+            secondScale: 1.2,
+            secondScaleDuration: 0.1
+        )
+
+        playButton.setScale(0)
+        addChild(playButton)
+
+        scaleTwice(
+            node: playButton,
+            firstScale: 1,
+            firstScaleDuration: 0.1,
+            secondScale: 1.2,
+            secondScaleDuration: 0.1
+        )
+    }
+
+    // MARK: Reset
+
+    private func resetScene() {
+        pipes.removeAllChildren()
+
+        resultNode.removeFromParent()
+        gameOverNode.removeFromParent()
+
+        updateSky()
+
+        addChild(tapTap)
+        addChild(getReady)
+        addChild(scoreLabelNode)
+        addChild(scoreLabelNodeInside)
+
+        scoreLabelNode.setScale(1)
+        scoreLabelNodeInside.setScale(1)
+
         score = 0
+
         moving.speed = 1
         bird.speed = 1
-        bird.zRotation = 0.0
-        bird.position = CGPoint(x: width / 2.5, y: height / 2)
-        bird.physicsBody?.do {
-            $0.isDynamic = false
-            $0.velocity = CGVector(dx: 0, dy: 0)
-            $0.collisionBitMask = PhysicsCatagory.land | PhysicsCatagory.pipe
+        pipes.setScale(0)
+
+        bird.zRotation = 0
+        bird.position = CGPoint(
+            x: width / 2.5,
+            y: height / 2
+        )
+
+        bird.removeAllActions()
+        applyBirdAnimation()
+
+        bird.physicsBody?.isDynamic = false
+        bird.physicsBody?.velocity = .zero
+        bird.physicsBody?.collisionBitMask =
+            PhysicsCategory.land |
+            PhysicsCategory.pipe
+
+        hasHitGround = false
+        isGameOver = false
+        isShowingGameOver = false
+        isWaitingToStart = true
+
+        lastFlapTime = 0
+
+        startIdleAnimation()
+    }
+
+    // MARK: Physics
+
+    private func isContact(
+        _ contact: SKPhysicsContact,
+        with category: UInt32
+    ) -> Bool {
+        let bodyA = contact.bodyA.categoryBitMask
+        let bodyB = contact.bodyB.categoryBitMask
+
+        return
+            bodyA & category == category ||
+            bodyB & category == category
+    }
+
+    private func handleScore() {
+        score += 1
+
+        if score == Constants.superScore {
+            enableSuperBird()
         }
-    }
-    
-    func playSound(sound: SKAction) {
-        if playSounds {
-            DispatchQueue.main.async {
-                self.run(sound)
-            }
+
+        if haptics {
+            impactFeedback.impactOccurred()
         }
+
+        playSound(pointSound)
+
+        scaleTwice(
+            node: scoreLabelNode,
+            firstScale: 1.5,
+            firstScaleDuration: 0.1,
+            secondScale: 1,
+            secondScaleDuration: 0.1
+        )
+
+        scaleTwice(
+            node: scoreLabelNodeInside,
+            firstScale: 1.5,
+            firstScaleDuration: 0.1,
+            secondScale: 1,
+            secondScaleDuration: 0.1
+        )
     }
-    
-    func scaleTwice(node: SKNode, firstScale: CGFloat, firstScaleDuration: TimeInterval, secondScale: CGFloat, secondScaleDuration: TimeInterval) {
-        node.run(SKAction.sequence([
-            SKAction.scale(to: firstScale, duration: firstScaleDuration),
-            SKAction.scale(to: secondScale, duration: secondScaleDuration)
-        ]))
+
+    private func enableSuperBird() {
+        for index in 0...2 {
+            birdTextures[index] =
+                Assets.shared.sprites.textureNamed(
+                    "super-bird-\(index + 1)"
+                ).then {
+                    $0.filteringMode = .nearest
+                }
+        }
+
+        applyBirdAnimation()
     }
-    
-    func flashScreen(color: UIColor, fadeInDuration: TimeInterval, peakAlpha: CGFloat, fadeOutDuration: TimeInterval){
-        let flash = SKShapeNode(rect: CGRect(x: -5, y: -5, width: width + 10 ,height: height + 10))
-        flash.zPosition = 7
-        flash.fillColor = color
-        flash.alpha = 0.0
-        self.addChild(flash)
-        
-        flash.run(SKAction.sequence([
-            SKAction.fadeAlpha(to: peakAlpha, duration: fadeInDuration),
-            SKAction.fadeAlpha(to: 0.0, duration: fadeOutDuration),
-            SKAction.removeFromParent()
-        ]))
+
+    private func handlePipeCollision() {
+        gameOver()
+    }
+
+    private func handleGroundCollision() {
+        guard !hasHitGround else {
+            return
+        }
+
+        hasHitGround = true
+        bird.speed = 0.5
+
+        if !isShowingGameOver {
+            gameOver()
+        }
+
+        bird.physicsBody?.velocity = .zero
+
+        run(
+            .sequence([
+                .wait(forDuration: Constants.gameOverDelay),
+                .run { [weak self] in
+                    self?.bird.speed = 0
+                },
+                .wait(forDuration: Constants.resultDelay),
+                .run { [weak self] in
+                    guard let self else { return }
+
+                    self.playSound(self.swooshSound)
+                    self.addResultsAndButtons()
+                }
+            ])
+        )
     }
 }
+
+// MARK: - Physics Contact Delegate
 
 extension GameScene: SKPhysicsContactDelegate {
+
     func didBegin(_ contact: SKPhysicsContact) {
-        if (bird.speed == 1 || bird.speed == 2) && !gameOverDisplayed && ((contact.bodyA.categoryBitMask & PhysicsCatagory.score) == PhysicsCatagory.score || (contact.bodyB.categoryBitMask & PhysicsCatagory.score) == PhysicsCatagory.score) {
-            score += 1
-            
-            // MARK: SUPERBIRD
-            
-            if score == superScore {
-                for n in 0...2 {
-                    birdTextures[n] = Assets.shared.sprites.textureNamed("super-bird-\(n + 1)").then { $0.filteringMode = .nearest }
-                }
-                let anim = SKAction.animate(with: [birdTextures[0], birdTextures[1], birdTextures[2], birdTextures[1]], timePerFrame: 0.1)
-                bird.run(SKAction.repeatForever(anim))
+        guard !hasHitGround else {
+            return
+        }
+
+        if !isShowingGameOver &&
+            bird.speed == 1 || bird.speed == 2 {
+
+            if isContact(
+                contact,
+                with: PhysicsCategory.score
+            ) {
+                handleScore()
+                return
             }
-            
-            
-            if haptics {
-                impact.impactOccurred()
-            }
-            
-            self.playSound(sound: self.pointAction)
-            
-            scaleTwice(node: scoreLabelNode, firstScale: 1.5, firstScaleDuration: 0.1, secondScale: 1.0, secondScaleDuration: 0.1)
-            scaleTwice(node: scoreLabelNodeInside, firstScale: 1.5, firstScaleDuration: 0.1, secondScale: 1.0, secondScaleDuration: 0.1)
-        } else if !gameOverDisplayed && ((contact.bodyA.categoryBitMask & PhysicsCatagory.pipe) == PhysicsCatagory.pipe || (contact.bodyB.categoryBitMask & PhysicsCatagory.pipe) == PhysicsCatagory.pipe) {
-            gameOver()
-            bird.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-            bird.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 20))
-        } else if !hitGround && (contact.bodyA.categoryBitMask & PhysicsCatagory.land) == PhysicsCatagory.land || (contact.bodyB.categoryBitMask & PhysicsCatagory.land) == PhysicsCatagory.land {
-            hitGround = true
-            bird.speed = 0.5
-            
-            if !gameOverDisplayed {
-                gameOver()
-            }
-            
-            bird.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-            
-            let addResultNode = SKAction.run {
-                self.playSound(sound: self.swooshAction)
-                self.addResultsAndButtons()
-            }
-            run(SKAction.sequence([SKAction.wait(forDuration: 0.8), SKAction.run { self.bird.speed = 0 }, SKAction.wait(forDuration: 0.2), addResultNode]))
+        }
+
+        if !isShowingGameOver &&
+            isContact(
+                contact,
+                with: PhysicsCategory.pipe
+            ) {
+            handlePipeCollision()
+            return
+        }
+
+        if isContact(
+            contact,
+            with: PhysicsCategory.land
+        ) {
+            handleGroundCollision()
         }
     }
 }
 
-extension GameScene: ControlCentreDelegate {
-    func callback(_ event: EventType) {
-        switch event {
-        case .touch:
-            touchAction()
-        case .restart:
-            resetScene()
+// MARK: - UI Helpers
+
+private extension GameScene {
+
+    func playSound(_ sound: SKAction?) {
+        guard playSounds, let sound else {
+            return
         }
+
+        run(sound)
+    }
+
+    func scaleTwice(
+        node: SKNode,
+        firstScale: CGFloat,
+        firstScaleDuration: TimeInterval,
+        secondScale: CGFloat,
+        secondScaleDuration: TimeInterval
+    ) {
+        node.run(
+            .sequence([
+                .scale(
+                    to: firstScale,
+                    duration: firstScaleDuration
+                ),
+                .scale(
+                    to: secondScale,
+                    duration: secondScaleDuration
+                )
+            ])
+        )
+    }
+
+    func flashScreen(
+        color: UIColor,
+        fadeInDuration: TimeInterval,
+        peakAlpha: CGFloat,
+        fadeOutDuration: TimeInterval
+    ) {
+        let flash = SKShapeNode(
+            rect: CGRect(
+                x: -5,
+                y: -5,
+                width: width + 10,
+                height: height + 10
+            )
+        )
+
+        flash.zPosition = 7
+        flash.fillColor = color
+        flash.alpha = 0
+
+        addChild(flash)
+
+        flash.run(
+            .sequence([
+                .fadeAlpha(
+                    to: peakAlpha,
+                    duration: fadeInDuration
+                ),
+                .fadeAlpha(
+                    to: 0,
+                    duration: fadeOutDuration
+                ),
+                .removeFromParent()
+            ])
+        )
     }
 }

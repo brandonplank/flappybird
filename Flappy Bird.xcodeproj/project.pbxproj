@@ -7,17 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		88112B3C2703F41E00B448DF /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 88112B3B2703F41E00B448DF /* Sentry */; };
 		881336392700DF5A00252F12 /* Then.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881336382700DF5A00252F12 /* Then.swift */; };
 		885785C52855532B00D55755 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885785C42855532B00D55755 /* LoadingViewController.swift */; };
 		885E0F9728559FC2008C70EF /* MKOutlinedLabelNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885E0F9628559FC2008C70EF /* MKOutlinedLabelNode.swift */; };
 		886C3FC2270A1C9C00EF00C3 /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 886C3FC1270A1C9C00EF00C3 /* IQKeyboardManagerSwift */; };
 		888D9F612707E5EA00F76EF3 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888D9F602707E5EA00F76EF3 /* Assets.swift */; };
 		888E79CA27093B9700912CD9 /* CustomVisualEffectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888E79C927093B9700912CD9 /* CustomVisualEffectsView.swift */; };
-		889E3EC024AD152400176E98 /* ControlCentre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889E3EBD24AD152400176E98 /* ControlCentre.swift */; };
-		889E3EC124AD152400176E98 /* ScreenMirror.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889E3EBE24AD152400176E98 /* ScreenMirror.swift */; };
-		889E3EC224AD152400176E98 /* TapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889E3EBF24AD152400176E98 /* TapViewController.swift */; };
-		889E3EC424AD158D00176E98 /* SKButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889E3EC324AD158D00176E98 /* SKButtonNode.swift */; };
+		CE55ED83305317960031EB43 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE55ED823053178C0031EB43 /* SceneDelegate.swift */; };
 		DD237702245B73B500B570A3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD237701245B73B500B570A3 /* AppDelegate.swift */; };
 		DD23770A245B73B500B570A3 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD237709245B73B500B570A3 /* GameViewController.swift */; };
 		DD23770D245B73B500B570A3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DD23770B245B73B500B570A3 /* Main.storyboard */; };
@@ -53,10 +49,7 @@
 		885E0F9628559FC2008C70EF /* MKOutlinedLabelNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKOutlinedLabelNode.swift; sourceTree = "<group>"; };
 		888D9F602707E5EA00F76EF3 /* Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 		888E79C927093B9700912CD9 /* CustomVisualEffectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomVisualEffectsView.swift; sourceTree = "<group>"; };
-		889E3EBD24AD152400176E98 /* ControlCentre.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlCentre.swift; sourceTree = "<group>"; };
-		889E3EBE24AD152400176E98 /* ScreenMirror.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenMirror.swift; sourceTree = "<group>"; };
-		889E3EBF24AD152400176E98 /* TapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TapViewController.swift; sourceTree = "<group>"; };
-		889E3EC324AD158D00176E98 /* SKButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKButtonNode.swift; sourceTree = "<group>"; };
+		CE55ED823053178C0031EB43 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		DD2376FE245B73B500B570A3 /* Flappy Bird.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Flappy Bird.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD237701245B73B500B570A3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DD237709245B73B500B570A3 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
@@ -79,7 +72,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				88112B3C2703F41E00B448DF /* Sentry in Frameworks */,
 				886C3FC2270A1C9C00EF00C3 /* IQKeyboardManagerSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -107,6 +99,7 @@
 		886C3FB4270A126500EF00C3 /* Delegates */ = {
 			isa = PBXGroup;
 			children = (
+				CE55ED823053178C0031EB43 /* SceneDelegate.swift */,
 				DD237701245B73B500B570A3 /* AppDelegate.swift */,
 			);
 			path = Delegates;
@@ -135,17 +128,6 @@
 				885785C42855532B00D55755 /* LoadingViewController.swift */,
 			);
 			path = UI;
-			sourceTree = "<group>";
-		};
-		889E3EBC24AD152400176E98 /* External Display */ = {
-			isa = PBXGroup;
-			children = (
-				889E3EC324AD158D00176E98 /* SKButtonNode.swift */,
-				889E3EBD24AD152400176E98 /* ControlCentre.swift */,
-				889E3EBE24AD152400176E98 /* ScreenMirror.swift */,
-				889E3EBF24AD152400176E98 /* TapViewController.swift */,
-			);
-			path = "External Display";
 			sourceTree = "<group>";
 		};
 		DD2376F5245B73B500B570A3 = {
@@ -186,7 +168,6 @@
 		DD898B0E245CD23A00478094 /* game */ = {
 			isa = PBXGroup;
 			children = (
-				889E3EBC24AD152400176E98 /* External Display */,
 				DD898B19245CD2C100478094 /* Actions.sks */,
 				DD898B0F245CD23A00478094 /* SettingsPanel.swift */,
 				DD898B10245CD23A00478094 /* GameScene.sks */,
@@ -216,7 +197,6 @@
 			);
 			name = "Flappy Bird";
 			packageProductDependencies = (
-				88112B3B2703F41E00B448DF /* Sentry */,
 				886C3FC1270A1C9C00EF00C3 /* IQKeyboardManagerSwift */,
 			);
 			productName = "Flappy Bird";
@@ -249,7 +229,6 @@
 			);
 			mainGroup = DD2376F5245B73B500B570A3;
 			packageReferences = (
-				88112B3A2703F41E00B448DF /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 				886C3FC0270A1C9C00EF00C3 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
 			);
 			productRefGroup = DD2376FF245B73B500B570A3 /* Products */;
@@ -283,10 +262,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				889E3EC024AD152400176E98 /* ControlCentre.swift in Sources */,
 				DD676405246DF93D00632CA8 /* Reachability.swift in Sources */,
 				888E79CA27093B9700912CD9 /* CustomVisualEffectsView.swift in Sources */,
-				889E3EC224AD152400176E98 /* TapViewController.swift in Sources */,
 				DD898B16245CD23A00478094 /* GameScene.swift in Sources */,
 				885785C52855532B00D55755 /* LoadingViewController.swift in Sources */,
 				DD23770A245B73B500B570A3 /* GameViewController.swift in Sources */,
@@ -294,10 +271,9 @@
 				DD237702245B73B500B570A3 /* AppDelegate.swift in Sources */,
 				885E0F9728559FC2008C70EF /* MKOutlinedLabelNode.swift in Sources */,
 				DD898B15245CD23A00478094 /* ResultBoard.swift in Sources */,
-				889E3EC424AD158D00176E98 /* SKButtonNode.swift in Sources */,
 				DD898B13245CD23A00478094 /* SettingsPanel.swift in Sources */,
-				889E3EC124AD152400176E98 /* ScreenMirror.swift in Sources */,
 				881336392700DF5A00252F12 /* Then.swift in Sources */,
+				CE55ED83305317960031EB43 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -455,7 +431,7 @@
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "Flappy Bird/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.arcade-games";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -464,7 +440,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				MARKETING_VERSION = 4.3;
+				MARKETING_VERSION = 4.5;
 				PRODUCT_BUNDLE_IDENTIFIER = org.brandonplank.flappybird;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -490,7 +466,7 @@
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "Flappy Bird/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.arcade-games";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -499,7 +475,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				MARKETING_VERSION = 4.3;
+				MARKETING_VERSION = 4.5;
 				PRODUCT_BUNDLE_IDENTIFIER = org.brandonplank.flappybird;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -536,14 +512,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		88112B3A2703F41E00B448DF /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/getsentry/sentry-cocoa";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 7.0.0;
-			};
-		};
 		886C3FC0270A1C9C00EF00C3 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/hackiftekhar/IQKeyboardManager";
@@ -555,11 +523,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		88112B3B2703F41E00B448DF /* Sentry */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 88112B3A2703F41E00B448DF /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
-			productName = Sentry;
-		};
 		886C3FC1270A1C9C00EF00C3 /* IQKeyboardManagerSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 886C3FC0270A1C9C00EF00C3 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;
