@@ -70,6 +70,7 @@ public final class ScreenData {
     private init() {}
 }
 
+
 // Keep compatibility with existing project code.
 typealias screenData = ScreenData
 
@@ -114,10 +115,37 @@ final class GameScene: SKScene {
         static let gameOverDelay: TimeInterval = 0.8
         static let resultDelay: TimeInterval = 0.2
     }
+    
+    private struct SeededRandomNumberGenerator {
+        private var state: UInt64
+
+        init(seed: UInt64) {
+            self.state = seed
+        }
+
+        mutating func next() -> UInt64 {
+            // SplitMix64
+            state &+= 0x9E3779B97F4A7C15
+
+            var z = state
+            z = (z ^ (z >> 30)) &* 0xBF58476D1CE4E5B9
+            z = (z ^ (z >> 27)) &* 0x94D049BB133111EB
+            return z ^ (z >> 31)
+        }
+
+        mutating func nextInt(in range: ClosedRange<Int>) -> Int {
+            let span = UInt64(range.upperBound - range.lowerBound + 1)
+            return range.lowerBound + Int(next() % span)
+        }
+    }
 
     // MARK: Shared State
 
     static let shared = GameScene()
+    
+    // MARK: Pipe seed
+    private var pipeSeed: UInt64 = 123456789
+    private var pipeRandom = SeededRandomNumberGenerator(seed: UInt64(arc4random()))
 
     static var width: CGFloat {
         shared.width
@@ -1376,9 +1404,12 @@ final class GameScene: SKScene {
     }
 
     private func spawnPipe() {
-        let quarterHeight = UInt32(height / 4)
+        let quarterHeight = Int(height / 4)
+
         let y = CGFloat(
-            arc4random_uniform(quarterHeight) + quarterHeight
+            pipeRandom.nextInt(
+                in: quarterHeight...(quarterHeight * 2)
+            )
         )
 
         let pipeDown = makePipe(
