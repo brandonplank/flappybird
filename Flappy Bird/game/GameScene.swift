@@ -112,6 +112,9 @@ final class GameScene: SKScene {
         static let uiAnimationDuration: TimeInterval = 0.1
         static let toggleAnimationDuration: TimeInterval = 0.12
 
+        static let pauseButtonScale: CGFloat = 2.4
+        static let pauseButtonInset: CGFloat = 45
+
         static let gameOverDelay: TimeInterval = 0.8
         static let resultDelay: TimeInterval = 0.2
     }
@@ -161,6 +164,13 @@ final class GameScene: SKScene {
 
     static let githubButtonTexture =
         Assets.shared.sprites.textureNamed("github")
+    
+    static let smallPlayButtonTexture =
+        Assets.shared.sprites.textureNamed("smallresume")
+    
+    static let smallPauseButtonTexture =
+        Assets.shared.sprites.textureNamed("smallpause")
+    
 
     static var hitButton = true
 
@@ -275,6 +285,11 @@ final class GameScene: SKScene {
     private lazy var settingsNode = makeSettingsNode()
 
     private lazy var playButton = makePlayButton()
+    private lazy var pauseButton = makePauseButton()
+    private lazy var resumeButton = makeResumeButton()
+    private lazy var pauseOverlay = makePauseOverlay()
+
+    private var isPausedByUser = false
 
     private lazy var scoreLabelNode = SKLabelNode(
         fontNamed: "04b_19"
@@ -379,6 +394,8 @@ final class GameScene: SKScene {
         addChild(Self.githubButton)
         addChild(Self.settingsButton)
         addChild(playButton)
+        pauseButton.removeFromParent()
+        resumeButton.removeFromParent()
 
         score = 0
 
@@ -619,6 +636,85 @@ final class GameScene: SKScene {
             )
         }
     }
+    
+    private func pauseButtonPosition() -> CGPoint {
+        guard let view = self.view else {
+            return CGPoint(
+                x: 32,
+                y: height - 32
+            )
+        }
+
+        let safeInsets = view.safeAreaInsets
+
+        // Top-left corner of the device's safe area, in SKView coordinates.
+        let topLeftInView = CGPoint(
+            x: view.bounds.minX + safeInsets.left,
+            y: view.bounds.minY + safeInsets.top
+        )
+
+        // Convert the actual visible top-left into scene coordinates.
+        let topLeftInScene = convertPoint(fromView: topLeftInView)
+
+        // The button's position is its center.
+        let buttonHalfWidth =
+            Self.smallPauseButtonTexture.size().width *
+            Constants.pauseButtonScale / 2
+
+        let buttonHalfHeight =
+            Self.smallPauseButtonTexture.size().height *
+            Constants.pauseButtonScale / 2
+
+        let margin: CGFloat = 12
+
+        return CGPoint(
+            x: topLeftInScene.x + buttonHalfWidth + margin,
+            y: topLeftInScene.y - buttonHalfHeight - margin
+        )
+    }
+
+    private func makePauseButton() -> SKSpriteNode {
+        SKSpriteNode(
+            texture: Self.smallPauseButtonTexture.then {
+                $0.filteringMode = .nearest
+            }
+        ).then {
+            $0.name = "pause"
+            $0.setScale(Constants.pauseButtonScale)
+            $0.position = pauseButtonPosition()
+            $0.zPosition = 100
+        }
+    }
+
+    private func makeResumeButton() -> SKSpriteNode {
+        SKSpriteNode(
+            texture: Self.smallPlayButtonTexture.then {
+                $0.filteringMode = .nearest
+            }
+        ).then {
+            $0.name = "resume"
+            $0.setScale(Constants.pauseButtonScale)
+            $0.position = pauseButtonPosition()
+            $0.zPosition = 100
+        }
+    }
+
+    private func makePauseOverlay() -> SKShapeNode {
+        SKShapeNode(
+            rect: CGRect(
+                x: 0,
+                y: 0,
+                width: width,
+                height: height
+            )
+        ).then {
+            $0.name = "pauseOverlay"
+            $0.fillColor = .black
+            $0.strokeColor = .clear
+            $0.alpha = 0.55
+            $0.zPosition = GameZPosition.resultText + 4
+        }
+    }
 
     // MARK: Bird
 
@@ -790,6 +886,12 @@ final class GameScene: SKScene {
         switch nodeName {
         case "play":
             handlePlayTap()
+            
+        case "pause":
+            handlePauseTap()
+
+        case "resume":
+            handleResumeTap()
 
         case "settings":
             handleSettingsTap()
@@ -841,6 +943,15 @@ final class GameScene: SKScene {
         stopIdleAnimation()
 
         removeStartUI()
+
+        pauseButton.removeAllActions()
+        pauseButton.position = pauseButtonPosition()
+        pauseButton.setScale(0)
+        addChild(pauseButton)
+
+        pauseButton.run(
+            .scale(to: Constants.pauseButtonScale, duration: 0.1)
+        )
 
         pipes.setScale(1)
 
@@ -905,6 +1016,85 @@ final class GameScene: SKScene {
             ]),
             completion: { [weak self] in
                 self?.prepareNewGame()
+            }
+        )
+    }
+    
+    private func handlePauseTap() {
+        guard !Self.hitButton,
+              !isWaitingToStart,
+              !isGameOver,
+              !isShowingGameOver,
+              !isPausedByUser else {
+            return
+        }
+
+        Self.hitButton = true
+        isPausedByUser = true
+
+        playSound(swooshSound)
+
+        if haptics {
+            impactFeedback.impactOccurred()
+        }
+
+        pauseButton.removeAllActions()
+        pauseButton.removeFromParent()
+
+        pauseOverlay.setScale(1)
+        pauseOverlay.alpha = 0.55
+        addChild(pauseOverlay)
+
+        resumeButton.removeAllActions()
+        resumeButton.position = pauseButtonPosition()
+        resumeButton.setScale(Constants.pauseButtonScale)
+        addChild(resumeButton)
+
+        isPaused = true
+    }
+
+    private func handleResumeTap() {
+        guard isPausedByUser else {
+            return
+        }
+
+        isPaused = false
+        isPausedByUser = false
+
+        playSound(swooshSound)
+
+        if haptics {
+            impactFeedback.impactOccurred()
+        }
+
+        resumeButton.removeAllActions()
+        resumeButton.removeFromParent()
+
+        pauseOverlay.run(
+            .sequence([
+                .fadeOut(withDuration: 0.1),
+                .removeFromParent()
+            ])
+        )
+
+        pauseButton.removeAllActions()
+        pauseButton.position = pauseButtonPosition()
+        pauseButton.setScale(0)
+        addChild(pauseButton)
+
+        pauseButton.run(
+            .sequence([
+                .scale(
+                    to: Constants.pauseButtonScale * 0.875,
+                    duration: 0.1
+                ),
+                .scale(
+                    to: Constants.pauseButtonScale,
+                    duration: 0.1
+                )
+            ]),
+            completion: {
+                Self.hitButton = false
             }
         )
     }
@@ -1513,6 +1703,13 @@ final class GameScene: SKScene {
         guard !isShowingGameOver else {
             return
         }
+        
+        pauseButton.removeFromParent()
+        resumeButton.removeFromParent()
+        pauseOverlay.removeFromParent()
+
+        isPausedByUser = false
+        isPaused = false
 
         timeTook =
             CFAbsoluteTimeGetCurrent() - gameStartTime
@@ -1632,6 +1829,13 @@ final class GameScene: SKScene {
     // MARK: Reset
 
     private func resetScene() {
+        isPaused = false
+        isPausedByUser = false
+
+        pauseButton.removeFromParent()
+        resumeButton.removeFromParent()
+        pauseOverlay.removeFromParent()
+        
         pipes.removeAllChildren()
 
         resultNode.removeFromParent()
