@@ -92,14 +92,14 @@ final class GameScene: SKScene {
 
         static let verticalPipeGap: CGFloat = 130
         static let pipeScale: CGFloat = 2
-        static let birdScale: CGFloat = 1.5
+        static let birdScale: CGFloat = 1.25
 
         static let idleFloatDistance: CGFloat = 35
         static let idleFloatDuration: TimeInterval = 1
 
-        static let flapImpulse: CGFloat = 22
+        static let flapImpulse: CGFloat = 15
         static let flapRotation: CGFloat = 0.45
-        static let flapRotationHold: TimeInterval = 0.60
+        static let flapRotationHold: TimeInterval = 0.65
 
         static let minimumBirdYOffset: CGFloat = 20
 
@@ -1775,7 +1775,7 @@ final class GameScene: SKScene {
 
         bird.physicsBody?.velocity = .zero
         bird.physicsBody?.applyImpulse(
-            CGVector(dx: 0, dy: 20)
+            CGVector(dx: 0, dy: 13)
         )
     }
 

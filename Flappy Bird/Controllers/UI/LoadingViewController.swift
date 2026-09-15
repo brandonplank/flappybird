@@ -24,7 +24,7 @@ Brandon Plank, ThatcherDev
 See license for details.
 """
         DispatchQueue.global(qos: .background).async {
-            //sleep(1)
+            sleep(1)
             DispatchQueue.main.async {
                 self.progressLabel.text = "Loading Sentry"
 //                SentrySDK.start { options in
